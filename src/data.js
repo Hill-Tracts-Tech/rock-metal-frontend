@@ -1,21 +1,21 @@
 export const sliderItems = [
   {
     id: 1,
-    img: "https://i.ibb.co/XsdmR2c/1.png",
+    img: "https://img.freepik.com/free-photo/blank-black-t-shirt-hanger-isolated-white-space_74952-876.jpg?w=1060&t=st=1691822178~exp=1691822778~hmac=5907c77e72d5f40549b01dde3f81119afcf205352fa98ff156a36e72f85a4213",
     title: "SUMMER SALE",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     bg: "f5fafd",
   },
   {
     id: 2,
-    img: "https://i.ibb.co/DG69bQ4/2.png",
+    img: "https://i.ibb.co/7S5qjLr/29834299-men-s-black-polo-shirt-mockup-in-different-view-removebg-preview.png",
     title: "AUTUMN COLLECTION",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     bg: "fcf1ed",
   },
   {
     id: 3,
-    img: "https://i.ibb.co/cXFnLLV/3.png",
+    img: "https://i.ibb.co/6Z4dbn6/7979501-2029-removebg-preview.png",
     title: "LOUNGEWEAR LOVE",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     bg: "fbf0f4",
