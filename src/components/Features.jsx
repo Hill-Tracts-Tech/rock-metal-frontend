@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import Product from "./Product";
 import axios from "axios";
+import Trending from "./Trending";
 
-const Products = ({ cat, filters, sort }) => {
+const Features = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
-  // console.log(filteredProducts);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -52,29 +50,30 @@ const Products = ({ cat, filters, sort }) => {
 
   return (
     <Container>
-      <Titles>
-        <Title>Our Regular Products</Title>
-        <Button>View All</Button>
-      </Titles>
+      <Title>
+        Elevate Your Lifestyle with <br /> Our Featured Collection
+      </Title>
+      <Heading>Featured Products</Heading>
       <Wrapper>
         {cat
           ? filteredProducts.map((item) => (
-              <Product item={item} key={item.id} />
+              <Trending item={item} key={item.id} />
             ))
           : products
               .slice(0, 8)
-              .map((item) => <Product item={item} key={item.id} />)}
+              .map((item) => <Trending item={item} key={item.id} />)}
       </Wrapper>
     </Container>
   );
 };
 
-export default Products;
+export default Features;
 
 const Container = styled.div`
   width: 90%;
   margin: auto;
   padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -87,19 +86,15 @@ const Title = styled.h2`
   font-weight: bold;
   padding: 50px 0px;
   text-transform: uppercase;
-  color: #ff8147;
-`;
-const Titles = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: -webkit-linear-gradient(#ff5607, #07ffa8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
 `;
 
-const Button = styled.button`
-  border: none;
-  font-size: 16px;
-  background-color: #ededed;
-  border-radius: 30px;
-  padding: 10px 50px;
-  cursor: pointer;
+const Heading = styled.h2`
+  font-size: 36px;
+  text-transform: uppercase;
+  color: teal;
+  padding: 50px 0 30px 0;
 `;
