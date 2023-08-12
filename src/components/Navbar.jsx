@@ -3,6 +3,7 @@ import {
   Search,
   ShoppingCartOutlined,
   AccountCircle,
+  FavoriteBorderOutlined,
 } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
@@ -16,7 +17,9 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <Logo>ROCK METAL</Logo>
+          <Link to="/" style={{ color: "teal", textDecoration: "none" }}>
+            <Logo>ROCK METAL</Logo>
+          </Link>
         </Left>
         <Center>
           <SearchContainer>
@@ -45,9 +48,16 @@ const Navbar = () => {
             <MenuItem>SIGN IN</MenuItem>
           </Link>
           <Link to="/cart">
-            <MenuItem>
+            <MenuItem title="Cart">
               <Badge badgeContent={quantity} color="primary">
                 <ShoppingCartOutlined />
+              </Badge>
+            </MenuItem>
+          </Link>
+          <Link to="/whishList">
+            <MenuItem title="WhishList">
+              <Badge badgeContent={quantity} color="primary">
+                <FavoriteBorderOutlined />
               </Badge>
             </MenuItem>
           </Link>
@@ -97,6 +107,7 @@ const Input = styled.input`
   border: none;
   outline: none;
   flex: 1;
+  margin-left: 7px;
   background: transparent;
   ${mobile({ width: "50px" })}
 `;

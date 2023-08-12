@@ -5,10 +5,14 @@ import Product from "./Product";
 import axios from "axios";
 
 const Container = styled.div`
+  gap: 18px;
   padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  align-items: center;
+  background-color: #f5f5f5;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const Products = ({ cat, filters, sort }) => {
