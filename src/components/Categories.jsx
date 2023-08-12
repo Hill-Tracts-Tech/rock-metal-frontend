@@ -19,8 +19,9 @@ const Categories = () => {
 export default Categories;
 
 const Container = styled.div`
+  width: 90%;
+  margin: 50px auto;
   padding: 20px;
-  margin: 50px 0 100px 0;
 `;
 
 const Wrapper = styled.div`
