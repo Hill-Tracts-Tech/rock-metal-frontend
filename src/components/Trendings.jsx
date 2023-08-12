@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import Product from "./Product";
 import axios from "axios";
+import Trending from "./Trending";
 
-const Products = ({ cat, filters, sort }) => {
+const Trendings = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
-  // console.log(filteredProducts);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -52,24 +50,24 @@ const Products = ({ cat, filters, sort }) => {
 
   return (
     <Container>
-      <Titles>
-        <Title>Our Regular Products</Title>
-        <Button>View All</Button>
-      </Titles>
+      <Title>
+        BEST SHOP TO BUY T-SHIRTS <br /> ONLINE IN BANDARBAN
+      </Title>
+      <Heading>Trending Now</Heading>
       <Wrapper>
         {cat
           ? filteredProducts.map((item) => (
-              <Product item={item} key={item.id} />
+              <Trending item={item} key={item.id} />
             ))
           : products
               .slice(0, 8)
-              .map((item) => <Product item={item} key={item.id} />)}
+              .map((item) => <Trending item={item} key={item.id} />)}
       </Wrapper>
     </Container>
   );
 };
 
-export default Products;
+export default Trendings;
 
 const Container = styled.div`
   width: 90%;
@@ -87,19 +85,15 @@ const Title = styled.h2`
   font-weight: bold;
   padding: 50px 0px;
   text-transform: uppercase;
-  color: #ff8147;
-`;
-const Titles = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: -webkit-linear-gradient(#07ffa8, #ff5607);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
 `;
 
-const Button = styled.button`
-  border: none;
-  font-size: 16px;
-  background-color: #ededed;
-  border-radius: 30px;
-  padding: 10px 50px;
-  cursor: pointer;
+const Heading = styled.h2`
+  font-size: 36px;
+  text-transform: uppercase;
+  color: #19aa6b;
+  padding: 50px 0 30px 0;
 `;

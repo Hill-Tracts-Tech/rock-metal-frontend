@@ -8,68 +8,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addProduct } from "../redux/cartRedux";
 
-const Info = styled.div`
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.5s ease;
-  cursor: pointer;
-`;
-
-const Container = styled.div`
-  flex: 1;
-  margin: 5px;
-  min-width: 280px;
-  height: 350px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f5fbfd;
-  position: relative;
-
-  &:hover ${Info} {
-    opacity: 1;
-  }
-`;
-
-const Circle = styled.div`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
-`;
-
-const Image = styled.img`
-  height: 100%;
-  width: 100%;
-  z-index: 2;
-`;
-
-const Icon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-  transition: all 0.5s ease;
-  &:hover {
-    background-color: #e9f5f5;
-    transform: scale(1.1);
-  }
-`;
-
 const Product = ({ item }) => {
   const dispatch = useDispatch();
   console.log(item[0]);
@@ -86,23 +24,64 @@ const Product = ({ item }) => {
 
   return (
     <Container>
-      <Circle />
-      <Image src={item.img} />
-      <Info>
-        <Icon onClick={handleAddToCart}>
-          <ShoppingCartOutlined />
-        </Icon>
-        <Icon>
-          <Link to={`/product/${item._id}`}>
-            <SearchOutlined />
+      <Image src={item.img} alt="" />
+      <Content>
+        <Title>{item.title}</Title>
+        <Description>
+          {item?.desc ||
+            "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."}
+        </Description>
+        <Icons>
+          <ShoppingCartOutlined
+            style={{ cursor: "pointer" }}
+            onClick={handleAddToCart}
+          />
+          <Link to={`/product/${item._id}`} style={{ color: "black" }}>
+            <SearchOutlined style={{ cursor: "pointer" }} />
           </Link>
-        </Icon>
-        <Icon>
-          <FavoriteBorderOutlined />
-        </Icon>
-      </Info>
+          <FavoriteBorderOutlined style={{ cursor: "pointer" }} />
+        </Icons>
+      </Content>
     </Container>
   );
 };
 
 export default Product;
+
+const Title = styled.h3`
+  font-size: 24px;
+  text-align: center;
+`;
+
+const Container = styled.div`
+  flex: 1;
+  margin: 5px;
+  min-width: 280px;
+  /* height: 350px; */
+  background-color: #f5fbfd;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+`;
+
+const Description = styled.div`
+  padding: 10px 0;
+  text-align: center;
+`;
+const Icons = styled.div`
+  display: flex;
+  gap: 30px;
+  padding: 15px 0;
+  justify-content: center;
+`;
+const Content = styled.div`
+  padding: 10px;
+`;
+
+const Image = styled.img`
+  height: 200px;
+  z-index: 2;
+  mix-blend-mode: darken;
+`;
