@@ -59,7 +59,7 @@ const Button = styled.button`
 `;
 
 const Error = styled.span`
-  color: green;
+  color: red;
 `;
 
 const Login = () => {
