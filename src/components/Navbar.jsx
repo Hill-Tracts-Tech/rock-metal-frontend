@@ -4,8 +4,9 @@ import {
   ShoppingCartOutlined,
   AccountCircle,
   FavoriteBorderOutlined,
+  Menu,
 } from "@material-ui/icons";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { useSelector } from "react-redux";
@@ -13,65 +14,192 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const quantity = useSelector((state) => state.cart.quantity);
+  const [user, setUser] = useState("userAche");
+  const [registered, setRegister] = useState("register");
+  //for search input and button
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleSearch = () => {
+    // Implement your search logic here using the searchValue state.
+    console.log("Searching for:", searchValue);
+  };
+
   return (
-    <Container>
-      <Wrapper>
-        <Left>
+    <>
+      <Container>
+        <Wrapper>
+          <Left>
+            <Link to="/" style={{ color: "teal", textDecoration: "none" }}>
+              <Logo>ROCK METAL</Logo>
+            </Link>
+          </Left>
+          <Center>
+            <SearchContainer>
+              <Input
+                type="text"
+                placeholder="Search..."
+                value={searchValue}
+                onChange={handleSearchChange}
+              />
+              <SearchButton onClick={handleSearch} disabled={!searchValue}>
+                <Search
+                  style={{
+                    color: "white",
+                    fontSize: 20,
+                    textAlign: "center",
+                  }}
+                />
+              </SearchButton>
+            </SearchContainer>
+          </Center>
+          <Right>
+            {user && (
+              <Link to="/account">
+                <MenuItem>
+                  <AccountCircle style={{ color: "teal" }} />
+                </MenuItem>
+              </Link>
+            )}
+            {!registered ? (
+              <Link
+                to="/register"
+                style={{ textDecoration: "none", color: "teal" }}
+              >
+                <MenuItem>REGISTER</MenuItem>
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                style={{ textDecoration: "none", color: "teal" }}
+              >
+                <MenuItem>SIGN IN</MenuItem>
+              </Link>
+            )}
+            <Link to="/cart">
+              <MenuItem title="Cart">
+                <Badge badgeContent={quantity} color="teal">
+                  <ShoppingCartOutlined style={{ color: "teal" }} />
+                </Badge>
+              </MenuItem>
+            </Link>
+            <Link to="/whishList">
+              <MenuItem title="WhishList">
+                <Badge badgeContent={quantity} color="teal">
+                  <FavoriteBorderOutlined style={{ color: "teal" }} />
+                </Badge>
+              </MenuItem>
+            </Link>
+            <MenuButton>
+              <Menu />
+            </MenuButton>
+          </Right>
+        </Wrapper>
+        {/* <MobileView>
           <Link to="/" style={{ color: "teal", textDecoration: "none" }}>
             <Logo>ROCK METAL</Logo>
           </Link>
-        </Left>
-        <Center>
-          <SearchContainer>
-            <Input placeholder="Search" />
-            <SearchButton>
-              <Search
-                style={{
-                  color: "white",
-                  fontSize: 20,
-                  textAlign: "center",
-                }}
-              />
-            </SearchButton>
-          </SearchContainer>
-        </Center>
-        <Right>
-          <Link to="/account">
-            <MenuItem>
-              <AccountCircle />
-            </MenuItem>
-          </Link>
-          <Link to="/register">
-            <MenuItem>REGISTER</MenuItem>
-          </Link>
-          <Link to="/login">
-            <MenuItem>SIGN IN</MenuItem>
-          </Link>
+          {user && (
+            <Link to="/account">
+              <MenuItem>
+                <AccountCircle style={{ color: "teal" }} />
+              </MenuItem>
+            </Link>
+          )}
+          {!registered ? (
+            <Link
+              to="/register"
+              style={{ textDecoration: "none", color: "teal" }}
+            >
+              <MenuItem>REGISTER</MenuItem>
+            </Link>
+          ) : (
+            <Link to="/login" style={{ textDecoration: "none", color: "teal" }}>
+              <MenuItem>SIGN IN</MenuItem>
+            </Link>
+          )}
           <Link to="/cart">
             <MenuItem title="Cart">
-              <Badge badgeContent={quantity} color="primary">
-                <ShoppingCartOutlined />
+              <Badge badgeContent={quantity} color="teal">
+                <ShoppingCartOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
           </Link>
           <Link to="/whishList">
             <MenuItem title="WhishList">
-              <Badge badgeContent={quantity} color="primary">
-                <FavoriteBorderOutlined />
+              <Badge badgeContent={quantity} color="teal">
+                <FavoriteBorderOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
           </Link>
-        </Right>
-      </Wrapper>
-    </Container>
+          <MenuButton>
+            <Menu />
+          </MenuButton>
+        </MobileView> */}
+      </Container>
+      <NavbarContainer>
+        <NavbarList>
+          <NavbarItem>
+            <NavbarLink href="/">Home</NavbarLink>
+          </NavbarItem>
+          <NavbarItem>
+            <NavbarLink href="/about">About</NavbarLink>
+          </NavbarItem>
+          <NavbarItem>
+            <NavbarLink href="/services">Services</NavbarLink>
+          </NavbarItem>
+          <NavbarItem>
+            <NavbarLink href="/contact">Contact</NavbarLink>
+          </NavbarItem>
+        </NavbarList>
+      </NavbarContainer>
+    </>
   );
 };
+//
+const NavbarContainer = styled.nav`
+  background-color: #333;
+  padding: 10px;
+`;
 
+const NavbarList = styled.ul`
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const NavbarItem = styled.li`
+  margin: 0;
+  padding: 0;
+`;
+
+const NavbarLink = styled.a`
+  text-decoration: none;
+  color: white;
+  padding: 10px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #555;
+  }
+`;
+//
 export default Navbar;
 
 const Container = styled.div`
   height: 60px;
-  ${mobile({ height: "50px" })}
+  /* ${mobile({ height: "50px" })} */
+  position: relative;
 `;
 
 const Wrapper = styled.div`
@@ -79,7 +207,23 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  ${mobile({ padding: "10px 0px" })}
+  ${mobile({
+    padding: "10px 0px",
+  })}
+`;
+
+const MobileView = styled.div`
+  background: orange;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: auto;
+  padding: 16px;
+  text-align: right;
+  z-index: 100;
+  right: 0;
+  ${mobile({ width: "100%", height: "100%" })}
 `;
 
 const Left = styled.div`
@@ -118,8 +262,9 @@ const SearchButton = styled.button`
   border-radius: 100%;
   padding: 6px 8px;
   cursor: pointer;
+  background-color: ${(props) => (props.disabled ? "#d1caca" : "teal")};
   &:hover {
-    background-color: #17af26;
+    background-color: ${(props) => (props.disabled ? "#d1caca" : "teal")};
   }
 `;
 const Center = styled.div`
@@ -139,6 +284,14 @@ const Right = styled.div`
   ${mobile({ flex: 2, justifyContent: "center" })}
 `;
 
+const MenuButton = styled.button`
+  color: teal;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  margin-left: 5px;
+  display: none;
+`;
 const MenuItem = styled.div`
   font-size: 14px;
   cursor: pointer;

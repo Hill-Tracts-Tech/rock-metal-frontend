@@ -7,19 +7,25 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addProduct } from "../redux/cartRedux";
+import toast, { Toaster } from "react-hot-toast";
 
 const Product = ({ item }) => {
   const dispatch = useDispatch();
   console.log(item[0]);
   const handleAddToCart = () => {
-    dispatch(
-      addProduct({
-        ...item,
-        quantity: 1,
-        color: item?.color[0],
-        size: item?.size[0],
-      })
-    );
+    try {
+      dispatch(
+        addProduct({
+          ...item,
+          quantity: 1,
+          color: item?.color[0],
+          size: item?.size[0],
+        })
+      );
+      toast.success("Added successfully!");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
   };
 
   return (
@@ -42,6 +48,7 @@ const Product = ({ item }) => {
           <FavoriteBorderOutlined style={{ cursor: "pointer" }} />
         </Icons>
       </Content>
+      <Toaster />
     </Container>
   );
 };
