@@ -7,31 +7,25 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addProduct } from "../redux/cartRedux";
-import toast, { Toaster } from "react-hot-toast";
 
-const Trending = ({ item }) => {
+const RegularProducts = ({ item }) => {
   const dispatch = useDispatch();
-  console.log(item[0]);
+//   console.log(item[0]);
   const handleAddToCart = () => {
-    try {
-      dispatch(
+    dispatch(
       addProduct({
         ...item,
         quantity: 1,
         color: item?.color[0],
         size: item?.size[0],
       })
-      );
-      toast.success("Added to cart successfully");
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong! May be occurred ",error)
-}
+    );
   };
 
   return (
     <Container>
-      <Circle />
+      <Title>Our Regular Products</Title>
+      {/* <Circle />
       <Image src={item.img} />
       <Info>
         <Icon onClick={handleAddToCart}>
@@ -45,14 +39,21 @@ const Trending = ({ item }) => {
         <Icon>
           <FavoriteBorderOutlined />
         </Icon>
-      </Info>
-      <Toaster/>
+      </Info> */}
     </Container>
   );
 };
 
-export default Trending;
+export default RegularProducts;
 
+const Title = styled.h2`
+  font-size: 36px;
+  font-weight: bold;
+  /* padding: 50px 0px; */
+  text-transform: uppercase;
+  text-align: left;
+  color: #ff8147;
+`;
 const Info = styled.div`
   opacity: 0;
   width: 100%;
