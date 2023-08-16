@@ -83,11 +83,11 @@ const Product = () => {
           <AddContainer>
             <AmountContainer>
               <QuantityActionButton>
-              <Remove onClick={() => handleQuantity("dec")} />
+                <Remove onClick={() => handleQuantity("dec")} />
               </QuantityActionButton>
               <Amount>{quantity}</Amount>
               <QuantityActionButton>
-              <Add onClick={() => handleQuantity("inc")} />
+                <Add onClick={() => handleQuantity("inc")} />
               </QuantityActionButton>
             </AmountContainer>
             <Button onClick={handleClick}>ADD TO CART</Button>
@@ -114,13 +114,16 @@ const Wrapper = styled.div`
 
 const ImgContainer = styled.div`
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 300px;
 `;
 
 const Image = styled.img`
-  width: 80%;
-  height: 100%;
-  object-fit: cover;
+  width: 100%;
+  height: 300px;
+  object-fit: contain;
   ${mobile({ height: "40vh" })}
 `;
 
@@ -183,7 +186,7 @@ const FilterSize = styled.select`
 `;
 
 const FilterSizeOption = styled.option`
-font-size: 17px;
+  font-size: 17px;
 `;
 
 const AddContainer = styled.div`
