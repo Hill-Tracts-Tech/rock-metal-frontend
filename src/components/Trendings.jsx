@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Trending from "./Trending";
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 const Trendings = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
@@ -53,7 +54,12 @@ const Trendings = ({ cat, filters, sort }) => {
       <Title>
         BEST SHOP TO BUY T-SHIRTS <br /> ONLINE IN BANDARBAN
       </Title>
-      <Heading>Trending Now</Heading>
+      <Titles>
+        <Title>Trending Now</Title>
+        <Link to="/all-products">
+          <Button>View All</Button>
+        </Link>
+      </Titles>
       <Wrapper>
         {cat
           ? filteredProducts.map((item) => (
@@ -79,7 +85,26 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
 `;
+const Titles = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
+const Button = styled.button`
+  border: 1.5px solid teal;
+  font-size: 16px;
+  background-color: teal;
+  border-radius: 30px;
+  padding: 10px 40px;
+  color: #fff;
+  cursor: pointer;
+  transition: ease 0.3s;
+  &:hover {
+    background-color: #fff;
+    color: teal;
+  }
+`;
 const Title = styled.h2`
   font-size: 36px;
   font-weight: bold;
@@ -89,11 +114,4 @@ const Title = styled.h2`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
-`;
-
-const Heading = styled.h2`
-  font-size: 36px;
-  text-transform: uppercase;
-  color: #19aa6b;
-  padding: 50px 0 30px 0;
 `;
