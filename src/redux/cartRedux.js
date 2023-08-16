@@ -4,6 +4,8 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     products: [],
+    favourite: [],
+    favQuantity: 0,
     quantity: 0,
     total: 0,
   },
@@ -40,9 +42,29 @@ const cartSlice = createSlice({
         state.quantity += quantity;
       }
     },
+    addFavourite: (state, action) => {
+      const existingProductIndex = state.favourite.findIndex(
+        (favourite) => favourite._id === action.payload._id
+      );
+      if (existingProductIndex !== -1) {
+        state.favourite[existingProductIndex].favQuantity += 1;
+      } else {
+        state.favourite.push({ ...action.payload, favQuantity: 1 });
+      }
+      state.favQuantity += 1;
+    },
+    clearFavourite: (state) => {
+      state.favQuantity = null;
+      state.favQuantity = [];
+    },
   },
 });
 
-export const { addProduct, clearCart, updateProductQuantity } =
-  cartSlice.actions;
+export const {
+  addProduct,
+  clearCart,
+  updateProductQuantity,
+  addFavourite,
+  clearFavourite,
+} = cartSlice.actions;
 export default cartSlice.reducer;
