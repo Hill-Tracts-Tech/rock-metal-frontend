@@ -17,6 +17,7 @@ const KEY = process.env.REACT_APP_STRIPE;
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+
   const [stripeToken, setStripeToken] = useState(null);
   const history = useHistory();
 
@@ -77,7 +78,7 @@ const Cart = () => {
           </Link>
           <TopTexts>
             <TopText>Shopping Bag({cart?.products?.length})</TopText>
-            <TopText>Your Wishlist (0)</TopText>
+            <TopText>Your Wishlist ({cart?.favourite?.length})</TopText>
           </TopTexts>
           <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
