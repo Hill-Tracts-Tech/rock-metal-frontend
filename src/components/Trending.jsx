@@ -8,26 +8,27 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Trending = ({ item }) => {
-  
   const dispatch = useDispatch();
-  console.log(item[0]);
+
   const handleAddToCart = () => {
     try {
       dispatch(
-      addProduct({
-        ...item,
-        quantity: 1,
-        color: item?.color[0],
-        size: item?.size[0],
-      })
+        addProduct({
+          ...item,
+          quantity: 1,
+          color: item?.color[0],
+          size: item?.size[0],
+        })
       );
       toast.success("Added to cart successfully");
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong! May be occurred ",error)
-}
+      toast.error("Something went wrong! May be occurred ", error);
+    }
   };
 
   return (
@@ -47,7 +48,7 @@ const Trending = ({ item }) => {
           <FavoriteBorderOutlined />
         </Icon>
       </Info>
-      <Toaster/>
+      <Toaster />
     </Container>
   );
 };

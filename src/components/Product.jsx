@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Product = ({ item }) => {
   const dispatch = useDispatch();
@@ -31,7 +33,7 @@ const Product = ({ item }) => {
 
   return (
     <Container>
-      <Image src={item.img} alt="" />
+      <Image src={item.img || <Skeleton count={10}/>} alt="" />
       <Content>
         <Title>{item.title}</Title>
         <Description>

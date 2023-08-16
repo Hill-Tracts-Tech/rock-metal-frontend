@@ -11,6 +11,7 @@ import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
 import { clearCart, updateProductQuantity } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
+import emptyCart from "../assets/cart-empty.png";
 
 const KEY = process.env.REACT_APP_STRIPE;
 
@@ -82,51 +83,61 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            {cart.products.map((product) => (
-              <Product>
-                <ProductDetail>
-                  <Image src={product.img} />
-                  <Details>
-                    <ProductName>
-                      <b>Product:</b> {product.title}
-                    </ProductName>
-                    <ProductId>
-                      <b>ID:</b> {product._id}
-                    </ProductId>
-                    <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>Size:</b> {product.size}
-                    </ProductSize>
-                  </Details>
-                </ProductDetail>
-                <PriceDetail>
-                  <ProductAmountContainer>
-                    <QuantityActionButton>
-                      <Remove
-                        onClick={() =>
-                          product.quantity > 1
-                            ? handleQuantity("dec", product._id)
-                            : console.log("can zero")
-                        }
-                      />
-                    </QuantityActionButton>
-                    <ProductAmount>{product.quantity}</ProductAmount>
-                    <QuantityActionButton>
-                      <Add onClick={() => handleQuantity("inc", product._id)} />
-                    </QuantityActionButton>
-                  </ProductAmountContainer>
-                  <ProductPrice>
-                    $ {product.price * product.quantity}
-                  </ProductPrice>
-                </PriceDetail>
-              </Product>
-            ))}
-            <br />
-            <Hr />
-            {cart.products.length ? (
-              <ClearButton onClick={handleClearCart}>Clear Cart</ClearButton>
+            {cart.products.length > 0 ? (
+              <InfoWrapper>
+                {cart.products.map((product) => (
+                  <Product>
+                    <ProductDetail>
+                      <Image src={product.img} />
+                      <Details>
+                        <ProductName>
+                          <b>Product:</b> {product.title}
+                        </ProductName>
+                        <ProductId>
+                          <b>ID:</b> {product._id}
+                        </ProductId>
+                        <ProductColor color={product.color} />
+                        <ProductSize>
+                          <b>Size:</b> {product.size}
+                        </ProductSize>
+                      </Details>
+                    </ProductDetail>
+                    <PriceDetail>
+                      <ProductAmountContainer>
+                        <QuantityActionButton>
+                          <Remove
+                            onClick={() =>
+                              product.quantity > 1
+                                ? handleQuantity("dec", product._id)
+                                : console.log("can zero")
+                            }
+                          />
+                        </QuantityActionButton>
+                        <ProductAmount>{product.quantity}</ProductAmount>
+                        <QuantityActionButton>
+                          <Add
+                            onClick={() => handleQuantity("inc", product._id)}
+                          />
+                        </QuantityActionButton>
+                      </ProductAmountContainer>
+                      <ProductPrice>
+                        $ {product.price * product.quantity}
+                      </ProductPrice>
+                    </PriceDetail>
+                  </Product>
+                ))}
+                <br />
+                <Hr />
+                {cart.products.length ? (
+                  <ClearButton onClick={handleClearCart}>
+                    Clear Cart
+                  </ClearButton>
+                ) : (
+                  ""
+                )}
+              </InfoWrapper>
             ) : (
-              ""
+              <img src={emptyCart}></img>
             )}
           </Info>
           <Summary>
@@ -220,6 +231,9 @@ const Bottom = styled.div`
   ${mobile({ flexDirection: "column" })}
 `;
 
+const InfoWrapper = styled.div`
+  flex: 3;
+`;
 const Info = styled.div`
   flex: 3;
 `;
@@ -230,6 +244,13 @@ const Product = styled.div`
   ${mobile({ flexDirection: "column" })}
 `;
 
+const EmptyCart = styled.div`
+  width: 100%;
+  height: 100%;
+  img {
+    object-fit: cover;
+  }
+`;
 const ClearButton = styled.button`
   background-color: #ff0000;
   color: #ffffff;
@@ -350,10 +371,10 @@ const Button = styled.button`
   background-color: teal;
   color: white;
   font-weight: 600;
-  border-radius: 12px; 
+  border-radius: 12px;
   border: 1.5px solid teal;
   transition: ease 0.5s;
-  &:hover{
+  &:hover {
     background-color: transparent;
     color: teal;
   }

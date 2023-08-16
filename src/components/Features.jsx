@@ -3,12 +3,15 @@ import styled from "styled-components";
 import axios from "axios";
 import Trending from "./Trending";
 import { Link } from "react-router-dom/cjs/react-router-dom";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 const Features = ({ cat, filters, sort }) => {
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
+    setLoading(true);
     const getProducts = async () => {
       try {
         const res = await axios.get(
@@ -17,7 +20,10 @@ const Features = ({ cat, filters, sort }) => {
             : "http://localhost:5000/api/products"
         );
         setProducts(res.data);
-      } catch (err) {}
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+      }
     };
     getProducts();
   }, [cat]);
@@ -50,26 +56,35 @@ const Features = ({ cat, filters, sort }) => {
   }, [sort]);
 
   return (
-    <Container>
-      <Title>
-        Elevate Your Lifestyle with <br /> Our Featured Collection
-      </Title>
-      <Titles>
-        <Title>FEATURED PRODUCTS</Title>
-        <Link to="/all-products">
-          <Button>View All</Button>
-        </Link>
-      </Titles>
-      <Wrapper>
-        {cat
-          ? filteredProducts.map((item) => (
-              <Trending item={item} key={item.id} />
-            ))
-          : products
-              .slice(0, 8)
-              .map((item) => <Trending item={item} key={item.id} />)}
-      </Wrapper>
-    </Container>
+    <SkeletonTheme baseColor="#b3aaaa" highlightColor="#444">
+      <Container>
+        <Title>
+          Elevate Your Lifestyle with <br /> Our Featured Collection
+        </Title>
+        <Titles>
+          <Title>FEATURED PRODUCTS</Title>
+          <Link to="/all-products">
+            <Button>View All</Button>
+          </Link>
+        </Titles>
+        {
+          loading ?
+            <Skeleton
+              width="30%"
+              count={4} />
+            :
+        <Wrapper>
+          {cat
+            ? filteredProducts.map((item) => (
+                <Trending item={item} key={item.id} />
+              ))
+            : products
+                .slice(0, 8)
+                .map((item) => <Trending item={item} key={item.id} />)}
+            </Wrapper>
+        }
+      </Container>
+    </SkeletonTheme>
   );
 };
 
