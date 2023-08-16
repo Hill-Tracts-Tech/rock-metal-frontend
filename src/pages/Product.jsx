@@ -31,6 +31,8 @@ const Product = () => {
     getProduct();
   }, [id]);
 
+  console.log(product?.size?.[0]);
+
   const handleQuantity = (type) => {
     if (type === "dec") {
       quantity > 1 && setQuantity(quantity - 1);
@@ -41,12 +43,23 @@ const Product = () => {
 
   const handleClick = () => {
     try {
-      dispatch(addProduct({ ...product, quantity, color, size }));
+      const selectedColor = color || (product.color && product.color[0]) || "";
+      const selectedSize = size || (product.size && product.size[0]) || "";
+
+      dispatch(
+        addProduct({
+          ...product,
+          quantity,
+          color: selectedColor,
+          size: selectedSize,
+        })
+      );
       toast.success("Added to cart successfully!");
     } catch (error) {
       toast.error("Something went wrong! May be occurred ", error);
     }
   };
+
   return (
     <Container>
       <Toaster />

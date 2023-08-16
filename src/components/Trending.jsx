@@ -6,28 +6,46 @@ import {
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { addProduct } from "../redux/cartRedux";
+import { addFavourite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 
 const Trending = ({ item }) => {
-  
   const dispatch = useDispatch();
-  console.log(item[0]);
+
+  // handle add to cart
   const handleAddToCart = () => {
     try {
       dispatch(
-      addProduct({
-        ...item,
-        quantity: 1,
-        color: item?.color[0],
-        size: item?.size[0],
-      })
+        addProduct({
+          ...item,
+          quantity: 1,
+          color: item?.color[0],
+          size: item?.size[0],
+        })
       );
       toast.success("Added to cart successfully");
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong! May be occurred ",error)
-}
+      toast.error("Something went wrong! May be occurred ", error);
+    }
+  };
+
+  // add to favourite
+  const handleAddToFavourite = () => {
+    try {
+      dispatch(
+        addFavourite({
+          ...item,
+          quantity: 1,
+          color: item?.color[0],
+          size: item?.size[0],
+        })
+      );
+      toast.success("Added to favourite successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong! May be occurred ", error);
+    }
   };
 
   return (
@@ -43,11 +61,11 @@ const Trending = ({ item }) => {
             <SearchOutlined />
           </Link>
         </Icon>
-        <Icon>
+        <Icon onClick={handleAddToFavourite}>
           <FavoriteBorderOutlined />
         </Icon>
       </Info>
-      <Toaster/>
+      <Toaster />
     </Container>
   );
 };
