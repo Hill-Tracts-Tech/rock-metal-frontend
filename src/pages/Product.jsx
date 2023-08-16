@@ -121,9 +121,9 @@ const ImgContainer = styled.div`
 `;
 
 const Image = styled.img`
-  width: 300px;
-  height: 100%;
-  object-fit: cover;
+  width: 100%;
+  height: 300px;
+  object-fit: contain;
   ${mobile({ height: "40vh" })}
 `;
 
