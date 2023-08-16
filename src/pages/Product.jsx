@@ -49,17 +49,21 @@ const Product = () => {
   };
   return (
     <Container>
-      <Toaster/>
-      <Navbar />
+      <Toaster />
       <Announcement />
+      <Navbar />
       <Wrapper>
         <ImgContainer>
           <Image src={product.img} />
         </ImgContainer>
         <InfoContainer>
           <Title>{product.title}</Title>
-          <Desc>{product.desc}</Desc>
-          <Price>$ {product.price}</Price>
+          <Desc>
+            {product.desc
+              ? product.desc
+              : "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Inventore, ab. Quisquam tempora adipisci vitae saepe"}
+          </Desc>
+          <Price>৳ {product.price}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
@@ -78,9 +82,13 @@ const Product = () => {
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
+              <QuantityActionButton>
               <Remove onClick={() => handleQuantity("dec")} />
+              </QuantityActionButton>
               <Amount>{quantity}</Amount>
+              <QuantityActionButton>
               <Add onClick={() => handleQuantity("inc")} />
+              </QuantityActionButton>
             </AmountContainer>
             <Button onClick={handleClick}>ADD TO CART</Button>
           </AddContainer>
@@ -99,16 +107,19 @@ const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   ${mobile({ padding: "10px", flexDirection: "column" })}
 `;
 
 const ImgContainer = styled.div`
   flex: 1;
+  width: 300px;
 `;
 
 const Image = styled.img`
-  width: 100%;
-  height: 90vh;
+  width: 80%;
+  height: 100%;
   object-fit: cover;
   ${mobile({ height: "40vh" })}
 `;
@@ -160,11 +171,20 @@ const FilterColor = styled.div`
 `;
 
 const FilterSize = styled.select`
-  margin-left: 10px;
-  padding: 5px;
+  font-size: 17px;
+  padding: 6px;
+  margin-left: 9px;
+  border: 1.5px solid teal;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  outline: none;
+  width: 100px;
 `;
 
-const FilterSizeOption = styled.option``;
+const FilterSizeOption = styled.option`
+font-size: 17px;
+`;
 
 const AddContainer = styled.div`
   width: 50%;
@@ -180,11 +200,23 @@ const AmountContainer = styled.div`
   font-weight: 700;
 `;
 
+const QuantityActionButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  padding: 4px;
+  border: none;
+  border-radius: 100%;
+  /* background-color: #3c3d3e; */
+  color: #3c3d3e;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.148), 0 4px 15px rgba(0, 0, 0, 0.116);
+`;
 const Amount = styled.span`
   width: 30px;
   height: 30px;
   border-radius: 10px;
-  border: 1px solid teal;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -192,13 +224,16 @@ const Amount = styled.span`
 `;
 
 const Button = styled.button`
-  padding: 15px;
-  border: 2px solid teal;
-  background-color: white;
+  border: 1.5px solid teal;
+  font-size: 16px;
+  background-color: teal;
+  border-radius: 30px;
+  padding: 10px 40px;
+  color: #fff;
   cursor: pointer;
-  font-weight: 500;
-
+  transition: ease 0.3s;
   &:hover {
-    background-color: #f8f4f4;
+    background-color: #fff;
+    color: teal;
   }
 `;

@@ -10,6 +10,7 @@ import { addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 
 const Trending = ({ item }) => {
+  
   const dispatch = useDispatch();
   console.log(item[0]);
   const handleAddToCart = () => {

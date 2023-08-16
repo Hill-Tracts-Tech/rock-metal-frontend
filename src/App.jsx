@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 import Success from "./pages/Success";
 import { useSelector } from "react-redux";
-import RegularProducts from "./components/Regularproducts";
+import AllProducts from "./components/AllProducts";
 
 const App = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -34,8 +34,8 @@ const App = () => {
         <Route path="/success">
           <Success />
         </Route>
-        <Route path="/products">
-          <RegularProducts />
+        <Route path="/all-products">
+          <AllProducts />
         </Route>
         
         <Route path="/login">{user ? <Redirect to="/" /> : <Login />}</Route>

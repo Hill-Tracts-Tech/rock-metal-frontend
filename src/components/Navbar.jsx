@@ -285,12 +285,12 @@ const NavbarContainer = styled.nav`
 `;
 
 const Logo = styled.div`
-  height: 36px;
-  height: 36px;
-  ${mobile({ width: "30px", height: "30px" })}
+  height: 42px;
+  height: 42px;
+  ${mobile({ width: "42px", height: "42px" })}
   & img {
-    width: 30px;
-    height: 30px;
+    width: 42px;
+    height: 42px;
   }
 `;
 

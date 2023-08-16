@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Trending from "./Trending";
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 const Features = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
@@ -53,7 +54,12 @@ const Features = ({ cat, filters, sort }) => {
       <Title>
         Elevate Your Lifestyle with <br /> Our Featured Collection
       </Title>
-      <Heading>Featured Products</Heading>
+      <Titles>
+        <Title>FEATURED PRODUCTS</Title>
+        <Link to="/all-products">
+          <Button>View All</Button>
+        </Link>
+      </Titles>
       <Wrapper>
         {cat
           ? filteredProducts.map((item) => (
@@ -91,10 +97,22 @@ const Title = styled.h2`
   -webkit-text-fill-color: transparent;
   text-align: center;
 `;
-
-const Heading = styled.h2`
-  font-size: 36px;
-  text-transform: uppercase;
-  color: teal;
-  padding: 50px 0 30px 0;
+const Titles = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+const Button = styled.button`
+  border: 1.5px solid teal;
+  font-size: 16px;
+  background-color: teal;
+  border-radius: 30px;
+  padding: 10px 40px;
+  color: #fff;
+  cursor: pointer;
+  transition: ease 0.3s;
+  &:hover {
+    background-color: #fff;
+    color: teal;
+  }
 `;
