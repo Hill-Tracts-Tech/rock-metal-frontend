@@ -1,30 +1,63 @@
+import React, { useState } from "react";
 import { Badge } from "@material-ui/core";
+import styled from "styled-components";
+import { mobile } from "../responsive";
 import {
   Search,
   ShoppingCartOutlined,
   AccountCircle,
   FavoriteBorderOutlined,
+  Menu,
 } from "@material-ui/icons";
-import React from "react";
-import styled from "styled-components";
-import { mobile } from "../responsive";
+import { Link } from "react-router-dom/cjs/react-router-dom";
+import logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+
 
 const Navbar = () => {
   const quantity = useSelector((state) => state.cart.quantity);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
+  //for search input and button
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleSearch = () => {
+    console.log("Searching for:", searchValue);
+    setIsPopupOpen(!isPopupOpen);
+  };
+
+  // popup
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
   return (
-    <Container>
-      <Wrapper>
+    <>
+      <NavbarContainer>
         <Left>
           <Link to="/" style={{ color: "teal", textDecoration: "none" }}>
-            <Logo>ROCK METAL</Logo>
+            <Logo>
+              <img src={logo} alt="" />
+            </Logo>
           </Link>
         </Left>
         <Center>
           <SearchContainer>
-            <Input placeholder="Search" />
-            <SearchButton>
+            <SearchInput
+              type="text"
+              placeholder="Search..."
+              value={searchValue}
+              onChange={handleSearchChange}
+            />
+            <SearchButton onClick={handleSearch} disabled={!searchValue}>
               <Search
                 style={{
                   color: "white",
@@ -38,73 +71,247 @@ const Navbar = () => {
         <Right>
           <Link to="/account">
             <MenuItem>
-              <AccountCircle />
+              <AccountCircle style={{ color: "teal" }} />
             </MenuItem>
-          </Link>
-          <Link to="/register">
-            <MenuItem>REGISTER</MenuItem>
-          </Link>
-          <Link to="/login">
-            <MenuItem>SIGN IN</MenuItem>
           </Link>
           <Link to="/cart">
             <MenuItem title="Cart">
-              <Badge badgeContent={quantity} color="primary">
-                <ShoppingCartOutlined />
+              <Badge badgeContent={quantity} color="teal">
+                <ShoppingCartOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
           </Link>
           <Link to="/whishList">
             <MenuItem title="WhishList">
-              <Badge badgeContent={quantity} color="primary">
-                <FavoriteBorderOutlined />
+              <Badge badgeContent={quantity} color="teal">
+                <FavoriteBorderOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
           </Link>
+          <AuthContainer>
+            <RegisterButton>
+              <Link
+                to="/register"
+                style={{ textDecoration: "none", fontWeight: "semibold" }}
+              >
+                Register
+              </Link>
+            </RegisterButton>
+            <LoginButton>
+              <Link
+                to="/login"
+                style={{ textDecoration: "none", fontWeight: "semibold" }}
+              >
+                Sign In
+              </Link>
+            </LoginButton>
+          </AuthContainer>
         </Right>
-      </Wrapper>
-    </Container>
+      </NavbarContainer>
+
+      {/* Mobile responsive view */}
+      <MobileViewNavbarContainer>
+        <Left>
+          <Link to="/" style={{ color: "teal", textDecoration: "none" }}>
+            <Logo>
+              <img src={logo} alt="" />
+            </Logo>
+          </Link>
+        </Left>
+        <Center style={{ display: "flex", alignItems: "center" }}>
+          <SearchContainer>
+            <SearchInput
+              type="text"
+              placeholder="Search..."
+              value={searchValue}
+              onChange={handleSearchChange}
+              style={{ display: "none" }}
+            />
+            <SearchButton onClick={togglePopup}>
+              <Search
+                style={{
+                  color: "white",
+                  fontSize: 20,
+                  textAlign: "center",
+                }}
+              />
+            </SearchButton>
+          </SearchContainer>
+        </Center>
+        <Right>
+          <Link to="/account">
+            <MenuItem>
+              <AccountCircle style={{ color: "teal" }} />
+            </MenuItem>
+          </Link>
+          <Link to="/cart">
+            <MenuItem title="Cart">
+              <Badge badgeContent={quantity} color="teal">
+                <ShoppingCartOutlined style={{ color: "teal" }} />
+              </Badge>
+            </MenuItem>
+          </Link>
+          <Link to="/whishList">
+            <MenuItem title="WhishList">
+              <Badge badgeContent={quantity} color="teal">
+                <FavoriteBorderOutlined style={{ color: "teal" }} />
+              </Badge>
+            </MenuItem>
+          </Link>
+          <MenuButton onClick={toggleDrawer}>
+            {drawerOpen ? "X" : <Menu />}{" "}
+          </MenuButton>
+        </Right>
+      </MobileViewNavbarContainer>
+
+      {/* Navbar drawer */}
+      <DrawerWrapper open={drawerOpen}>
+        <Logo style={{ margin: "20px 0px 0px 20px" }}>
+          <Link to="/" style={{ color: "teal", textDecoration: "none" }}>
+            <img src={logo} alt="" />
+          </Link>
+        </Logo>
+        <DrawerInner>
+          <Link to="/account">
+            <MenuItem>Profile</MenuItem>
+          </Link>
+
+          <Link to="/cart">
+            <MenuItem title="Cart">My Cart</MenuItem>
+          </Link>
+          <Link to="/whishList">
+            <MenuItem title="WhishList">My WishList</MenuItem>
+          </Link>
+          <AuthContainer>
+            <RegisterButton>
+              <Link
+                to="/register"
+                style={{ textDecoration: "none", fontWeight: "semibold" }}
+              >
+                Register
+              </Link>
+            </RegisterButton>
+            <LoginButton>
+              <Link
+                to="/login"
+                style={{ textDecoration: "none", fontWeight: "semibold" }}
+              >
+                Sign In
+              </Link>
+            </LoginButton>
+          </AuthContainer>
+        </DrawerInner>
+      </DrawerWrapper>
+
+      {/* pop up */}
+      <Overlay isOpen={isPopupOpen}>
+        <PopupContent>
+          <SearchContainer>
+            <SearchInput
+              type="text"
+              placeholder="Search..."
+              value={searchValue}
+              onChange={handleSearchChange}
+            />
+            <SearchButton onClick={handleSearch} disabled={!searchValue}>
+              <Search
+                style={{
+                  color: "white",
+                  fontSize: 20,
+                  textAlign: "center",
+                }}
+              />
+            </SearchButton>
+          </SearchContainer>
+        </PopupContent>
+      </Overlay>
+    </>
   );
 };
 
 export default Navbar;
 
-const Container = styled.div`
-  height: 60px;
-  ${mobile({ height: "50px" })}
+// Styled component for the pop-up overlay
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: ${props => (props.isOpen ? 'block' : 'none')};
 `;
 
-const Wrapper = styled.div`
-  padding: 10px 20px;
+// Styled component for the pop-up content
+const PopupContent = styled.div`
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+  width: 80%;
+  height: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999999999999999;
+`;
+
+// Mobile responsive css
+
+const MobileViewNavbarContainer = styled.nav`
+  display: none;
+  @media (max-width: 768px) {
+    background-color: #ffffff;
+    color: teal;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+`;
+const NavbarContainer = styled.nav`
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  ${mobile({ padding: "10px 0px" })}
-`;
-
-const Left = styled.div`
-  flex: 1;
-  display: flex;
   align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  color: teal;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    display: none;
+  }
 `;
 
-const Language = styled.span`
-  font-size: 14px;
-  cursor: pointer;
-  ${mobile({ display: "none" })}
+const Logo = styled.div`
+  height: 36px;
+  height: 36px;
+  ${mobile({ width: "30px", height: "30px" })}
+  & img {
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 const SearchContainer = styled.div`
-  border: 0.5px solid lightgray;
   display: flex;
   align-items: center;
+  border: 0.5px solid lightgray;
   border-radius: 18px;
   margin-left: 25px;
   padding: 3px;
+
+  @media (max-width: 768px) {
+    /* margin-top: 1rem; */
+  }
 `;
 
-const Input = styled.input`
+const SearchInput = styled.input`
+  padding: 0.5rem;
   border: none;
+  border-radius: 4px;
+  margin-right: 0.5rem;
   outline: none;
   flex: 1;
   margin-left: 7px;
@@ -118,18 +325,121 @@ const SearchButton = styled.button`
   border-radius: 100%;
   padding: 6px 8px;
   cursor: pointer;
+  background-color: ${(props) => (props.disabled ? "#d1caca" : "teal")};
   &:hover {
-    background-color: #17af26;
+    background-color: ${(props) => (props.disabled ? "#d1caca" : "teal")};
   }
+`;
+
+const AuthContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+  }
+`;
+
+const RegisterButton = styled.button`
+  padding: 0.5rem 1rem;
+  background-color: teal;
+  border: none;
+  margin-right: 1rem;
+  cursor: pointer;
+  border: 1.3px solid teal;
+  border-radius: 4px;
+  transition: ease-in-out 0.5s;
+  &:hover {
+    background-color: transparent;
+    a {
+      color: teal;
+    }
+  }
+  a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+  }
+`;
+const LoginButton = styled.button`
+  padding: 0.5rem 1rem;
+  background-color: teal;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  border: 1.3px solid teal;
+  transition: ease-in-out 0.5s;
+  &:hover {
+    background-color: transparent;
+    a {
+      color: teal;
+    }
+  }
+  a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+  }
+`;
+const MenuButton = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: none;
+  color: teal;
+  margin-right: 11px;
+  @media (max-width: 768px) {
+    display: block;
+    z-index: 200;
+  }
+`;
+const DrawerWrapper = styled.div`
+  position: fixed;
+  top: 30px;
+  z-index: 100;
+  right: ${({ open }) => (open ? "0" : "-3000px")};
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: #fff;
+  transition: right 0.3s ease-in-out;
+  @media (max-width: 768px) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+`;
+const DrawerInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    transition: ease 0.5s;
+    &&:hover {
+      font-size: 19px;
+    }
+  }
+`;
+
+const MenuItem = styled.div`
+  padding: 1rem;
+`;
+const Left = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
 `;
 const Center = styled.div`
   flex: 1;
   text-align: center;
-`;
-
-const Logo = styled.h1`
-  font-weight: bold;
-  ${mobile({ fontSize: "24px" })}
 `;
 const Right = styled.div`
   flex: 1;
@@ -138,10 +448,4 @@ const Right = styled.div`
   justify-content: flex-end;
   ${mobile({ flex: 2, justifyContent: "center" })}
 `;
-
-const MenuItem = styled.div`
-  font-size: 14px;
-  cursor: pointer;
-  margin-left: 25px;
-  ${mobile({ fontSize: "12px", marginLeft: "10px" })}
-`;
+//styled component ended//

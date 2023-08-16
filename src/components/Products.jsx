@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Product from "./Product";
 import axios from "axios";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const Products = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
@@ -54,7 +55,9 @@ const Products = ({ cat, filters, sort }) => {
     <Container>
       <Titles>
         <Title>Our Regular Products</Title>
-        <Button>View All</Button>
+        <Link to="/products">
+          <Button>View All</Button>
+        </Link>
       </Titles>
       <Wrapper>
         {cat
