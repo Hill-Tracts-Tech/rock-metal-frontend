@@ -25,6 +25,7 @@ const Product = ({ item }) => {
       toast.success("Added successfully!");
     } catch (error) {
       console.error("Error adding to cart:", error);
+      toast.error("Something went wrong! May be occurred ",error)
     }
   };
 

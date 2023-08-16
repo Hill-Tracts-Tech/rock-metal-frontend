@@ -7,19 +7,26 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addProduct } from "../redux/cartRedux";
+import toast, { Toaster } from "react-hot-toast";
 
 const Trending = ({ item }) => {
   const dispatch = useDispatch();
   console.log(item[0]);
   const handleAddToCart = () => {
-    dispatch(
+    try {
+      dispatch(
       addProduct({
         ...item,
         quantity: 1,
         color: item?.color[0],
         size: item?.size[0],
       })
-    );
+      );
+      toast.success("Added to cart successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong! May be occurred ",error)
+}
   };
 
   return (
@@ -39,6 +46,7 @@ const Trending = ({ item }) => {
           <FavoriteBorderOutlined />
         </Icon>
       </Info>
+      <Toaster/>
     </Container>
   );
 };
