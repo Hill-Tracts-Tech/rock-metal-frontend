@@ -8,6 +8,7 @@ import Products from "../components/Products";
 import Slider from "../components/slider/Slider";
 import Trendings from "../components/Trendings";
 import Features from "../components/Features";
+import Ordersectionads from "../components/Ordersectionads";
 const Home = () => {
   return (
     <div>
@@ -18,6 +19,7 @@ const Home = () => {
       <Trendings />
       <Products />
       <Features />
+      <Ordersectionads />
       <Newsletter />
       <Footer />
     </div>
