@@ -19,7 +19,7 @@ const Home = () => {
       <Trendings />
       <Products />
       <Features />
-      <Ordersectionads></Ordersectionads>
+      <Ordersectionads />
       <Newsletter />
       <Footer />
     </div>
