@@ -3,12 +3,17 @@ import styled from "styled-components";
 import Product from "./Product";
 import axios from "axios";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { mobile } from "../responsive";
 
 const Products = ({ cat, filters, sort }) => {
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
+    setLoading(true);
     const getProducts = async () => {
       try {
         const res = await axios.get(
@@ -17,7 +22,10 @@ const Products = ({ cat, filters, sort }) => {
             : "http://localhost:5000/api/products"
         );
         setProducts(res.data);
-      } catch (err) {}
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+      }
     };
     getProducts();
   }, [cat]);
@@ -50,23 +58,29 @@ const Products = ({ cat, filters, sort }) => {
   }, [sort]);
 
   return (
-    <Container>
-      <Titles>
-        <Title>Our Regular Products</Title>
-        <Link to="/all-products">
-          <Button>View All</Button>
-        </Link>
-      </Titles>
-      <Wrapper>
-        {cat
-          ? filteredProducts.map((item) => (
-              <Product item={item} key={item.id} />
-            ))
-          : products
-              .slice(0, 8)
-              .map((item) => <Product item={item} key={item.id} />)}
-      </Wrapper>
-    </Container>
+    <SkeletonTheme baseColor="#b3aaaa" highlightColor="#444">
+      <Container>
+        <Titles>
+          <Title>Our Regular Products</Title>
+          <Link to="/all-products">
+            <Button>View All</Button>
+          </Link>
+        </Titles>
+        {loading ? (
+          <Skeleton count={4} width="30%" />
+        ) : (
+          <Wrapper>
+            {cat
+              ? filteredProducts.map((item) => (
+                  <Product item={item} key={item.id} />
+                ))
+              : products
+                  .slice(0, 8)
+                  .map((item) => <Product item={item} key={item.id} />)}
+          </Wrapper>
+        )}
+      </Container>
+    </SkeletonTheme>
   );
 };
 
@@ -89,7 +103,11 @@ const Title = styled.h2`
   font-weight: bold;
   padding: 50px 0px;
   text-transform: uppercase;
-  color: #ff8147;
+  background: -webkit-linear-gradient(#07ffa8, #ff5607);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+    ${mobile({fontSize:"20px",padding:"12px 0px" })}
 `;
 const Titles = styled.div`
   display: flex;
@@ -102,7 +120,7 @@ const Button = styled.button`
   font-size: 16px;
   background-color: teal;
   border-radius: 30px;
-  padding: 10px 40px;
+  padding: 10px 20px;
   color: #fff;
   cursor: pointer;
   transition: ease 0.3s;

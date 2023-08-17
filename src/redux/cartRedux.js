@@ -4,7 +4,7 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     products: [],
-    favourite: [],
+    favorite: [],
     favQuantity: 0,
     quantity: 0,
     total: 0,
@@ -42,20 +42,34 @@ const cartSlice = createSlice({
         state.quantity += quantity;
       }
     },
-    addFavourite: (state, action) => {
-      const existingProductIndex = state.favourite.findIndex(
-        (favourite) => favourite._id === action.payload._id
+    addFavorite: (state, action) => {
+      const existingProductIndex = state.favorite.findIndex(
+        (favorite) => favorite._id === action.payload._id
       );
       if (existingProductIndex !== -1) {
-        state.favourite[existingProductIndex].favQuantity += 1;
+        state.favorite[existingProductIndex].favQuantity += 1;
       } else {
-        state.favourite.push({ ...action.payload, favQuantity: 1 });
+        state.favorite.push({ ...action.payload, favQuantity: 1 });
       }
       state.favQuantity += 1;
     },
-    clearFavourite: (state) => {
+    clearFavorite: (state) => {
       state.favQuantity = null;
       state.favQuantity = [];
+      state.favorite = [];
+    },
+    updateFavQuantity: (state, action) => {
+      const { productId, quantity } = action.payload;
+      const product = state.favorite.find(
+        (product) => product._id === productId
+      );
+      if (!product) return;
+
+      const updatedQuantity = product.quantity + quantity;
+      if (updatedQuantity >= 1) {
+        product.quantity = updatedQuantity;
+        state.favQuantity += quantity;
+      }
     },
   },
 });
@@ -64,7 +78,8 @@ export const {
   addProduct,
   clearCart,
   updateProductQuantity,
-  addFavourite,
-  clearFavourite,
+  addFavorite,
+  clearFavorite,
+  updateFavQuantity
 } = cartSlice.actions;
 export default cartSlice.reducer;
