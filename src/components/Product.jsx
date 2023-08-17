@@ -6,9 +6,9 @@ import {
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { addProduct } from "../redux/cartRedux";
+import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 const Product = ({ item }) => {
@@ -18,6 +18,22 @@ const Product = ({ item }) => {
     try {
       dispatch(
         addProduct({
+          ...item,
+          quantity: 1,
+          color: item?.color[0],
+          size: item?.size[0],
+        })
+      );
+      toast.success("Added successfully!");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      toast.error("Something went wrong! May be occurred ",error)
+    }
+  };
+  const handleAddToWishList = () => {
+    try {
+      dispatch(
+        addFavorite({
           ...item,
           quantity: 1,
           color: item?.color[0],
@@ -48,7 +64,10 @@ const Product = ({ item }) => {
           <Link to={`/product/${item._id}`} style={{ color: "black" }}>
             <SearchOutlined style={{ cursor: "pointer" }} />
           </Link>
-          <FavoriteBorderOutlined style={{ cursor: "pointer" }} />
+          <FavoriteBorderOutlined
+            onClick={handleAddToWishList}
+            style={{ cursor: "pointer" }}
+          />
         </Icons>
       </Content>
       <Toaster />

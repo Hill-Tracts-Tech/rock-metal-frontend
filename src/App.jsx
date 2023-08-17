@@ -14,6 +14,7 @@ import Success from "./pages/Success";
 import { useSelector } from "react-redux";
 import AllProducts from "./components/AllProducts";
 import ScrollToTop from "./components/scroll/ScrollToTop";
+import WishList from "./pages/WishList";
 
 const App = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -32,6 +33,9 @@ const App = () => {
         </Route>
         <Route path="/cart">
           <Cart />
+        </Route>
+        <Route path="/wishList">
+          <WishList />
         </Route>
         <Route path="/success">
           <Success />

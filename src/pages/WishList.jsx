@@ -5,58 +5,30 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
-import StripeCheckout from "react-stripe-checkout";
-import { useEffect, useState } from "react";
-import { userRequest } from "../requestMethods";
-import { useHistory } from "react-router";
-import { clearCart, updateProductQuantity } from "../redux/cartRedux";
+import { clearFavorite, updateFavQuantity } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
 
-const KEY = process.env.REACT_APP_STRIPE;
-
-const Cart = () => {
+const WishList = () => {
   const cart = useSelector((state) => state.cart);
-
-  const [stripeToken, setStripeToken] = useState(null);
-  const history = useHistory();
 
   const dispatch = useDispatch();
 
-  const onToken = (token) => {
-    setStripeToken(token);
-  };
-
   const handleClearCart = () => {
-    dispatch(clearCart());
+    dispatch(clearFavorite());
   };
-
-  useEffect(() => {
-    const makeRequest = async () => {
-      try {
-        const res = await userRequest.post("/checkout/payment", {
-          tokenId: stripeToken.id,
-          amount: 500,
-        });
-        history.push("/success", {
-          stripeData: res.data,
-          products: cart,
-        });
-      } catch {}
-    };
-    stripeToken && makeRequest();
-  }, [stripeToken, cart.total, history]);
 
   const handleQuantity = (type, productId) => {
     const updatedQuantity = type === "inc" ? 1 : -1;
-    dispatch(updateProductQuantity({ productId, quantity: updatedQuantity }));
+    dispatch(updateFavQuantity({ productId, quantity: updatedQuantity }));
   };
+
   return (
     <Container>
       <Announcement />
       <Navbar />
       <Wrapper>
-        <Title>Your are shipping {cart.products.length}</Title>
+        <Title>Your are shipping {cart?.favorite?.length}</Title>
         <Top>
           <Link to="/" style={{ textDecoration: "none" }}>
             <TopButton
@@ -76,101 +48,67 @@ const Cart = () => {
             </TopButton>
           </Link>
           <TopTexts>
-            <TopText>Shopping Bag({cart?.products?.length})</TopText>
             <TopText>Your Wishlist ({cart?.favorite?.length})</TopText>
           </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
-          <Info>
-            {cart.products.length > 0 ? (
-              <InfoWrapper>
-                {cart.products.map((product) => (
-                  <Product>
-                    <ProductDetail>
+          {cart.favorite.length > 0 ? (
+            <InfoWrapper>
+              {cart.favorite.map((product) => (
+                <Product>
+                  <ProductDetail>
+                    <ImageWrapper>
                       <Image src={product.img} />
-                      <Details>
-                        <ProductName>
-                          <b>Product:</b> {product.title}
-                        </ProductName>
-                        <ProductId>
-                          <b>ID:</b> {product._id}
-                        </ProductId>
-                        <ProductColor color={product.color} />
-                        <ProductSize>
-                          <b>Size:</b> {product.size}
-                        </ProductSize>
-                      </Details>
-                    </ProductDetail>
-                    <PriceDetail>
-                      <ProductAmountContainer>
-                        <QuantityActionButton>
-                          <Remove
-                            onClick={() =>
-                              product.quantity > 1
-                                ? handleQuantity("dec", product._id)
-                                : console.log("can zero")
-                            }
-                          />
-                        </QuantityActionButton>
-                        <ProductAmount>{product.quantity}</ProductAmount>
-                        <QuantityActionButton>
-                          <Add
-                            onClick={() => handleQuantity("inc", product._id)}
-                          />
-                        </QuantityActionButton>
-                      </ProductAmountContainer>
-                      <ProductPrice>
-                        $ {product.price * product.quantity}
-                      </ProductPrice>
-                    </PriceDetail>
-                  </Product>
-                ))}
-                <br />
-                <Hr />
-                {cart.products.length ? (
-                  <ClearButton onClick={handleClearCart}>
-                    Clear Cart
-                  </ClearButton>
-                ) : (
-                  ""
-                )}
-              </InfoWrapper>
-            ) : (
-              <img src={emptyCart}></img>
-            )}
-          </Info>
-          <Summary>
-            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem type="total">
-              <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-            </SummaryItem>
-            <StripeCheckout
-              name="Lama Shop"
-              image="https://avatars.githubusercontent.com/u/1486366?v=4"
-              billingAddress
-              shippingAddress
-              description={`Your total is $${cart.total}`}
-              amount={cart.total * 100}
-              token={onToken}
-              stripeKey={KEY}
-            >
-              <Button>CHECKOUT NOW</Button>
-            </StripeCheckout>
-          </Summary>
+                    </ImageWrapper>
+                    <Details>
+                      <ProductName>
+                        <b>Product:</b> {product.title}
+                      </ProductName>
+                      <ProductId>
+                        <b>ID:</b> {product._id}
+                      </ProductId>
+                      <ProductColor color={product.color} />
+                      <ProductSize>
+                        <b>Size:</b> {product.size}
+                      </ProductSize>
+                    </Details>
+                  </ProductDetail>
+                  <PriceDetail>
+                    <ProductAmountContainer>
+                      <QuantityActionButton>
+                        <Remove
+                          onClick={() =>
+                            product.quantity > 1
+                              ? handleQuantity("dec", product._id)
+                              : console.log("can zero")
+                          }
+                        />
+                      </QuantityActionButton>
+                      <ProductAmount>{product.quantity}</ProductAmount>
+                      <QuantityActionButton>
+                        <Add
+                          onClick={() => handleQuantity("inc", product._id)}
+                        />
+                      </QuantityActionButton>
+                    </ProductAmountContainer>
+                    <ProductPrice>
+                      $ {product.price * product.quantity}
+                    </ProductPrice>
+                    <AddToCartButton>Add To Cart</AddToCartButton>
+                  </PriceDetail>
+                </Product>
+              ))}
+              <br />
+              <Hr />
+              {cart.products.length ? (
+                <ClearButton onClick={handleClearCart}>Clear Cart</ClearButton>
+              ) : (
+                ""
+              )}
+            </InfoWrapper>
+          ) : (
+            <img src={emptyCart}></img>
+          )}
         </Bottom>
       </Wrapper>
       <Footer />
@@ -178,7 +116,7 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default WishList;
 
 // styled components
 
@@ -201,6 +139,11 @@ const Top = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  @media screen and (max-width: "360px") {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const TopButton = styled.button`
@@ -233,23 +176,13 @@ const Bottom = styled.div`
 
 const InfoWrapper = styled.div`
   flex: 3;
-`;
-const Info = styled.div`
-  flex: 3;
+  ${mobile({ flex: 1 })}
 `;
 
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
   ${mobile({ flexDirection: "column" })}
-`;
-
-const EmptyCart = styled.div`
-  width: 100%;
-  height: 100%;
-  img {
-    object-fit: cover;
-  }
 `;
 const ClearButton = styled.button`
   background-color: #ff0000;
@@ -266,13 +199,34 @@ const ClearButton = styled.button`
     background-color: #cc0000;
   }
 `;
+const AddToCartButton = styled.button`
+  border: 1px solid teal;
+  background-color: teal;
+  padding: 12px 22px;
+  margin-top: 12px;
+  border-radius: 11px;
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+  transition: ease 0.3s;
+  &:hover {
+    background-color: transparent;
+    color: teal;
+  }
+`;
 const ProductDetail = styled.div`
-  flex: 2;
   display: flex;
+  flex: 2;
 `;
 
-const Image = styled.img`
+const ImageWrapper = styled.div`
   width: 200px;
+  height: 200px;
+`;
+const Image = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 `;
 
 const Details = styled.div`
@@ -280,6 +234,7 @@ const Details = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin-left: 20px;
 `;
 
 const ProductName = styled.span``;

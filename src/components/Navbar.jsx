@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 const Navbar = () => {
   const cart = useSelector((state) => state.cart);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  console.log(cart.favQuantity);
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -80,7 +81,7 @@ const Navbar = () => {
               </Badge>
             </MenuItem>
           </Link>
-          <Link to="/whishList">
+          <Link to="/wishList">
             <MenuItem title="WhishList">
               <Badge badgeContent={cart.favQuantity} color="teal">
                 <FavoriteBorderOutlined style={{ color: "teal" }} />
@@ -178,8 +179,8 @@ const Navbar = () => {
           <Link to="/cart">
             <MenuItem title="Cart">My Cart</MenuItem>
           </Link>
-          <Link to="/whishList">
-            <MenuItem title="WhishList">My WishList</MenuItem>
+          <Link to="/wishList">
+            <MenuItem title="WishList">My WishList</MenuItem>
           </Link>
           <AuthContainer>
             <RegisterButton>

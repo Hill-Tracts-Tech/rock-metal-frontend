@@ -6,7 +6,7 @@ import {
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { addFavourite, addProduct } from "../redux/cartRedux";
+import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -31,18 +31,18 @@ const Trending = ({ item }) => {
     }
   };
 
-  // add to favourite
-  const handleAddToFavourite = () => {
+  // add to favorite
+  const handleAddToFavorite = () => {
     try {
       dispatch(
-        addFavourite({
+        addFavorite({
           ...item,
           quantity: 1,
           color: item?.color[0],
           size: item?.size[0],
         })
       );
-      toast.success("Added to favourite successfully");
+      toast.success("Added to favorite successfully");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong! May be occurred ", error);
@@ -62,7 +62,7 @@ const Trending = ({ item }) => {
             <SearchOutlined />
           </Link>
         </Icon>
-        <Icon onClick={handleAddToFavourite}>
+        <Icon onClick={handleAddToFavorite}>
           <FavoriteBorderOutlined />
         </Icon>
       </Info>
