@@ -64,7 +64,7 @@ const Ordersectionads = () => {
               </Count>
               <div>
                 <img src={MAKEPAYMENT} alt="" />
-                <TinyTitle>MAKEPAYMENT</TinyTitle>
+                <TinyTitle>MAKE PAYMENT</TinyTitle>
               </div>
             </Box>
             <SmallSize>
@@ -115,9 +115,10 @@ const TinyTitle = styled.div`
   font-size: 20px;
   font-weight: 900;
   text-align: center;
+  margin: 10px auto;
 `;
 const SmallSize = styled.div`
-  font-size: 10px;
+  font-size: 12px;
   width: 50%;
   margin: 10px auto;
 `;
