@@ -52,9 +52,9 @@ const WishList = () => {
           </TopTexts>
         </Top>
         <Bottom>
-          {cart.favorite.length > 0 ? (
+          {cart?.favorite?.length > 0 ? (
             <InfoWrapper>
-              {cart.favorite.map((product) => (
+              {cart?.favorite?.map((product) => (
                 <Product>
                   <ProductDetail>
                     <ImageWrapper>
@@ -100,14 +100,16 @@ const WishList = () => {
               ))}
               <br />
               <Hr />
-              {cart.products.length ? (
+              {cart.favorite.length ? (
                 <ClearButton onClick={handleClearCart}>Clear Cart</ClearButton>
               ) : (
                 ""
               )}
             </InfoWrapper>
           ) : (
-            <img src={emptyCart}></img>
+            <EmptyCart>
+              <EmptyCartImage src={emptyCart} />
+            </EmptyCart>
           )}
         </Bottom>
       </Wrapper>
@@ -139,7 +141,7 @@ const Top = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  @media screen and (max-width: "360px") {
+  @media screen and (max-width: 600px) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -171,6 +173,7 @@ const TopText = styled.span`
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   ${mobile({ flexDirection: "column" })}
 `;
 
@@ -236,7 +239,18 @@ const Details = styled.div`
   justify-content: space-around;
   margin-left: 20px;
 `;
-
+const EmptyCartImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+const EmptyCart = styled.div`
+  max-width: 400px;
+  max-height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const ProductName = styled.span``;
 
 const ProductId = styled.span``;

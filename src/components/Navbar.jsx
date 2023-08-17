@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "@material-ui/core";
 import styled from "styled-components";
 import { mobile } from "../responsive";
@@ -16,18 +16,17 @@ import { useSelector } from "react-redux";
 import profile from "../assets/profile.png";
 
 const Navbar = () => {
+  //for search input and button
   const cart = useSelector((state) => state.cart);
+  const [searchValue, setSearchValue] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [profilePopup, setProfilePopup] = useState(false);
+  // popup
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupProfileOpen, setIsPopupProfileOpen] = useState(false);
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
-  const profileOpen = () => {
-    setProfilePopup(!profilePopup);
-  };
-  //for search input and button
-  const [searchValue, setSearchValue] = useState("");
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -35,15 +34,28 @@ const Navbar = () => {
 
   const handleSearch = () => {
     console.log("Searching for:", searchValue);
-    setIsPopupOpen(!isPopupOpen);
   };
-
-  // popup
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const togglePopup = () => {
+    console.log("Searching for:", searchValue);
     setIsPopupOpen(!isPopupOpen);
   };
+  const ProfileTogglePopup = () => {
+    setIsPopupProfileOpen(!isPopupProfileOpen);
+  };
+
+  const popupRef = useRef(null);
+  const handleClickOutside = (event) => {
+    if (popupRef.current && !popupRef.current.contains(event.target)) {
+      setIsPopupOpen(false);
+    }
+  }
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+  },[])
   return (
     <>
       <NavbarContainer>
@@ -74,7 +86,7 @@ const Navbar = () => {
           </SearchContainer>
         </Center>
         <Right>
-          <MenuItem onClick={profileOpen}>
+          <MenuItem onClick={ProfileTogglePopup}>
             <AccountCircle style={{ color: "teal" }} />
           </MenuItem>
           <Link to="/cart">
@@ -122,28 +134,22 @@ const Navbar = () => {
           </Link>
         </Left>
         <Center style={{ display: "flex", alignItems: "center" }}>
-          <SearchContainer>
-            <SearchInput
-              type="text"
-              placeholder="Search..."
-              value={searchValue}
-              onChange={handleSearchChange}
-              style={{ display: "none" }}
+          <SearchButton onClick={togglePopup}>
+            <Search
+              style={{
+                color: "white",
+                fontSize: 20,
+                textAlign: "center",
+              }}
             />
-            <SearchButton onClick={togglePopup}>
-              <Search
-                style={{
-                  color: "white",
-                  fontSize: 20,
-                  textAlign: "center",
-                }}
-              />
-            </SearchButton>
-          </SearchContainer>
+          </SearchButton>
         </Center>
         <Right>
           <MenuItem>
-            <AccountCircle onClick={profileOpen} style={{ color: "teal" }} />
+            <AccountCircle
+              onClick={ProfileTogglePopup}
+              style={{ color: "teal" }}
+            />
           </MenuItem>
           <Link to="/cart">
             <MenuItem title="Cart">
@@ -152,8 +158,8 @@ const Navbar = () => {
               </Badge>
             </MenuItem>
           </Link>
-          <Link to="/whishList">
-            <MenuItem title="WhishList">
+          <Link to="/wishList">
+            <MenuItem title="WishList">
               <Badge badgeContent={cart.favQuantity} color="teal">
                 <FavoriteBorderOutlined style={{ color: "teal" }} />
               </Badge>
@@ -165,28 +171,6 @@ const Navbar = () => {
         </Right>
       </MobileViewNavbarContainer>
       {/*  */}
-      {/* profile popup */}
-      <ProfileDrawerWrapper open={profilePopup}>
-        <ProfileDrawerInner>
-          <button
-            style={{
-              position: "absolute",
-              right: "3px",
-              top: "6px",
-              backgroundColor: "none",
-              border: "none",
-              outline: "none",
-              cursor: "pointer",
-              title:"Close"
-            }}
-            onClick={profileOpen}><Close/></button>
-          <Profile>
-            <ProfileImage src={profile} />
-          </Profile>
-          <MenuItem>Language</MenuItem>
-          <MenuItem>Logout</MenuItem>
-        </ProfileDrawerInner>
-      </ProfileDrawerWrapper>
       {/*  */}
       {/* Navbar drawer */}
       <DrawerWrapper open={drawerOpen}>
@@ -226,9 +210,9 @@ const Navbar = () => {
         </DrawerInner>
       </DrawerWrapper>
 
-      {/* pop up */}
+      {/* Search pop up */}
       <Overlay isOpen={isPopupOpen}>
-        <PopupContent>
+        <PopupContent ref={popupRef}>
           <SearchContainer>
             <SearchInput
               type="text"
@@ -236,7 +220,7 @@ const Navbar = () => {
               value={searchValue}
               onChange={handleSearchChange}
             />
-            <SearchButton onClick={handleSearch} disabled={!searchValue}>
+            <SearchButton onClick={togglePopup} disabled={!searchValue}>
               <Search
                 style={{
                   color: "white",
@@ -248,6 +232,31 @@ const Navbar = () => {
           </SearchContainer>
         </PopupContent>
       </Overlay>
+      <ProfileOverlay isOpenProfile={isPopupProfileOpen}>
+        <ProfilePopupContent>
+          <button
+            style={{
+              position: "absolute",
+              right: "3px",
+              top: "6px",
+              backgroundColor: "none",
+              border: "none",
+              outline: "none",
+              cursor: "pointer",
+              title: "Close",
+            }}
+            onClick={ProfileTogglePopup}
+          >
+            <Close />
+          </button>
+          <Profile>
+            <ProfileImage src={profile} />
+          </Profile>
+          <h3>Dev User</h3>
+          <span>dev2023@gmail.com</span>
+          <LogoutButton>Logout</LogoutButton>
+        </ProfilePopupContent>
+      </ProfileOverlay>
     </>
   );
 };
@@ -263,6 +272,7 @@ const Overlay = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: ${(props) => (props.isOpen ? "block" : "none")};
+  z-index: 99999999;
 `;
 
 // Styled component for the pop-up content
@@ -278,6 +288,46 @@ const PopupContent = styled.div`
   height: auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 999999999999999;
+`;
+
+const ProfileOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: ${(ProfileProps) => (ProfileProps.isOpenProfile ? "block" : "none")};
+  z-index: 99999999;
+`;
+const ProfilePopupContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+`;
+const ProfilePopupContent = styled.div`
+  position: absolute;
+  top: 40%;
+  right: 1%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  transform: translate(0%, -77%);
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+  width: 30%;
+  height: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999999999999999;
+  @media screen and (max-width: 500px) {
+    width: 50%;
+    top: 31%;
+  }
 `;
 
 // Mobile responsive css
@@ -456,7 +506,6 @@ const ProfileDrawerWrapper = styled.div`
   position: fixed;
   top: 138px;
   z-index: 100;
-  /* left: ${({ open }) => (open ? "0" : "-3000px")}; */
   left: 60%;
   width: 300px;
   height: auto;
@@ -464,13 +513,29 @@ const ProfileDrawerWrapper = styled.div`
   color: #fff;
   border-radius: 5px;
   transition: right 0.5s ease;
-  visibility: ${({ open }) => (open ? "visible" : "hidden")};
+  left: ${({ open }) => (open ? "0" : "-3000px")};
+  /* visibility: ${({ open }) => (open ? "visible" : "hidden")}; */
   @media (max-width: 768px) {
     top: 0;
-    left: 0;
+    /* left: 0; */
     display: block;
     width: 100%;
-    height: 100%;
+    height: auto;
+  }
+`;
+const LogoutButton = styled.button`
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+  background-color: teal;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  transition: ease 0.3s;
+  &:hover {
+    background-color: transparent;
+    color: teal;
   }
 `;
 const ProfileDrawerInner = styled.div`
@@ -501,7 +566,7 @@ const Profile = styled.div`
   align-items: center;
 `;
 const ProfileImage = styled.img`
-margin-top: 12px;
+  margin-top: 12px;
   width: 100%;
   height: 100%;
   object-fit: cover;
