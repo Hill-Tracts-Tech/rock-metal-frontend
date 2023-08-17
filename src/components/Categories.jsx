@@ -37,4 +37,5 @@ const Heading = styled.h2`
   padding: 50px 0px 20px 0px;
   text-transform: uppercase;
   color: teal;
+  ${mobile({fontSize:"20px", padding:"12px 0px 5px 0px"})}
 `;

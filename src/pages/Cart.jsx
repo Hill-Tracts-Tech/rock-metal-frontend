@@ -79,7 +79,6 @@ const Cart = () => {
             <TopText>Shopping Bag({cart?.products?.length})</TopText>
             <TopText>Your Wishlist ({cart?.favorite?.length})</TopText>
           </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
@@ -135,6 +134,7 @@ const Cart = () => {
                 ) : (
                   ""
                 )}
+                <br/>
               </InfoWrapper>
             ) : (
               <img src={emptyCart}></img>
@@ -201,6 +201,7 @@ const Top = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  ${mobile({ justifyContent: "center" })}
 `;
 
 const TopButton = styled.button`
@@ -228,7 +229,11 @@ const TopText = styled.span`
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
-  ${mobile({ flexDirection: "column" })}
+  ${mobile({
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  })}
 `;
 
 const InfoWrapper = styled.div`
@@ -260,8 +265,7 @@ const ClearButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
-  margin-left: 11px;
-  margin-top: 12px;
+  margin: 12px 0px 12px 30px;
   &:hover {
     background-color: #cc0000;
   }

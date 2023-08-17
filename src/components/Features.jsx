@@ -4,6 +4,7 @@ import axios from "axios";
 import Trending from "./Trending";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { mobile } from "../responsive";
 
 const Features = ({ cat, filters, sort }) => {
   const [loading, setLoading] = useState(false);
@@ -111,6 +112,7 @@ const Title = styled.h2`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
+  ${mobile({ fontSize: "20px", padding: "12px 0px" })};
 `;
 const Titles = styled.div`
   display: flex;

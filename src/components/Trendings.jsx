@@ -5,6 +5,7 @@ import Trending from "./Trending";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { mobile } from "../responsive";
 const Trendings = ({ cat, filters, sort }) => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
@@ -130,4 +131,5 @@ const Title = styled.h2`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
+  ${mobile({fontSize:"20px",padding:"12px 0px" })};
 `;

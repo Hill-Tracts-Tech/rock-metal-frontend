@@ -52,7 +52,9 @@ const Trending = ({ item }) => {
   return (
     <Container>
       <Circle />
-      <Image src={item.img} />
+      <ImageWrapper>
+        <Image src={item.img} />
+      </ImageWrapper>
       <Info>
         <Icon onClick={handleAddToCart}>
           <ShoppingCartOutlined />
@@ -113,8 +115,15 @@ const Circle = styled.div`
   position: absolute;
 `;
 
+const ImageWrapper = styled.div`
+  width: 300px;
+  height: 300px;
+  box-sizing: border-box;
+`
 const Image = styled.img`
-  height: 75%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   z-index: 2;
   mix-blend-mode: darken;
 `;

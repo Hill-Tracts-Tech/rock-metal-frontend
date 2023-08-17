@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { mobile } from "../responsive";
 
 const Products = ({ cat, filters, sort }) => {
   const [loading, setLoading] = useState(false);
@@ -106,6 +107,7 @@ const Title = styled.h2`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
+    ${mobile({fontSize:"20px",padding:"12px 0px" })}
 `;
 const Titles = styled.div`
   display: flex;
@@ -118,7 +120,7 @@ const Button = styled.button`
   font-size: 16px;
   background-color: teal;
   border-radius: 30px;
-  padding: 10px 40px;
+  padding: 10px 20px;
   color: #fff;
   cursor: pointer;
   transition: ease 0.3s;

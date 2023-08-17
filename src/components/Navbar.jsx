@@ -8,18 +8,23 @@ import {
   AccountCircle,
   FavoriteBorderOutlined,
   Menu,
+  Close,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
+import profile from "../assets/profile.png";
 
 const Navbar = () => {
   const cart = useSelector((state) => state.cart);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  console.log(cart.favQuantity);
+  const [profilePopup, setProfilePopup] = useState(false);
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
+  };
+  const profileOpen = () => {
+    setProfilePopup(!profilePopup);
   };
   //for search input and button
   const [searchValue, setSearchValue] = useState("");
@@ -69,11 +74,9 @@ const Navbar = () => {
           </SearchContainer>
         </Center>
         <Right>
-          <Link to="/account">
-            <MenuItem>
-              <AccountCircle style={{ color: "teal" }} />
-            </MenuItem>
-          </Link>
+          <MenuItem onClick={profileOpen}>
+            <AccountCircle style={{ color: "teal" }} />
+          </MenuItem>
           <Link to="/cart">
             <MenuItem title="Cart">
               <Badge badgeContent={cart.quantity} color="teal">
@@ -139,11 +142,9 @@ const Navbar = () => {
           </SearchContainer>
         </Center>
         <Right>
-          <Link to="/account">
-            <MenuItem>
-              <AccountCircle style={{ color: "teal" }} />
-            </MenuItem>
-          </Link>
+          <MenuItem>
+            <AccountCircle onClick={profileOpen} style={{ color: "teal" }} />
+          </MenuItem>
           <Link to="/cart">
             <MenuItem title="Cart">
               <Badge badgeContent={cart.quantity} color="teal">
@@ -163,7 +164,30 @@ const Navbar = () => {
           </MenuButton>
         </Right>
       </MobileViewNavbarContainer>
-
+      {/*  */}
+      {/* profile popup */}
+      <ProfileDrawerWrapper open={profilePopup}>
+        <ProfileDrawerInner>
+          <button
+            style={{
+              position: "absolute",
+              right: "3px",
+              top: "6px",
+              backgroundColor: "none",
+              border: "none",
+              outline: "none",
+              cursor: "pointer",
+              title:"Close"
+            }}
+            onClick={profileOpen}><Close/></button>
+          <Profile>
+            <ProfileImage src={profile} />
+          </Profile>
+          <MenuItem>Language</MenuItem>
+          <MenuItem>Logout</MenuItem>
+        </ProfileDrawerInner>
+      </ProfileDrawerWrapper>
+      {/*  */}
       {/* Navbar drawer */}
       <DrawerWrapper open={drawerOpen}>
         <Logo style={{ margin: "20px 0px 0px 20px" }}>
@@ -172,10 +196,9 @@ const Navbar = () => {
           </Link>
         </Logo>
         <DrawerInner>
-          <Link to="/account">
-            <MenuItem>Profile</MenuItem>
-          </Link>
-
+          <Profile>
+            <ProfileImage src={profile} />
+          </Profile>
           <Link to="/cart">
             <MenuItem title="Cart">My Cart</MenuItem>
           </Link>
@@ -428,7 +451,61 @@ const DrawerInner = styled.div`
     }
   }
 `;
+// profile open
+const ProfileDrawerWrapper = styled.div`
+  position: fixed;
+  top: 138px;
+  z-index: 100;
+  /* left: ${({ open }) => (open ? "0" : "-3000px")}; */
+  left: 60%;
+  width: 300px;
+  height: auto;
+  background-color: #333;
+  color: #fff;
+  border-radius: 5px;
+  transition: right 0.5s ease;
+  visibility: ${({ open }) => (open ? "visible" : "hidden")};
+  @media (max-width: 768px) {
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+`;
+const ProfileDrawerInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    transition: ease 0.5s;
+    &&:hover {
+      font-size: 19px;
+    }
+  }
+`;
 
+const Profile = styled.div`
+  width: 64px;
+  height: 64px;
+  border: none;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const ProfileImage = styled.img`
+margin-top: 12px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
 const MenuItem = styled.div`
   padding: 1rem;
 `;
