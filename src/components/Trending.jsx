@@ -6,8 +6,9 @@ import {
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { addFavourite, addProduct } from "../redux/cartRedux";
+import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Trending = ({ item }) => {
   const dispatch = useDispatch();
@@ -30,18 +31,18 @@ const Trending = ({ item }) => {
     }
   };
 
-  // add to favourite
-  const handleAddToFavourite = () => {
+  // add to favorite
+  const handleAddToFavorite = () => {
     try {
       dispatch(
-        addFavourite({
+        addFavorite({
           ...item,
           quantity: 1,
           color: item?.color[0],
           size: item?.size[0],
         })
       );
-      toast.success("Added to favourite successfully");
+      toast.success("Added to favorite successfully");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong! May be occurred ", error);
@@ -51,7 +52,9 @@ const Trending = ({ item }) => {
   return (
     <Container>
       <Circle />
-      <Image src={item.img} />
+      <ImageWrapper>
+        <Image src={item.img} />
+      </ImageWrapper>
       <Info>
         <Icon onClick={handleAddToCart}>
           <ShoppingCartOutlined />
@@ -61,7 +64,7 @@ const Trending = ({ item }) => {
             <SearchOutlined />
           </Link>
         </Icon>
-        <Icon onClick={handleAddToFavourite}>
+        <Icon onClick={handleAddToFavorite}>
           <FavoriteBorderOutlined />
         </Icon>
       </Info>
@@ -112,8 +115,15 @@ const Circle = styled.div`
   position: absolute;
 `;
 
+const ImageWrapper = styled.div`
+  width: 300px;
+  height: 300px;
+  box-sizing: border-box;
+`
 const Image = styled.img`
-  height: 75%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   z-index: 2;
   mix-blend-mode: darken;
 `;
