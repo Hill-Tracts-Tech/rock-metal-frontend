@@ -7,6 +7,7 @@ import "./styles.css";
 import { sliderItems } from "../../data";
 import styled from "styled-components";
 import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
+import { mobile } from "../../responsive";
 
 export default function Slider() {
   SwiperCore.use([Autoplay, Pagination, Navigation]);
@@ -51,12 +52,14 @@ const Slide = styled.div`
   display: flex;
   align-items: center;
   background-color: #${(props) => props.bg};
+  ${mobile({ display: "block" })}
 `;
 
 const ImgContainer = styled.div`
   height: auto;
   width: 100%;
   flex: 1;
+  ${mobile({ display: "block" })}
 `;
 
 const Image = styled.img`
@@ -68,10 +71,12 @@ const Image = styled.img`
 const InfoContainer = styled.div`
   flex: 1;
   padding: 50px;
+  ${mobile({ display: "block" })}
 `;
 
 const Title = styled.h1`
   font-size: 70px;
+  ${mobile({ fontSize: "40px" })}
 `;
 
 const Desc = styled.p`
