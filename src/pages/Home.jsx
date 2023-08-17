@@ -9,6 +9,7 @@ import Slider from "../components/slider/Slider";
 import Trendings from "../components/Trendings";
 import Features from "../components/Features";
 import Ordersectionads from "../components/Ordersectionads";
+import Expilation from "../components/Expilation";
 const Home = () => {
   return (
     <div>
@@ -20,7 +21,8 @@ const Home = () => {
       <Products />
       <Features />
       <Ordersectionads />
-      <Newsletter />
+      <Expilation />
+      {/* <Newsletter /> */}
       <Footer />
     </div>
   );
