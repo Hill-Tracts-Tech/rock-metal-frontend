@@ -10,13 +10,174 @@ import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
 import { clearCart, updateProductQuantity } from "../redux/cartRedux";
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 const KEY = process.env.REACT_APP_STRIPE;
+
+const Cart = () => {
+  const cart = useSelector((state) => state.cart);
+
+  const [stripeToken, setStripeToken] = useState(null);
+  const history = useHistory();
+
+  const dispatch = useDispatch();
+
+  const onToken = (token) => {
+    setStripeToken(token);
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
+  useEffect(() => {
+    const makeRequest = async () => {
+      try {
+        const res = await userRequest.post("/checkout/payment", {
+          tokenId: stripeToken.id,
+          amount: 500,
+        });
+        history.push("/success", {
+          stripeData: res.data,
+          products: cart,
+        });
+      } catch {}
+    };
+    stripeToken && makeRequest();
+  }, [stripeToken, cart.total, history]);
+
+  const handleQuantity = (type, productId) => {
+    const updatedQuantity = type === "inc" ? 1 : -1;
+    dispatch(updateProductQuantity({ productId, quantity: updatedQuantity }));
+  };
+
+  return (
+    <Container>
+      <Announcement />
+      <Navbar />
+      <Wrapper>
+        <Title>Your are shipping {cart.products.length}</Title>
+        <Top>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <TopButton
+              style={{
+                backgroundColor: "teal",
+                color: "#ffffff",
+                border: "none",
+                padding: "10px 20px",
+                borderRadius: "4px",
+                fontSize: "16px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              CONTINUE SHOPPING
+            </TopButton>
+          </Link>
+          <TopTexts>
+            <TopText>Shopping Bag({cart?.products?.length})</TopText>
+            <TopText>Your Wishlist ({cart?.favourite?.length})</TopText>
+          </TopTexts>
+          <TopButton type="filled">CHECKOUT NOW</TopButton>
+        </Top>
+        <Bottom>
+          <Info>
+            {cart.products.map((product) => (
+              <Product>
+                <ProductDetail>
+                  <Image src={product.img} />
+                  <Details>
+                    <ProductName>
+                      <b>Product:</b> {product.title}
+                    </ProductName>
+                    <ProductId>
+                      <b>ID:</b> {product._id}
+                    </ProductId>
+                    <ProductColor color={product.color} />
+                    <ProductSize>
+                      <b>Size:</b> {product.size}
+                    </ProductSize>
+                  </Details>
+                </ProductDetail>
+                <PriceDetail>
+                  <ProductAmountContainer>
+                    <QuantityActionButton>
+                      <Remove
+                        onClick={() =>
+                          product.quantity > 1
+                            ? handleQuantity("dec", product._id)
+                            : console.log("can zero")
+                        }
+                      />
+                    </QuantityActionButton>
+                    <ProductAmount>{product.quantity}</ProductAmount>
+                    <QuantityActionButton>
+                      <Add onClick={() => handleQuantity("inc", product._id)} />
+                    </QuantityActionButton>
+                  </ProductAmountContainer>
+                  <ProductPrice>
+                    $ {product.price * product.quantity}
+                  </ProductPrice>
+                </PriceDetail>
+              </Product>
+            ))}
+            <br />
+            <Hr />
+            {cart.products.length ? (
+              <ClearButton onClick={handleClearCart}>Clear Cart</ClearButton>
+            ) : (
+              ""
+            )}
+          </Info>
+          <Summary>
+            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+            <SummaryItem>
+              <SummaryItemText>Subtotal</SummaryItemText>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+            </SummaryItem>
+            <SummaryItem>
+              <SummaryItemText>Estimated Shipping</SummaryItemText>
+              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
+            </SummaryItem>
+            <SummaryItem>
+              <SummaryItemText>Shipping Discount</SummaryItemText>
+              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
+            </SummaryItem>
+            <SummaryItem type="total">
+              <SummaryItemText>Total</SummaryItemText>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+            </SummaryItem>
+            <StripeCheckout
+              name="Lama Shop"
+              image="https://avatars.githubusercontent.com/u/1486366?v=4"
+              billingAddress
+              shippingAddress
+              description={`Your total is $${cart.total}`}
+              amount={cart.total * 100}
+              token={onToken}
+              stripeKey={KEY}
+            >
+              <Button>CHECKOUT NOW</Button>
+            </StripeCheckout>
+          </Summary>
+        </Bottom>
+      </Wrapper>
+      <Footer />
+    </Container>
+  );
+};
+
+export default Cart;
+
+// styled components
 
 const Container = styled.div``;
 
 const Wrapper = styled.div`
   padding: 20px;
+  width: 90%;
+  margin: 0 auto;
   ${mobile({ padding: "10px" })}
 `;
 
@@ -40,6 +201,9 @@ const TopButton = styled.button`
   background-color: ${(props) =>
     props.type === "filled" ? "black" : "transparent"};
   color: ${(props) => props.type === "filled" && "white"};
+  a {
+    text-decoration: none;
+  }
 `;
 
 const TopTexts = styled.div`
@@ -67,6 +231,21 @@ const Product = styled.div`
   ${mobile({ flexDirection: "column" })}
 `;
 
+const ClearButton = styled.button`
+  background-color: #ff0000;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  margin-left: 11px;
+  margin-top: 12px;
+  &:hover {
+    background-color: #cc0000;
+  }
+`;
 const ProductDetail = styled.div`
   flex: 2;
   display: flex;
@@ -107,7 +286,7 @@ const PriceDetail = styled.div`
 const ProductAmountContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 11px;
 `;
 
 const ProductAmount = styled.div`
@@ -152,140 +331,31 @@ const SummaryItemText = styled.span``;
 
 const SummaryItemPrice = styled.span``;
 
+const QuantityActionButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  padding: 4px;
+  border: none;
+  border-radius: 100%;
+  /* background-color: #3c3d3e; */
+  color: #3c3d3e;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.148), 0 4px 15px rgba(0, 0, 0, 0.116);
+`;
+
 const Button = styled.button`
   width: 100%;
   padding: 10px;
-  background-color: black;
+  background-color: teal;
   color: white;
   font-weight: 600;
+  border-radius: 12px;
+  border: 1.5px solid teal;
+  transition: ease 0.5s;
+  &:hover {
+    background-color: transparent;
+    color: teal;
+  }
 `;
-
-const Cart = () => {
-  const cart = useSelector((state) => state.cart);
-  const [stripeToken, setStripeToken] = useState(null);
-  const history = useHistory();
-
-  const dispatch = useDispatch();
-
-  const onToken = (token) => {
-    setStripeToken(token);
-  };
-
-  const handleClearCart = () => {
-    dispatch(clearCart());
-  };
-
-  useEffect(() => {
-    const makeRequest = async () => {
-      try {
-        const res = await userRequest.post("/checkout/payment", {
-          tokenId: stripeToken.id,
-          amount: 500,
-        });
-        history.push("/success", {
-          stripeData: res.data,
-          products: cart,
-        });
-      } catch {}
-    };
-    stripeToken && makeRequest();
-  }, [stripeToken, cart.total, history]);
-
-  const handleQuantity = (type, productId) => {
-    const updatedQuantity = type === "inc" ? 1 : -1;
-    dispatch(updateProductQuantity({ productId, quantity: updatedQuantity }));
-  };
-
-  return (
-    <Container>
-      <Navbar />
-      <Announcement />
-      <Wrapper>
-        <Title>YOUR BAG</Title>
-        <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
-          <TopTexts>
-            <TopText>Shopping Bag({cart?.products?.length})</TopText>
-            <TopText>Your Wishlist (0)</TopText>
-          </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
-        </Top>
-        <Bottom>
-          <Info>
-            {cart.products.map((product) => (
-              <Product>
-                <ProductDetail>
-                  <Image src={product.img} />
-                  <Details>
-                    <ProductName>
-                      <b>Product:</b> {product.title}
-                    </ProductName>
-                    <ProductId>
-                      <b>ID:</b> {product._id}
-                    </ProductId>
-                    <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>Size:</b> {product.size}
-                    </ProductSize>
-                  </Details>
-                </ProductDetail>
-                <PriceDetail>
-                  <ProductAmountContainer>
-                    <Add onClick={() => handleQuantity("inc", product._id)} />
-                    <ProductAmount>{product.quantity}</ProductAmount>
-                    <Remove
-                      onClick={() =>
-                        product.quantity > 1
-                          ? handleQuantity("dec", product._id)
-                          : console.log("can zero")
-                      }
-                    />
-                  </ProductAmountContainer>
-                  <ProductPrice>
-                    $ {product.price * product.quantity}
-                  </ProductPrice>
-                </PriceDetail>
-              </Product>
-            ))}
-            <Hr />
-            <button onClick={handleClearCart}>Clear Cart</button>
-          </Info>
-          <Summary>
-            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem type="total">
-              <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-            </SummaryItem>
-            <StripeCheckout
-              name="Lama Shop"
-              image="https://avatars.githubusercontent.com/u/1486366?v=4"
-              billingAddress
-              shippingAddress
-              description={`Your total is $${cart.total}`}
-              amount={cart.total * 100}
-              token={onToken}
-              stripeKey={KEY}
-            >
-              <Button>CHECKOUT NOW</Button>
-            </StripeCheckout>
-          </Summary>
-        </Bottom>
-      </Wrapper>
-      <Footer />
-    </Container>
-  );
-};
-
-export default Cart;

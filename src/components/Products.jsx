@@ -8,8 +8,6 @@ const Products = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  // console.log(filteredProducts);
-
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -55,7 +53,7 @@ const Products = ({ cat, filters, sort }) => {
     <Container>
       <Titles>
         <Title>Our Regular Products</Title>
-        <Link to="/products">
+        <Link to="/all-products">
           <Button>View All</Button>
         </Link>
       </Titles>
@@ -74,6 +72,7 @@ const Products = ({ cat, filters, sort }) => {
 
 export default Products;
 
+// styled component
 const Container = styled.div`
   width: 90%;
   margin: auto;
@@ -99,10 +98,16 @@ const Titles = styled.div`
 `;
 
 const Button = styled.button`
-  border: none;
+  border: 1.5px solid teal;
   font-size: 16px;
-  background-color: #ededed;
+  background-color: teal;
   border-radius: 30px;
-  padding: 10px 50px;
+  padding: 10px 40px;
+  color: #fff;
   cursor: pointer;
+  transition: ease 0.3s;
+  &:hover {
+    background-color: #fff;
+    color: teal;
+  }
 `;

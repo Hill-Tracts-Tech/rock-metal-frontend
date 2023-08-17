@@ -13,9 +13,8 @@ import { Link } from "react-router-dom/cjs/react-router-dom";
 import logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
 
-
 const Navbar = () => {
-  const quantity = useSelector((state) => state.cart.quantity);
+  const cart = useSelector((state) => state.cart);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = () => {
@@ -34,7 +33,7 @@ const Navbar = () => {
   };
 
   // popup
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -76,14 +75,14 @@ const Navbar = () => {
           </Link>
           <Link to="/cart">
             <MenuItem title="Cart">
-              <Badge badgeContent={quantity} color="teal">
+              <Badge badgeContent={cart.quantity} color="teal">
                 <ShoppingCartOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
           </Link>
           <Link to="/whishList">
             <MenuItem title="WhishList">
-              <Badge badgeContent={quantity} color="teal">
+              <Badge badgeContent={cart.favQuantity} color="teal">
                 <FavoriteBorderOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
@@ -146,14 +145,14 @@ const Navbar = () => {
           </Link>
           <Link to="/cart">
             <MenuItem title="Cart">
-              <Badge badgeContent={quantity} color="teal">
+              <Badge badgeContent={cart.quantity} color="teal">
                 <ShoppingCartOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
           </Link>
           <Link to="/whishList">
             <MenuItem title="WhishList">
-              <Badge badgeContent={quantity} color="teal">
+              <Badge badgeContent={cart.favQuantity} color="teal">
                 <FavoriteBorderOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
@@ -239,7 +238,7 @@ const Overlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  display: ${props => (props.isOpen ? 'block' : 'none')};
+  display: ${(props) => (props.isOpen ? "block" : "none")};
 `;
 
 // Styled component for the pop-up content
@@ -285,12 +284,12 @@ const NavbarContainer = styled.nav`
 `;
 
 const Logo = styled.div`
-  height: 36px;
-  height: 36px;
-  ${mobile({ width: "30px", height: "30px" })}
+  height: 42px;
+  height: 42px;
+  ${mobile({ width: "42px", height: "42px" })}
   & img {
-    width: 30px;
-    height: 30px;
+    width: 42px;
+    height: 42px;
   }
 `;
 

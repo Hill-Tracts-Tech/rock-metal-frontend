@@ -8,36 +8,6 @@ import { mobile } from "../responsive";
 import { useLocation } from "react-router";
 import { useState } from "react";
 
-const Container = styled.div``;
-
-const Title = styled.h1`
-  margin: 20px;
-`;
-
-const FilterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Filter = styled.div`
-  margin: 20px;
-  ${mobile({ width: "0px 20px", display: "flex", flexDirection: "column" })}
-`;
-
-const FilterText = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-  margin-right: 20px;
-  ${mobile({ marginRight: "0px" })}
-`;
-
-const Select = styled.select`
-  padding: 10px;
-  margin-right: 20px;
-  ${mobile({ margin: "10px 0px" })}
-`;
-const Option = styled.option``;
-
 const ProductList = () => {
   const location = useLocation();
   const cat = location.pathname.split("/")[2];
@@ -54,8 +24,8 @@ const ProductList = () => {
 
   return (
     <Container>
-      <Navbar />
       <Announcement />
+      <Navbar />
       <Title>{cat}</Title>
       <FilterContainer>
         <Filter>
@@ -95,3 +65,42 @@ const ProductList = () => {
 };
 
 export default ProductList;
+
+const Container = styled.div``;
+
+const Title = styled.h1`
+  margin: 20px;
+`;
+
+const FilterContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Filter = styled.div`
+  margin: 20px;
+  ${mobile({ width: "0px 20px", display: "flex", flexDirection: "column" })}
+`;
+
+const FilterText = styled.span`
+  font-size: 20px;
+  font-weight: 600;
+  margin-right: 20px;
+  ${mobile({ marginRight: "0px" })}
+`;
+
+const Select = styled.select`
+  font-size: 17px;
+  padding: 6px;
+  margin-left: 9px;
+  border: 1.5px solid teal;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  outline: none;
+  width: 100px;
+  ${mobile({ margin: "10px 0px" })}
+`;
+const Option = styled.option`
+  font-size: 17px;
+`;
