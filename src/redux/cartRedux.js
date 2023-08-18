@@ -15,13 +15,17 @@ const cartSlice = createSlice({
         (product) => product._id === action.payload._id
       );
       if (existingProductIndex !== -1) {
-        state.products[existingProductIndex].quantity += 1;
+        state.products[existingProductIndex].quantity +=
+          action.payload.quantity;
       } else {
-        state.products.push({ ...action.payload, quantity: 1 });
+        state.products.push({
+          ...action.payload,
+          quantity: action.payload.quantity,
+        });
       }
 
-      state.quantity += 1;
-      state.total += action.payload.price;
+      state.quantity += action.payload.quantity;
+      state.total += action.payload.price * action.payload.quantity;
     },
     clearCart: (state) => {
       state.quantity = null;

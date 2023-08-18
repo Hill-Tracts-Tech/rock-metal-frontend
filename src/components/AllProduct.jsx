@@ -6,7 +6,7 @@ import {
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { addProduct } from "../redux/cartRedux";
+import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 import { mobile } from "../responsive";
 
@@ -29,6 +29,23 @@ const AllProduct = ({ item }) => {
       toast.error("Something went wrong! May be occurred ", error);
     }
   };
+
+  const handleAddToFavourite = () => {
+    try {
+      dispatch(
+        addFavorite({
+          ...item,
+          quantity: 1,
+          color: item?.color[0],
+          size: item?.size[0],
+        })
+      );
+      toast.success("Added to wish list successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong! May be occurred ", error);
+    }
+  };
   return (
     <Container>
       <Circle />
@@ -42,7 +59,7 @@ const AllProduct = ({ item }) => {
             <SearchOutlined />
           </Link>
         </Icon>
-        <Icon>
+        <Icon onClick={handleAddToFavourite}>
           <FavoriteBorderOutlined />
         </Icon>
       </Info>
