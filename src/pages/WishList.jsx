@@ -55,7 +55,7 @@ const WishList = () => {
           {cart?.favorite?.length > 0 ? (
             <InfoWrapper>
               {cart?.favorite?.map((product) => (
-                <Product>
+                <Product key={product._id}>
                   <ProductDetail>
                     <ImageWrapper>
                       <Image src={product.img} />

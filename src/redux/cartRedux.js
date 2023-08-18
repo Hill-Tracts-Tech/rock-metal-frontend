@@ -43,6 +43,9 @@ const cartSlice = createSlice({
       }
     },
     addFavorite: (state, action) => {
+      if (!state.favorite) {
+        state.favorite = [];
+      }
       const existingProductIndex = state.favorite.findIndex(
         (favorite) => favorite._id === action.payload._id
       );
@@ -80,6 +83,6 @@ export const {
   updateProductQuantity,
   addFavorite,
   clearFavorite,
-  updateFavQuantity
+  updateFavQuantity,
 } = cartSlice.actions;
 export default cartSlice.reducer;
