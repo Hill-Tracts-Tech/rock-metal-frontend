@@ -62,7 +62,10 @@ const WishList = () => {
                     </ImageWrapper>
                     <Details>
                       <ProductName>
-                        <b>Product:</b> {product.title}
+                        <b>Product:</b> {product.title}{" "}
+                        <b style={{ fontSize: "20px" }}>
+                          x {product.favQuantity}
+                        </b>
                       </ProductName>
                       <ProductId>
                         <b>ID:</b> {product._id}
@@ -78,13 +81,13 @@ const WishList = () => {
                       <QuantityActionButton>
                         <Remove
                           onClick={() =>
-                            product.quantity > 1
+                            product.favQuantity > 1
                               ? handleQuantity("dec", product._id)
                               : console.log("can zero")
                           }
                         />
                       </QuantityActionButton>
-                      <ProductAmount>{product.quantity}</ProductAmount>
+                      <ProductAmount>{product.favQuantity}</ProductAmount>
                       <QuantityActionButton>
                         <Add
                           onClick={() => handleQuantity("inc", product._id)}
@@ -92,7 +95,7 @@ const WishList = () => {
                       </QuantityActionButton>
                     </ProductAmountContainer>
                     <ProductPrice>
-                      $ {product.price * product.quantity}
+                      $ {product.price * product.favQuantity}
                     </ProductPrice>
                     <AddToCartButton>Add To Cart</AddToCartButton>
                   </PriceDetail>

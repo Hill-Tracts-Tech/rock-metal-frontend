@@ -71,9 +71,9 @@ const cartSlice = createSlice({
       );
       if (!product) return;
 
-      const updatedQuantity = product.quantity + quantity;
+      const updatedQuantity = product.favQuantity + quantity;
       if (updatedQuantity >= 1) {
-        product.quantity = updatedQuantity;
+        product.favQuantity = updatedQuantity;
         state.favQuantity += quantity;
       }
     },
