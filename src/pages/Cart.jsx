@@ -151,7 +151,9 @@ const Cart = () => {
                 <br />
               </InfoWrapper>
             ) : (
-              <img src={emptyCart}></img>
+              <EmptyCart>
+                <EmptyCartImage src={emptyCart}/>
+              </EmptyCart>
             )}
           </Info>
           <Summary>
@@ -264,12 +266,17 @@ const Product = styled.div`
   margin-bottom:20px;
 `;
 
-const EmptyCart = styled.div`
+const EmptyCartImage = styled.img`
   width: 100%;
   height: 100%;
-  img {
-    object-fit: cover;
-  }
+  object-fit: cover;
+`;
+const EmptyCart = styled.div`
+  max-width: 400px;
+  max-height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 const ClearButton = styled.button`
   background-color: #ff0000;
@@ -352,6 +359,7 @@ const Summary = styled.div`
   border-radius: 10px;
   padding: 20px;
   height: 50vh;
+  ${mobile({marginTop:"20px"})}
 `;
 
 const SummaryTitle = styled.h1`

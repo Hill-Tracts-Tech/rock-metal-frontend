@@ -5,6 +5,8 @@ import SHOP from "../assets/orderIcons/SHOP.png";
 import MAKEPAYMENT from "../assets/orderIcons/MAKE PAYMENT.png";
 import RELAX from "../assets/orderIcons/RELAX.png";
 import { mobile } from "../responsive";
+import { Link } from "react-router-dom";
+
 const Ordersectionads = () => {
   return (
     <Container>
@@ -90,7 +92,9 @@ const Ordersectionads = () => {
             </SmallSize>
           </AlignBox>
         </Info>
-        <Button>ORDER NOW</Button>
+        <Link to="all-products">
+          <Button>ORDER NOW</Button>
+        </Link>
       </Background>
     </Container>
   );
