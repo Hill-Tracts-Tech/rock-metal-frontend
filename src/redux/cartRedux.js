@@ -77,6 +77,18 @@ const cartSlice = createSlice({
         state.favQuantity += quantity;
       }
     },
+    removeProduct: (state, action) => {
+      const productId = action.payload;
+      const productIndex = state.products.findIndex(
+        (product) => product._id === productId
+      );
+      if (productIndex !== -1) {
+        const product = state.products[productIndex];
+        state.quantity -= product.quantity;
+        state.total -= product.quantity * product.price;
+        state.products.splice(productIndex, 1);
+      }
+    },
   },
 });
 
@@ -87,5 +99,6 @@ export const {
   addFavorite,
   clearFavorite,
   updateFavQuantity,
+  removeProduct,
 } = cartSlice.actions;
 export default cartSlice.reducer;
