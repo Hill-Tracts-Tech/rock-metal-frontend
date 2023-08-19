@@ -62,7 +62,6 @@ const cartSlice = createSlice({
     },
     clearFavorite: (state) => {
       state.favQuantity = null;
-      state.favQuantity = [];
       state.favorite = [];
     },
     updateFavQuantity: (state, action) => {
