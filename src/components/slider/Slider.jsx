@@ -76,7 +76,7 @@ const InfoContainer = styled.div`
 
 const Title = styled.h1`
   font-size: 70px;
-  ${mobile({ fontSize: "40px" })}
+  ${mobile({ fontSize: "35px" })}
 `;
 
 const Desc = styled.p`
@@ -84,6 +84,7 @@ const Desc = styled.p`
   font-size: 20px;
   font-weight: 500;
   letter-spacing: 3px;
+  ${mobile({ fontSize: "15px" })}
 `;
 
 const Button = styled.button`
