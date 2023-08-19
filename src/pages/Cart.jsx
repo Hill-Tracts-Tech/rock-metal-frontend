@@ -9,10 +9,14 @@ import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
-import { clearCart, updateProductQuantity } from "../redux/cartRedux";
+import {
+  clearCart,
+  removeProduct,
+  updateProductQuantity,
+} from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
-
+import Delete from "../assets/DeleteIcon.png";
 const KEY = process.env.REACT_APP_STRIPE;
 
 const Cart = () => {
@@ -51,6 +55,9 @@ const Cart = () => {
     const updatedQuantity = type === "inc" ? 1 : -1;
     dispatch(updateProductQuantity({ productId, quantity: updatedQuantity }));
   };
+  const handleRemoveProduct = (productId) => {
+    // dispatch(removeProduct(productId,));
+  };
   return (
     <Container>
       <Announcement />
@@ -77,7 +84,9 @@ const Cart = () => {
           </Link>
           <TopTexts>
             <TopText>Shopping Bag({cart?.products?.length})</TopText>
-            <TopText>Your Wishlist ({cart?.favorite?.length})</TopText>
+            <Link to="/wishList">
+              <TopText>Your Wishlist ({cart?.favorite?.length})</TopText>
+            </Link>
           </TopTexts>
         </Top>
         <Bottom>
@@ -86,6 +95,10 @@ const Cart = () => {
               <InfoWrapper>
                 {cart.products.map((product) => (
                   <Product>
+                    <DeleteButton
+                      onClick={handleRemoveProduct(product._id)}
+                      src={Delete}
+                    />
                     <ProductDetail>
                       <Image src={product.img} />
                       <Details>
@@ -101,6 +114,7 @@ const Cart = () => {
                         </ProductSize>
                       </Details>
                     </ProductDetail>
+
                     <PriceDetail>
                       <ProductAmountContainer>
                         <QuantityActionButton>
@@ -249,6 +263,7 @@ const Product = styled.div`
   display: flex;
   justify-content: space-between;
   ${mobile({ flexDirection: "column" })}
+  margin-bottom:20px;
 `;
 
 const EmptyCartImage = styled.img`
@@ -390,4 +405,15 @@ const Button = styled.button`
     background-color: transparent;
     color: teal;
   }
+`;
+const DeleteButton = styled.img`
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-right: -10px;
+  margin-top: -10px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.148), 0 4px 15px rgba(0, 0, 0, 0.116);
+  border: 1.5px solid teal;
+  border-radius: 12px;
 `;
