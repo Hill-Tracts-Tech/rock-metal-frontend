@@ -3,8 +3,6 @@ import styled from "styled-components";
 import Product from "./Product";
 import axios from "axios";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 import { mobile } from "../responsive";
 
 const Products = ({ cat, filters, sort }) => {
@@ -58,29 +56,26 @@ const Products = ({ cat, filters, sort }) => {
   }, [sort]);
 
   return (
-    <SkeletonTheme baseColor="#b3aaaa" highlightColor="#444">
-      <Container>
-        <Titles>
-          <Title>Our Regular Products</Title>
-          <Link to="/all-products">
-            <Button>View All</Button>
-          </Link>
-        </Titles>
-        {loading ? (
-          <Skeleton count={4} width="30%" />
-        ) : (
-          <Wrapper>
-            {cat
-              ? filteredProducts.map((item) => (
-                  <Product item={item} key={item.id} />
-                ))
-              : products
-                  .slice(0, 8)
-                  .map((item) => <Product item={item} key={item.id} />)}
-          </Wrapper>
-        )}
-      </Container>
-    </SkeletonTheme>
+    <Container>
+      <Titles>
+        <Title>Our Regular Products</Title>
+        <Link to="/all-products">
+          <Button>View All</Button>
+        </Link>
+      </Titles>
+
+      <Wrapper>
+        {cat
+          ? filteredProducts.map((item) => (
+              <Product item={item} key={item.id} />
+            ))
+          : products
+              .slice(0, 8)
+              .map((item) => (
+                <Product item={item} loading={loading} key={item.id} />
+              ))}
+      </Wrapper>
+    </Container>
   );
 };
 
@@ -107,7 +102,7 @@ const Title = styled.h2`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
-    ${mobile({fontSize:"20px",padding:"12px 0px" })}
+  ${mobile({ fontSize: "20px", padding: "12px 0px" })}
 `;
 const Titles = styled.div`
   display: flex;

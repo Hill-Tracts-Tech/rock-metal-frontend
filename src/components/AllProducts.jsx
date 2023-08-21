@@ -8,15 +8,17 @@ import Navbar from "./Navbar";
 import { useLocation } from "react-router-dom/cjs/react-router-dom";
 
 const AllProducts = () => {
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-    const location = useLocation();
-    const cat = location.pathname.split("/")[2];
-    const [filters, setFilters] = useState({});
-    const [sort, setSort] = useState("newest");
+  const location = useLocation();
+  const cat = location.pathname.split("/")[2];
+  const [filters, setFilters] = useState({});
+  const [sort, setSort] = useState("newest");
 
   useEffect(() => {
+    setLoading(true);
     const getProducts = async () => {
       try {
         const res = await axios.get(
@@ -25,7 +27,10 @@ const AllProducts = () => {
             : "http://localhost:5000/api/products"
         );
         setProducts(res.data);
-      } catch (err) {}
+        setLoading(false)
+      } catch (err) {
+        setLoading(false)
+      }
     };
     getProducts();
   }, [cat]);
@@ -57,13 +62,13 @@ const AllProducts = () => {
     }
   }, [sort]);
 
-    const handleFilters = (e) => {
-      const value = e.target.value;
-      setFilters({
-        ...filters,
-        [e.target.name]: value,
-      });
-    };
+  const handleFilters = (e) => {
+    const value = e.target.value;
+    setFilters({
+      ...filters,
+      [e.target.name]: value,
+    });
+  };
 
   return (
     <>
@@ -104,9 +109,11 @@ const AllProducts = () => {
         <Wrapper>
           {cat
             ? filteredProducts.map((item) => (
-                <AllProduct item={item} key={item.id} />
+                <AllProduct item={item} loading={loading} key={item.id} />
               ))
-            : products.map((item) => <AllProduct item={item} key={item.id} />)}
+            : products.map((item) => (
+                <AllProduct loading={loading} item={item} key={item.id} />
+              ))}
         </Wrapper>
       </Container>
     </>
@@ -123,6 +130,7 @@ export default AllProducts;
 const FilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 15px;
 `;
 
 const Filter = styled.div`
@@ -161,6 +169,9 @@ const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  ${mobile({ justifyContent: "center" })}
 `;
 
 const Title = styled.h2`

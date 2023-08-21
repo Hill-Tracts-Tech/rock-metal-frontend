@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { register } from "../redux/apiCalls";
 import { useState } from "react";
+import Announcement from "../components/Announcement";
+import Navbar from "../components/Navbar";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -31,54 +33,84 @@ const Register = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Title>CREATE AN ACCOUNT</Title>
-        <Form>
-          <Input
-            onChange={(e) => setName(e.target.value)}
-            name="name"
-            placeholder="name"
-          />
-          <Input
-            onChange={(e) => setLastName(e.target.value)}
-            name="last_name"
-            placeholder="last name"
-          />
-          <Input
-            onChange={(e) => setUsername(e.target.value)}
-            name="username"
-            placeholder="username"
-          />
-          <Input
-            onChange={(e) => setEmail(e.target.value)}
-            name="email"
-            placeholder="email"
-          />
-          <Input
-            onChange={(e) => setPassword(e.target.value)}
-            name="password"
-            placeholder="password"
-          />
-          <Input
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            name="confirm_password"
-            placeholder="confirm password"
-          />
-          <Agreement>
-            By creating an account, I consent to the processing of my personal
-            data in accordance with the <b>PRIVACY POLICY</b>
-          </Agreement>
-          <Link to="/login">Already Have an accout. Log in</Link>
-          <Button onClick={handleRegistration}>CREATE</Button>
-        </Form>
-      </Wrapper>
-    </Container>
+    <ContainerWrapper>
+      <Announcement />
+      <Navbar />
+      <Container>
+        <Wrapper>
+          <Title>CREATE AN ACCOUNT</Title>
+          <Form>
+            <Input
+              onChange={(e) => setName(e.target.value)}
+              name="name"
+              type="text"
+              placeholder="name"
+            />
+            <Input
+              onChange={(e) => setLastName(e.target.value)}
+              name="last_name"
+              placeholder="last name"
+              type="text"
+            />
+            <Input
+              onChange={(e) => setUsername(e.target.value)}
+              name="username"
+              placeholder="username"
+              type="text"
+            />
+            <Input
+              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              placeholder="email"
+              type="email"
+            />
+            <Input
+              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              placeholder="password"
+              type="password"
+            />
+            <Input
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              name="confirm_password"
+              placeholder="confirm password"
+              type="password"
+            />
+            {
+              password!==confirm_password?<Error>Password doesn't match</Error>:""
+            }
+            <Agreement>
+              By creating an account, I consent to the processing of my personal
+              data in accordance with the <b>PRIVACY POLICY</b>
+            </Agreement>
+            <ButtonWrapper>
+              <Link
+                to="/login"
+                style={{
+                  color: "teal",
+                  textDecoration: "none",
+                }}
+              >
+                Already Have an account? Log in
+              </Link>
+              <Button onClick={handleRegistration}>Register Now</Button>
+            </ButtonWrapper>
+          </Form>
+        </Wrapper>
+      </Container>
+    </ContainerWrapper>
   );
 };
 
 export default Register;
 
+const Error = styled.p`
+  color: #c23e3e;
+  margin: 12px 0px;
+`
+const ContainerWrapper = styled.div`
+overflow: hidden;
+`;
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -97,6 +129,8 @@ const Container = styled.div`
 const Wrapper = styled.div`
   width: 40%;
   padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   background-color: white;
   ${mobile({ width: "75%" })}
 `;
@@ -104,6 +138,8 @@ const Wrapper = styled.div`
 const Title = styled.h1`
   font-size: 24px;
   font-weight: 300;
+  text-align: center;
+  font-weight: 500;
 `;
 
 const Form = styled.form`
@@ -116,6 +152,9 @@ const Input = styled.input`
   min-width: 40%;
   margin: 20px 10px 0px 0px;
   padding: 10px;
+  outline: none;
+  border-radius: 6px;
+  font-size: 17pxx;
 `;
 
 const Agreement = styled.span`
@@ -123,11 +162,24 @@ const Agreement = styled.span`
   margin: 20px 0px;
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: start;
+  gap: 20px;
+  align-items: center;
+`;
 const Button = styled.button`
-  width: 40%;
   border: none;
-  padding: 15px 20px;
+  border-radius: 11px;
+  font-weight: 600;
+  border: 1.5px solid teal;
+  padding: 15px 26px;
   background-color: teal;
   color: white;
+  transition: ease 0.4s;
   cursor: pointer;
+  &:hover {
+    background-color: transparent;
+    color: teal;
+  }
 `;
