@@ -68,11 +68,11 @@ const Trendings = ({ cat, filters, sort }) => {
       </Titles>
       <Wrapper>
         {cat
-          ? filteredProducts.map((item) => (
-              <Trending item={item} key={item.id} />
-            ))
+          ? filteredProducts
+              .filter((item) => item.isFeatured === true)
+              .map((item) => <Trending item={item} key={item.id} />)
           : products
-              .slice(0, 8)
+              .filter((item) => item.isTreding === true)
               .map((item) => (
                 <Trending item={item} loading={loading} key={item.id} />
               ))}
@@ -95,7 +95,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   ${mobile({
-    justifyContent:"center"
+    justifyContent: "center",
   })}
 `;
 const Titles = styled.div`

@@ -77,16 +77,16 @@ const cartSlice = createSlice({
         state.favQuantity += quantity;
       }
     },
-    removeProduct: (state, action) => {
-      const productId = action.payload;
-      const productIndex = state.products.findIndex(
-        (product) => product._id === productId
+    removeFromCart: (state, action) => {
+      const removedProduct = state.products.find(
+        (product) => product._id === action.payload._id
       );
-      if (productIndex !== -1) {
-        const product = state.products[productIndex];
-        state.quantity -= product.quantity;
-        state.total -= product.quantity * product.price;
-        state.products.splice(productIndex, 1);
+      if (removedProduct) {
+        state.products = state.products.filter(
+          (product) => product._id !== action.payload._id
+        );
+        state.quantity -= removedProduct.quantity;
+        state.total -= removedProduct.price * removedProduct.quantity;
       }
     },
   },
@@ -99,6 +99,6 @@ export const {
   addFavorite,
   clearFavorite,
   updateFavQuantity,
-  removeProduct,
+  removeFromCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;
