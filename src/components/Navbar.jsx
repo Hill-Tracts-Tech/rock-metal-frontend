@@ -12,10 +12,15 @@ import {
 } from "@material-ui/icons";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import logo from "../assets/logo.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import profile from "../assets/profile.png";
+import { logout } from "../redux/userRedux";
 
 const Navbar = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
   //for search input and button
   const cart = useSelector((state) => state.cart);
   const [searchValue, setSearchValue] = useState("");
@@ -49,13 +54,14 @@ const Navbar = () => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       setIsPopupOpen(false);
     }
-  }
+  };
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-  },[])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       <NavbarContainer>
@@ -86,9 +92,6 @@ const Navbar = () => {
           </SearchContainer>
         </Center>
         <Right>
-          <MenuItem onClick={ProfileTogglePopup}>
-            <AccountCircle style={{ color: "teal" }} />
-          </MenuItem>
           <Link to="/cart">
             <MenuItem title="Cart">
               <Badge badgeContent={cart.quantity} color="teal">
@@ -103,24 +106,30 @@ const Navbar = () => {
               </Badge>
             </MenuItem>
           </Link>
-          <AuthContainer>
-            <RegisterButton>
-              <Link
-                to="/register"
-                style={{ textDecoration: "none", fontWeight: "semibold" }}
-              >
-                Register
-              </Link>
-            </RegisterButton>
-            <LoginButton>
-              <Link
-                to="/login"
-                style={{ textDecoration: "none", fontWeight: "semibold" }}
-              >
-                Sign In
-              </Link>
-            </LoginButton>
-          </AuthContainer>
+          {!currentUser?.username ? (
+            <AuthContainer>
+              <RegisterButton>
+                <Link
+                  to="/register"
+                  style={{ textDecoration: "none", fontWeight: "semibold" }}
+                >
+                  Register
+                </Link>
+              </RegisterButton>
+              <LoginButton>
+                <Link
+                  to="/login"
+                  style={{ textDecoration: "none", fontWeight: "semibold" }}
+                >
+                  Sign In
+                </Link>
+              </LoginButton>
+            </AuthContainer>
+          ) : (
+            <MenuItem onClick={ProfileTogglePopup}>
+              <AccountCircle style={{ color: "teal" }} />
+            </MenuItem>
+          )}
         </Right>
       </NavbarContainer>
 
@@ -189,24 +198,26 @@ const Navbar = () => {
           <Link to="/wishList">
             <MenuItem title="WishList">My WishList</MenuItem>
           </Link>
-          <AuthContainer>
-            <RegisterButton>
-              <Link
-                to="/register"
-                style={{ textDecoration: "none", fontWeight: "semibold" }}
-              >
-                Register
-              </Link>
-            </RegisterButton>
-            <LoginButton>
-              <Link
-                to="/login"
-                style={{ textDecoration: "none", fontWeight: "semibold" }}
-              >
-                Sign In
-              </Link>
-            </LoginButton>
-          </AuthContainer>
+          {!currentUser?.username && (
+            <AuthContainer>
+              <RegisterButton>
+                <Link
+                  to="/register"
+                  style={{ textDecoration: "none", fontWeight: "semibold" }}
+                >
+                  Register
+                </Link>
+              </RegisterButton>
+              <LoginButton>
+                <Link
+                  to="/login"
+                  style={{ textDecoration: "none", fontWeight: "semibold" }}
+                >
+                  Sign In
+                </Link>
+              </LoginButton>
+            </AuthContainer>
+          )}
         </DrawerInner>
       </DrawerWrapper>
 
@@ -232,31 +243,35 @@ const Navbar = () => {
           </SearchContainer>
         </PopupContent>
       </Overlay>
-      <ProfileOverlay isOpenProfile={isPopupProfileOpen}>
-        <ProfilePopupContent>
-          <button
-            style={{
-              position: "absolute",
-              right: "3px",
-              top: "6px",
-              backgroundColor: "none",
-              border: "none",
-              outline: "none",
-              cursor: "pointer",
-              title: "Close",
-            }}
-            onClick={ProfileTogglePopup}
-          >
-            <Close />
-          </button>
-          <Profile>
-            <ProfileImage src={profile} />
-          </Profile>
-          <h3>Dev User</h3>
-          <span>dev2023@gmail.com</span>
-          <LogoutButton>Logout</LogoutButton>
-        </ProfilePopupContent>
-      </ProfileOverlay>
+      {currentUser?.username && (
+        <ProfileOverlay isOpenProfile={isPopupProfileOpen}>
+          <ProfilePopupContent>
+            <button
+              style={{
+                position: "absolute",
+                right: "3px",
+                top: "6px",
+                backgroundColor: "none",
+                border: "none",
+                outline: "none",
+                cursor: "pointer",
+                title: "Close",
+              }}
+              onClick={ProfileTogglePopup}
+            >
+              <Close />
+            </button>
+            <Profile>
+              <ProfileImage src={profile} />
+            </Profile>
+            <h3>{currentUser?.username}</h3>
+            <span>{currentUser?.email}</span>
+            <LogoutButton onClick={() => dispatch(logout())}>
+              Logout
+            </LogoutButton>
+          </ProfilePopupContent>
+        </ProfileOverlay>
+      )}
     </>
   );
 };
@@ -300,13 +315,7 @@ const ProfileOverlay = styled.div`
   display: ${(ProfileProps) => (ProfileProps.isOpenProfile ? "block" : "none")};
   z-index: 99999999;
 `;
-const ProfilePopupContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-`;
+
 const ProfilePopupContent = styled.div`
   position: absolute;
   top: 40%;
@@ -501,28 +510,7 @@ const DrawerInner = styled.div`
     }
   }
 `;
-// profile open
-const ProfileDrawerWrapper = styled.div`
-  position: fixed;
-  top: 138px;
-  z-index: 100;
-  left: 60%;
-  width: 300px;
-  height: auto;
-  background-color: #333;
-  color: #fff;
-  border-radius: 5px;
-  transition: right 0.5s ease;
-  left: ${({ open }) => (open ? "0" : "-3000px")};
-  /* visibility: ${({ open }) => (open ? "visible" : "hidden")}; */
-  @media (max-width: 768px) {
-    top: 0;
-    /* left: 0; */
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-`;
+
 const LogoutButton = styled.button`
   padding: 12px 20px;
   border: none;
@@ -536,23 +524,6 @@ const LogoutButton = styled.button`
   &:hover {
     background-color: transparent;
     color: teal;
-  }
-`;
-const ProfileDrawerInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 500;
-    transition: ease 0.5s;
-    &&:hover {
-      font-size: 19px;
-    }
   }
 `;
 
@@ -590,4 +561,3 @@ const Right = styled.div`
   justify-content: flex-end;
   ${mobile({ flex: 2, justifyContent: "center" })}
 `;
-//styled component ended//
