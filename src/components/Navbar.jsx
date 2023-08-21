@@ -12,10 +12,15 @@ import {
 } from "@material-ui/icons";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import logo from "../assets/logo.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import profile from "../assets/profile.png";
+import { logout } from "../redux/userRedux";
 
 const Navbar = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
   //for search input and button
   const cart = useSelector((state) => state.cart);
   const [searchValue, setSearchValue] = useState("");
@@ -49,13 +54,14 @@ const Navbar = () => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       setIsPopupOpen(false);
     }
-  }
+  };
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-  },[])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       <NavbarContainer>
@@ -86,9 +92,6 @@ const Navbar = () => {
           </SearchContainer>
         </Center>
         <Right>
-          <MenuItem onClick={ProfileTogglePopup}>
-            <AccountCircle style={{ color: "teal" }} />
-          </MenuItem>
           <Link to="/cart">
             <MenuItem title="Cart">
               <Badge badgeContent={cart.quantity} color="teal">
@@ -103,24 +106,30 @@ const Navbar = () => {
               </Badge>
             </MenuItem>
           </Link>
-          <AuthContainer>
-            <RegisterButton>
-              <Link
-                to="/register"
-                style={{ textDecoration: "none", fontWeight: "semibold" }}
-              >
-                Register
-              </Link>
-            </RegisterButton>
-            <LoginButton>
-              <Link
-                to="/login"
-                style={{ textDecoration: "none", fontWeight: "semibold" }}
-              >
-                Sign In
-              </Link>
-            </LoginButton>
-          </AuthContainer>
+          {!currentUser?.username ? (
+            <AuthContainer>
+              <RegisterButton>
+                <Link
+                  to="/register"
+                  style={{ textDecoration: "none", fontWeight: "semibold" }}
+                >
+                  Register
+                </Link>
+              </RegisterButton>
+              <LoginButton>
+                <Link
+                  to="/login"
+                  style={{ textDecoration: "none", fontWeight: "semibold" }}
+                >
+                  Sign In
+                </Link>
+              </LoginButton>
+            </AuthContainer>
+          ) : (
+            <MenuItem onClick={ProfileTogglePopup}>
+              <AccountCircle style={{ color: "teal" }} />
+            </MenuItem>
+          )}
         </Right>
       </NavbarContainer>
 
@@ -189,24 +198,26 @@ const Navbar = () => {
           <Link to="/wishList">
             <MenuItem title="WishList">My WishList</MenuItem>
           </Link>
-          <AuthContainer>
-            <RegisterButton>
-              <Link
-                to="/register"
-                style={{ textDecoration: "none", fontWeight: "semibold" }}
-              >
-                Register
-              </Link>
-            </RegisterButton>
-            <LoginButton>
-              <Link
-                to="/login"
-                style={{ textDecoration: "none", fontWeight: "semibold" }}
-              >
-                Sign In
-              </Link>
-            </LoginButton>
-          </AuthContainer>
+          {!currentUser?.username && (
+            <AuthContainer>
+              <RegisterButton>
+                <Link
+                  to="/register"
+                  style={{ textDecoration: "none", fontWeight: "semibold" }}
+                >
+                  Register
+                </Link>
+              </RegisterButton>
+              <LoginButton>
+                <Link
+                  to="/login"
+                  style={{ textDecoration: "none", fontWeight: "semibold" }}
+                >
+                  Sign In
+                </Link>
+              </LoginButton>
+            </AuthContainer>
+          )}
         </DrawerInner>
       </DrawerWrapper>
 
@@ -232,31 +243,35 @@ const Navbar = () => {
           </SearchContainer>
         </PopupContent>
       </Overlay>
-      <ProfileOverlay isOpenProfile={isPopupProfileOpen}>
-        <ProfilePopupContent>
-          <button
-            style={{
-              position: "absolute",
-              right: "3px",
-              top: "6px",
-              backgroundColor: "none",
-              border: "none",
-              outline: "none",
-              cursor: "pointer",
-              title: "Close",
-            }}
-            onClick={ProfileTogglePopup}
-          >
-            <Close />
-          </button>
-          <Profile>
-            <ProfileImage src={profile} />
-          </Profile>
-          <h3>Dev User</h3>
-          <span>dev2023@gmail.com</span>
-          <LogoutButton>Logout</LogoutButton>
-        </ProfilePopupContent>
-      </ProfileOverlay>
+      {currentUser?.username && (
+        <ProfileOverlay isOpenProfile={isPopupProfileOpen}>
+          <ProfilePopupContent>
+            <button
+              style={{
+                position: "absolute",
+                right: "3px",
+                top: "6px",
+                backgroundColor: "none",
+                border: "none",
+                outline: "none",
+                cursor: "pointer",
+                title: "Close",
+              }}
+              onClick={ProfileTogglePopup}
+            >
+              <Close />
+            </button>
+            <Profile>
+              <ProfileImage src={profile} />
+            </Profile>
+            <h3>{currentUser?.username}</h3>
+            <span>{currentUser?.email}</span>
+            <LogoutButton onClick={() => dispatch(logout())}>
+              Logout
+            </LogoutButton>
+          </ProfilePopupContent>
+        </ProfileOverlay>
+      )}
     </>
   );
 };
