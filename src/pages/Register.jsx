@@ -25,6 +25,8 @@ const Register = () => {
     confirm_password,
   };
 
+  console.log(user);
+
   const handleRegistration = (e) => {
     e.preventDefault();
     register(dispatch, { user });
