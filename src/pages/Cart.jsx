@@ -1,4 +1,4 @@
-import { Add, Remove } from "@material-ui/icons";
+import { Add, Remove, Delete } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
@@ -9,6 +9,7 @@ import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
+import "../index.css";
 import {
   clearCart,
   removeProduct,
@@ -16,7 +17,7 @@ import {
 } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
-import Delete from "../assets/DeleteIcon.png";
+
 const KEY = process.env.REACT_APP_STRIPE;
 
 const Cart = () => {
@@ -56,7 +57,7 @@ const Cart = () => {
     dispatch(updateProductQuantity({ productId, quantity: updatedQuantity }));
   };
   const handleRemoveProduct = (productId) => {
-    // dispatch(removeProduct(productId,));
+    dispatch(removeProduct(productId));
   };
   return (
     <Container>
@@ -95,10 +96,16 @@ const Cart = () => {
               <InfoWrapper>
                 {cart.products.map((product) => (
                   <Product>
-                    <DeleteButton
-                      onClick={handleRemoveProduct(product._id)}
-                      src={Delete}
-                    />
+                    <DeleteButton onClick={handleRemoveProduct}>
+                      <Delete
+                        style={{
+                          color: "teal",
+                          marginLeft: "1px",
+                          marginTop: "1px",
+                          transition: "color 0.3s",
+                        }}
+                      ></Delete>
+                    </DeleteButton>
                     <ProductDetail>
                       <Image src={product.img} />
                       <Details>
@@ -152,7 +159,7 @@ const Cart = () => {
               </InfoWrapper>
             ) : (
               <EmptyCart>
-                <EmptyCartImage src={emptyCart}/>
+                <EmptyCartImage src={emptyCart} />
               </EmptyCart>
             )}
           </Info>
@@ -359,7 +366,7 @@ const Summary = styled.div`
   border-radius: 10px;
   padding: 20px;
   height: 50vh;
-  ${mobile({marginTop:"20px"})}
+  ${mobile({ marginTop: "20px" })}
 `;
 
 const SummaryTitle = styled.h1`
@@ -406,14 +413,18 @@ const Button = styled.button`
     color: teal;
   }
 `;
-const DeleteButton = styled.img`
+const DeleteButton = styled.div`
   position: relative;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   margin-right: -10px;
   margin-top: -10px;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.148), 0 4px 15px rgba(0, 0, 0, 0.116);
   border: 1.5px solid teal;
-  border-radius: 12px;
+  border-radius: 15px;
+  transition: "background-color 0.3s";
+  // &:hover {
+  //   background-color: teal;
+  // }
 `;
