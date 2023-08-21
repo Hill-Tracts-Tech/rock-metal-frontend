@@ -15,6 +15,7 @@ import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import profile from "../assets/profile.png";
 import { logout } from "../redux/userRedux";
+import gravatar from "gravatar";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -61,6 +62,8 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const imageUrl = gravatar.url(currentUser.email);
 
   return (
     <>
@@ -126,8 +129,24 @@ const Navbar = () => {
               </LoginButton>
             </AuthContainer>
           ) : (
-            <MenuItem onClick={ProfileTogglePopup}>
-              <AccountCircle style={{ color: "teal" }} />
+            <MenuItem
+              onClick={ProfileTogglePopup}
+              style={{ cursor: "pointer" }}
+            >
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt="profile"
+                  style={{
+                    height: "30px",
+                    width: "30px",
+                    borderRadius: "15px",
+                    objectFit: "contain",
+                  }}
+                />
+              ) : (
+                <AccountCircle style={{ color: "teal" }} />
+              )}
             </MenuItem>
           )}
         </Right>
@@ -262,7 +281,20 @@ const Navbar = () => {
               <Close />
             </button>
             <Profile>
-              <ProfileImage src={profile} />
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt="profile"
+                  style={{
+                    height: "50px",
+                    width: "50px",
+                    borderRadius: "25px",
+                    objectFit: "contain",
+                  }}
+                />
+              ) : (
+                <AccountCircle style={{ color: "teal" }} />
+              )}
             </Profile>
             <h3>{currentUser?.username}</h3>
             <span>{currentUser?.email}</span>
