@@ -424,7 +424,10 @@ const DeleteButton = styled.div`
   border: 1.5px solid teal;
   border-radius: 15px;
   transition: "background-color 0.3s";
-  // &:hover {
-  //   background-color: teal;
-  // }
+  &:hover {
+    background-color: teal;
+    p {
+      color: white;
+    }
+  }
 `;

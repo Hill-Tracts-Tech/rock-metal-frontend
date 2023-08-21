@@ -63,7 +63,7 @@ const Navbar = () => {
     };
   }, []);
 
-  const imageUrl = gravatar.url(currentUser.email);
+  const imageUrl = gravatar.url(currentUser?.email);
 
   return (
     <>
@@ -111,22 +111,18 @@ const Navbar = () => {
           </Link>
           {!currentUser?.username ? (
             <AuthContainer>
-              <RegisterButton>
-                <Link
-                  to="/register"
-                  style={{ textDecoration: "none", fontWeight: "semibold" }}
-                >
-                  Register
-                </Link>
-              </RegisterButton>
-              <LoginButton>
-                <Link
-                  to="/login"
-                  style={{ textDecoration: "none", fontWeight: "semibold" }}
-                >
-                  Sign In
-                </Link>
-              </LoginButton>
+              <Link
+                to="/register"
+                style={{ textDecoration: "none", fontWeight: "semibold" }}
+              >
+                <RegisterButton>Register</RegisterButton>
+              </Link>
+              <Link
+                to="/login"
+                style={{ textDecoration: "none", fontWeight: "semibold" }}
+              >
+                <LoginButton>Sign In</LoginButton>
+              </Link>
             </AuthContainer>
           ) : (
             <MenuItem
@@ -219,22 +215,18 @@ const Navbar = () => {
           </Link>
           {!currentUser?.username && (
             <AuthContainer>
-              <RegisterButton>
-                <Link
-                  to="/register"
-                  style={{ textDecoration: "none", fontWeight: "semibold" }}
-                >
-                  Register
-                </Link>
-              </RegisterButton>
-              <LoginButton>
-                <Link
-                  to="/login"
-                  style={{ textDecoration: "none", fontWeight: "semibold" }}
-                >
-                  Sign In
-                </Link>
-              </LoginButton>
+              <Link
+                to="/register"
+                style={{ textDecoration: "none", fontWeight: "semibold" }}
+              >
+                <RegisterButton>Register</RegisterButton>
+              </Link>
+              <Link
+                to="/login"
+                style={{ textDecoration: "none", fontWeight: "semibold" }}
+              >
+                <LoginButton>Sign In</LoginButton>
+              </Link>
             </AuthContainer>
           )}
         </DrawerInner>
@@ -463,9 +455,10 @@ const RegisterButton = styled.button`
   border: 1.3px solid teal;
   border-radius: 4px;
   transition: ease-in-out 0.5s;
+  color: white;
   &:hover {
     background-color: transparent;
-    a {
+     {
       color: teal;
     }
   }
@@ -486,7 +479,7 @@ const LoginButton = styled.button`
   transition: ease-in-out 0.5s;
   &:hover {
     background-color: transparent;
-    a {
+     {
       color: teal;
     }
   }
