@@ -3,32 +3,39 @@ import {
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Redirect, useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const Trending = ({ item, loading }) => {
+  const user = useSelector((state) => state.user.currentUser);
+  const history = useHistory();
   const dispatch = useDispatch();
 
   // handle add to cart
   const handleAddToCart = () => {
-    try {
-      dispatch(
-        addProduct({
-          ...item,
-          quantity: 1,
-          color: item?.color[0],
-          size: item?.size[0],
-        })
-      );
-      toast.success("Added to cart successfully");
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong! May be occurred ", error);
+    if (user) {
+      try {
+        dispatch(
+          addProduct({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+          })
+        );
+        toast.success("Added to cart successfully");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! May be occurred ", error);
+      }
+    } else {
+      history.push("/login");
     }
   };
 
@@ -58,7 +65,7 @@ const Trending = ({ item, loading }) => {
           height="200px"
           count={1}
           style={{
-            margin:"12px 0px"
+            margin: "12px 0px",
           }}
         />
       ) : (
