@@ -63,7 +63,7 @@ const Navbar = () => {
     };
   }, []);
 
-  const imageUrl = gravatar.url(currentUser.email);
+  const imageUrl = gravatar.url(currentUser?.email);
 
   return (
     <>
