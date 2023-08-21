@@ -8,9 +8,10 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const Trending = ({ item }) => {
+const Trending = ({ item, loading }) => {
   const dispatch = useDispatch();
 
   // handle add to cart
@@ -50,26 +51,39 @@ const Trending = ({ item }) => {
   };
 
   return (
-    <Container>
-      <Circle />
-      <ImageWrapper>
-        <Image src={item.img} />
-      </ImageWrapper>
-      <Info>
-        <Icon onClick={handleAddToCart}>
-          <ShoppingCartOutlined />
-        </Icon>
-        <Icon>
-          <Link to={`/product/${item._id}`}>
-            <SearchOutlined />
-          </Link>
-        </Icon>
-        <Icon onClick={handleAddToFavorite}>
-          <FavoriteBorderOutlined />
-        </Icon>
-      </Info>
-      <Toaster />
-    </Container>
+    <>
+      {loading ? (
+        <Skeleton
+          width="280px"
+          height="200px"
+          count={1}
+          style={{
+            margin:"12px 0px"
+          }}
+        />
+      ) : (
+        <Container>
+          <Circle />
+          <ImageWrapper>
+            <Image src={item.img} />
+          </ImageWrapper>
+          <Info>
+            <Icon onClick={handleAddToCart}>
+              <ShoppingCartOutlined />
+            </Icon>
+            <Icon>
+              <Link to={`/product/${item._id}`}>
+                <SearchOutlined />
+              </Link>
+            </Icon>
+            <Icon onClick={handleAddToFavorite}>
+              <FavoriteBorderOutlined />
+            </Icon>
+          </Info>
+          <Toaster />
+        </Container>
+      )}
+    </>
   );
 };
 
@@ -93,7 +107,7 @@ const Info = styled.div`
 
 const Container = styled.div`
   flex: 1;
-  margin: 5px;
+  margin: 12px 5px;
   min-width: 280px;
   height: 350px;
   display: flex;
@@ -119,7 +133,7 @@ const ImageWrapper = styled.div`
   width: 300px;
   height: 300px;
   box-sizing: border-box;
-`
+`;
 const Image = styled.img`
   width: 100%;
   height: 100%;

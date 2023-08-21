@@ -11,7 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const Product = ({ item }) => {
+const Product = ({ item, loading }) => {
   const dispatch = useDispatch();
   console.log(item[0]);
   const handleAddToCart = () => {
@@ -27,7 +27,7 @@ const Product = ({ item }) => {
       toast.success("Added successfully!");
     } catch (error) {
       console.error("Error adding to cart:", error);
-      toast.error("Something went wrong! May be occurred ",error)
+      toast.error("Something went wrong! May be occurred ", error);
     }
   };
   const handleAddToWishList = () => {
@@ -43,32 +43,48 @@ const Product = ({ item }) => {
       toast.success("Added successfully!");
     } catch (error) {
       console.error("Error adding to cart:", error);
-      toast.error("Something went wrong! May be occurred ",error)
+      toast.error("Something went wrong! May be occurred ", error);
     }
   };
 
   return (
     <Container>
-      <Image src={item.img || <Skeleton count={10}/>} alt="" />
+      {loading ? (
+        <Skeleton width="280px" height="200px" count={1} />
+      ) : (
+        <Image src={item.img} alt="" />
+      )}
       <Content>
-        <Title>{item.title}</Title>
-        <Description>
-          {item?.desc ||
-            "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."}
-        </Description>
-        <Icons>
-          <ShoppingCartOutlined
-            style={{ cursor: "pointer" }}
-            onClick={handleAddToCart}
-          />
-          <Link to={`/product/${item._id}`} style={{ color: "black" }}>
-            <SearchOutlined style={{ cursor: "pointer" }} />
-          </Link>
-          <FavoriteBorderOutlined
-            onClick={handleAddToWishList}
-            style={{ cursor: "pointer" }}
-          />
-        </Icons>
+        {loading ? (
+          <Skeleton width="150px" count={1} />
+        ) : (
+          <Title>{item?.title}</Title>
+        )}
+        {loading ? (
+          <Skeleton width="280px" count={2} />
+        ) : (
+          <Description>
+            {item?.desc ||
+              "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."}
+          </Description>
+        )}
+        {loading ? (
+          <Skeleton width="280px" height="35px" />
+        ) : (
+          <Icons>
+            <ShoppingCartOutlined
+              style={{ cursor: "pointer" }}
+              onClick={handleAddToCart}
+            />
+            <Link to={`/product/${item._id}`} style={{ color: "black" }}>
+              <SearchOutlined style={{ cursor: "pointer" }} />
+            </Link>
+            <FavoriteBorderOutlined
+              onClick={handleAddToWishList}
+              style={{ cursor: "pointer" }}
+            />
+          </Icons>
+        )}
       </Content>
       <Toaster />
     </Container>

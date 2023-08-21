@@ -9,10 +9,10 @@ import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 import { mobile } from "../responsive";
+import Skeleton from "react-loading-skeleton";
 
-const AllProduct = ({ item }) => {
+const AllProduct = ({ item, loading }) => {
   const dispatch = useDispatch();
-  console.log(item[0]);
   const handleAddToCart = () => {
     try {
       dispatch(
@@ -47,24 +47,30 @@ const AllProduct = ({ item }) => {
     }
   };
   return (
-    <Container>
-      <Circle />
-      <Image src={item.img} />
-      <Info>
-        <Icon onClick={handleAddToCart}>
-          <ShoppingCartOutlined />
-        </Icon>
-        <Icon>
-          <Link to={`/product/${item._id}`}>
-            <SearchOutlined />
-          </Link>
-        </Icon>
-        <Icon onClick={handleAddToFavourite}>
-          <FavoriteBorderOutlined />
-        </Icon>
-      </Info>
-      <Toaster />
-    </Container>
+    <>
+      {loading ? (
+        <Skeleton width="280px" height="200px" style={{margin:"12px 0px"}}/>
+      ) : (
+        <Container>
+          <Circle />
+          <Image src={item.img} />
+          <Info>
+            <Icon onClick={handleAddToCart}>
+              <ShoppingCartOutlined />
+            </Icon>
+            <Icon>
+              <Link to={`/product/${item._id}`}>
+                <SearchOutlined />
+              </Link>
+            </Icon>
+            <Icon onClick={handleAddToFavourite}>
+              <FavoriteBorderOutlined />
+            </Icon>
+          </Info>
+          <Toaster />
+        </Container>
+      )}
+    </>
   );
 };
 

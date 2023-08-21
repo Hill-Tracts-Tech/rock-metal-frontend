@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import Trending from "./Trending";
 import { Link } from "react-router-dom/cjs/react-router-dom";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { mobile } from "../responsive";
+import Feature from "./Feature";
 
 const Features = ({ cat, filters, sort }) => {
   const [loading, setLoading] = useState(false);
@@ -57,35 +56,26 @@ const Features = ({ cat, filters, sort }) => {
   }, [sort]);
 
   return (
-    <SkeletonTheme baseColor="#b3aaaa" highlightColor="#444">
-      <Container>
-        <Title>
-          Elevate Your Lifestyle with <br /> Our Featured Collection
-        </Title>
-        <Titles>
-          <Title>FEATURED PRODUCTS</Title>
-          <Link to="/all-products">
-            <Button>View All</Button>
-          </Link>
-        </Titles>
-        {
-          loading ?
-            <Skeleton
-              width="30%"
-              count={4} />
-            :
-        <Wrapper>
-          {cat
-            ? filteredProducts.map((item) => (
-                <Trending item={item} key={item.id} />
-              ))
-            : products
-                .slice(0, 8)
-                .map((item) => <Trending item={item} key={item.id} />)}
-            </Wrapper>
-        }
-      </Container>
-    </SkeletonTheme>
+    <Container>
+      <Title>
+        Elevate Your Lifestyle with <br /> Our Featured Collection
+      </Title>
+      <Titles>
+        <Title>FEATURED PRODUCTS</Title>
+        <Link to="/all-products">
+          <Button>View All</Button>
+        </Link>
+      </Titles>
+      <Wrapper>
+        {cat
+          ? filteredProducts.map((item) => (
+              <Feature item={item} loading={loading} key={item.id} />
+            ))
+          : products
+              .slice(0, 8)
+              .map((item) => <Feature loading={loading} item={item} key={item.id} />)}
+      </Wrapper>
+    </Container>
   );
 };
 
@@ -101,6 +91,9 @@ const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  ${mobile({justifyContent:"center"})}
 `;
 
 const Title = styled.h2`
