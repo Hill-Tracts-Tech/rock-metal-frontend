@@ -315,13 +315,7 @@ const ProfileOverlay = styled.div`
   display: ${(ProfileProps) => (ProfileProps.isOpenProfile ? "block" : "none")};
   z-index: 99999999;
 `;
-const ProfilePopupContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-`;
+
 const ProfilePopupContent = styled.div`
   position: absolute;
   top: 40%;
@@ -516,28 +510,7 @@ const DrawerInner = styled.div`
     }
   }
 `;
-// profile open
-const ProfileDrawerWrapper = styled.div`
-  position: fixed;
-  top: 138px;
-  z-index: 100;
-  left: 60%;
-  width: 300px;
-  height: auto;
-  background-color: #333;
-  color: #fff;
-  border-radius: 5px;
-  transition: right 0.5s ease;
-  left: ${({ open }) => (open ? "0" : "-3000px")};
-  /* visibility: ${({ open }) => (open ? "visible" : "hidden")}; */
-  @media (max-width: 768px) {
-    top: 0;
-    /* left: 0; */
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-`;
+
 const LogoutButton = styled.button`
   padding: 12px 20px;
   border: none;
@@ -551,23 +524,6 @@ const LogoutButton = styled.button`
   &:hover {
     background-color: transparent;
     color: teal;
-  }
-`;
-const ProfileDrawerInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 500;
-    transition: ease 0.5s;
-    &&:hover {
-      font-size: 19px;
-    }
   }
 `;
 
@@ -605,4 +561,3 @@ const Right = styled.div`
   justify-content: flex-end;
   ${mobile({ flex: 2, justifyContent: "center" })}
 `;
-//styled component ended//
