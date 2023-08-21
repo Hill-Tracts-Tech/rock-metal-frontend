@@ -3,7 +3,6 @@ import styled from "styled-components";
 import axios from "axios";
 import Trending from "./Trending";
 import { Link } from "react-router-dom/cjs/react-router-dom";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { mobile } from "../responsive";
 const Trendings = ({ cat, filters, sort }) => {
@@ -57,36 +56,28 @@ const Trendings = ({ cat, filters, sort }) => {
   }, [sort]);
 
   return (
-    <SkeletonTheme baseColor="#b3aaaa" highlightColor="#444">
-      <Container>
-        <Title>
-          BEST SHOP TO BUY T-SHIRTS <br /> ONLINE IN BANDARBAN
-        </Title>
-        <Titles>
-          <Title>Trending Now</Title>
-          <Link to="/all-products">
-            <Button>View All</Button>
-          </Link>
-        </Titles>
-        {loading ? (
-          <Skeleton
-            width="30%"
-            count={3} />
-        ) : (
-          <Wrapper>
-            {cat
-              ? filteredProducts.map((item) => (
-                  <Trending item={item} key={item.id} />
-                ))
-              : products
-                  .slice(0, 8)
-                  .map((item) => (
-                    <Trending item={item} loading={loading} key={item.id} />
-                  ))}
-          </Wrapper>
-        )}
-      </Container>
-    </SkeletonTheme>
+    <Container>
+      <Title>
+        BEST SHOP TO BUY T-SHIRTS <br /> ONLINE IN BANDARBAN
+      </Title>
+      <Titles>
+        <Title>Trending Now</Title>
+        <Link to="/all-products">
+          <Button>View All</Button>
+        </Link>
+      </Titles>
+      <Wrapper>
+        {cat
+          ? filteredProducts.map((item) => (
+              <Trending item={item} key={item.id} />
+            ))
+          : products
+              .slice(0, 8)
+              .map((item) => (
+                <Trending item={item} loading={loading} key={item.id} />
+              ))}
+      </Wrapper>
+    </Container>
   );
 };
 
@@ -100,12 +91,17 @@ const Container = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  gap: 12px;
   justify-content: space-between;
+  align-items: center;
+  ${mobile({
+    justifyContent:"center"
+  })}
 `;
 const Titles = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
 `;
 
 const Button = styled.button`
@@ -131,5 +127,5 @@ const Title = styled.h2`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
-  ${mobile({fontSize:"20px",padding:"12px 0px" })};
+  ${mobile({ fontSize: "20px", padding: "12px 0px" })};
 `;

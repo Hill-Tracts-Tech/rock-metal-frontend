@@ -7,10 +7,11 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addProduct } from "../redux/cartRedux";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-const Feature = ({ item }) => {
+const Feature = ({ item, loading }) => {
   const dispatch = useDispatch();
-  console.log(item[0]);
   const handleAddToCart = () => {
     dispatch(
       addProduct({
@@ -23,23 +24,29 @@ const Feature = ({ item }) => {
   };
 
   return (
-    <Container>
-      <Circle />
-      <Image src={item.img} />
-      <Info>
-        <Icon onClick={handleAddToCart}>
-          <ShoppingCartOutlined />
-        </Icon>
-        <Icon>
-          <Link to={`/product/${item._id}`}>
-            <SearchOutlined />
-          </Link>
-        </Icon>
-        <Icon>
-          <FavoriteBorderOutlined />
-        </Icon>
-      </Info>
-    </Container>
+    <>
+      {loading ? (
+        <Skeleton width="280px" height="200px" count={1} style={{margin:"12px 0px"}}/>
+      ) : (
+        <Container>
+          <Circle />
+          <Image src={item.img} />
+          <Info>
+            <Icon onClick={handleAddToCart}>
+              <ShoppingCartOutlined />
+            </Icon>
+            <Icon>
+              <Link to={`/product/${item._id}`}>
+                <SearchOutlined />
+              </Link>
+            </Icon>
+            <Icon>
+              <FavoriteBorderOutlined />
+            </Icon>
+          </Info>
+        </Container>
+      )}
+    </>
   );
 };
 
@@ -63,7 +70,7 @@ const Info = styled.div`
 
 const Container = styled.div`
   flex: 1;
-  margin: 5px;
+  margin: 12px 5px;
   min-width: 280px;
   height: 350px;
   display: flex;
