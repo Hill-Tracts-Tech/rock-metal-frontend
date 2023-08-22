@@ -12,7 +12,7 @@ import { useHistory } from "react-router";
 import "../index.css";
 import {
   clearCart,
-  removeProduct,
+  removeFromCart,
   updateProductQuantity,
 } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
@@ -50,14 +50,20 @@ const Cart = () => {
       } catch {}
     };
     stripeToken && makeRequest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stripeToken, cart.total, history]);
 
   const handleQuantity = (type, productId) => {
     const updatedQuantity = type === "inc" ? 1 : -1;
     dispatch(updateProductQuantity({ productId, quantity: updatedQuantity }));
   };
-  const handleRemoveProduct = (productId) => {
-    dispatch(removeProduct(productId));
+  const handleRemoveFromCart = (productId) => {
+    const productToRemove = cart?.products.find(
+      (product) => product._id === productId
+    );
+    if (productToRemove) {
+      dispatch(removeFromCart(productToRemove));
+    }
   };
   return (
     <Container>
@@ -96,15 +102,10 @@ const Cart = () => {
               <InfoWrapper>
                 {cart.products.map((product) => (
                   <Product>
-                    <DeleteButton onClick={handleRemoveProduct}>
-                      <Delete
-                        style={{
-                          color: "teal",
-                          marginLeft: "1px",
-                          marginTop: "1px",
-                          transition: "color 0.3s",
-                        }}
-                      ></Delete>
+                    <DeleteButton
+                      onClick={() => handleRemoveFromCart(product._id)}
+                    >
+                      <Delete className="icon" />
                     </DeleteButton>
                     <ProductDetail>
                       <Image src={product.img} />
@@ -414,6 +415,7 @@ const Button = styled.button`
   }
 `;
 const DeleteButton = styled.div`
+  cursor: pointer;
   position: relative;
   width: 25px;
   height: 25px;
@@ -424,9 +426,12 @@ const DeleteButton = styled.div`
   border: 1.5px solid teal;
   border-radius: 15px;
   transition: "background-color 0.3s";
+  .icon {
+    color: teal;
+  }
   &:hover {
     background-color: teal;
-    p {
+    .icon {
       color: white;
     }
   }

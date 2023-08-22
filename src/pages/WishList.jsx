@@ -27,7 +27,7 @@ const WishList = () => {
     dispatch(updateFavQuantity({ productId, quantity: updatedQuantity }));
   };
   const handleRemoveFromCart = (productId) => {
-    const productToRemove = cart?.products.find(
+    const productToRemove = cart?.favorite.find(
       (product) => product._id === productId
     );
     if (productToRemove) {

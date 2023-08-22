@@ -20,7 +20,6 @@ import PrivateRoute from "./router/PrivateRoute ";
 
 const App = () => {
   const user = useSelector((state) => state.user.currentUser);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
     <Router>
       <ScrollToTop />
@@ -41,13 +40,7 @@ const App = () => {
           <AllProducts />
         </Route>
 
-        <Route path="/login">
-          {user ? (
-            <Redirect to="/" />
-          ) : (
-            <Login setIsAuthenticated={setIsAuthenticated} />
-          )}
-        </Route>
+        <Route path="/login">{user ? <Redirect to="/" /> : <Login />}</Route>
         <Route path="/register">
           {user ? <Redirect to="/" /> : <Register />}
         </Route>
