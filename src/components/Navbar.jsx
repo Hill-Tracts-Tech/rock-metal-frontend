@@ -97,14 +97,17 @@ const Navbar = () => {
         <Right>
           <Link to="/cart">
             <MenuItem title="Cart">
-              <Badge badgeContent={cart.quantity} color="teal">
+              <Badge badgeContent={currentUser && cart.quantity} color="teal">
                 <ShoppingCartOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
           </Link>
           <Link to="/wishList">
             <MenuItem title="WhishList">
-              <Badge badgeContent={cart.favQuantity} color="teal">
+              <Badge
+                badgeContent={currentUser && cart.favQuantity}
+                color="teal"
+              >
                 <FavoriteBorderOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
