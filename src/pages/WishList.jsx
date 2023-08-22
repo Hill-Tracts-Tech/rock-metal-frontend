@@ -112,7 +112,7 @@ const WishList = () => {
                       </QuantityActionButton>
                     </ProductAmountContainer>
                     <ProductPrice>
-                      $ {product.price * product.favQuantity}
+                      ৳ {product.price * product.favQuantity}
                     </ProductPrice>
                     <AddToCartButton>Add To Cart</AddToCartButton>
                   </PriceDetail>
@@ -280,6 +280,7 @@ const ProductColor = styled.div`
   height: 20px;
   border-radius: 50%;
   background-color: ${(props) => props.color};
+  border: 1px solid gray !important;
 `;
 
 const ProductSize = styled.span``;
