@@ -8,8 +8,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 const Trending = ({ item, loading }) => {
   const dispatch = useDispatch();
@@ -51,39 +49,26 @@ const Trending = ({ item, loading }) => {
   };
 
   return (
-    <>
-      {loading ? (
-        <Skeleton
-          width="280px"
-          height="200px"
-          count={1}
-          style={{
-            margin:"12px 0px"
-          }}
-        />
-      ) : (
-        <Container>
-          <Circle />
-          <ImageWrapper>
-            <Image src={item.img} />
-          </ImageWrapper>
-          <Info>
-            <Icon onClick={handleAddToCart}>
-              <ShoppingCartOutlined />
-            </Icon>
-            <Icon>
-              <Link to={`/product/${item._id}`}>
-                <SearchOutlined />
-              </Link>
-            </Icon>
-            <Icon onClick={handleAddToFavorite}>
-              <FavoriteBorderOutlined />
-            </Icon>
-          </Info>
-          <Toaster />
-        </Container>
-      )}
-    </>
+    <Container>
+      <Circle />
+      <ImageWrapper>
+        <Image src={item.img} />
+      </ImageWrapper>
+      <Info>
+        <Icon onClick={handleAddToCart}>
+          <ShoppingCartOutlined />
+        </Icon>
+        <Icon>
+          <Link to={`/product/${item._id}`}>
+            <SearchOutlined />
+          </Link>
+        </Icon>
+        <Icon onClick={handleAddToFavorite}>
+          <FavoriteBorderOutlined />
+        </Icon>
+      </Info>
+      <Toaster />
+    </Container>
   );
 };
 

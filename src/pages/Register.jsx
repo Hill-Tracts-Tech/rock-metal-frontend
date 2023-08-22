@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { register } from "../redux/apiCalls";
 import { useState } from "react";
 import Announcement from "../components/Announcement";
 import Navbar from "../components/Navbar";
+import { Toaster, toast } from "react-hot-toast";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,9 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm_password, setConfirmPassword] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
+  const { isFetching, error } = useSelector((state) => state.user);
+console.log(error);
   const user = {
     name,
     lastName,
@@ -24,9 +27,6 @@ const Register = () => {
     password,
     confirm_password,
   };
-
-  console.log(user);
-
   const handleRegistration = (e) => {
     e.preventDefault();
     register(dispatch, { user });
@@ -34,22 +34,25 @@ const Register = () => {
 
   return (
     <ContainerWrapper>
+      <Toaster />
       <Announcement />
       <Navbar />
       <Container>
         <Wrapper>
           <Title>CREATE AN ACCOUNT</Title>
-          <Form>
+          <Form onSubmit={handleRegistration}>
             <Input
               onChange={(e) => setName(e.target.value)}
               name="name"
               type="text"
               placeholder="name"
+              required
             />
+
             <Input
               onChange={(e) => setLastName(e.target.value)}
               name="last_name"
-              placeholder="last name"
+              placeholder="last name(optional)"
               type="text"
             />
             <Input
@@ -57,28 +60,35 @@ const Register = () => {
               name="username"
               placeholder="username"
               type="text"
+              required
             />
+            
             <Input
               onChange={(e) => setEmail(e.target.value)}
               name="email"
               placeholder="email"
               type="email"
+              required
             />
             <Input
               onChange={(e) => setPassword(e.target.value)}
               name="password"
               placeholder="password"
               type="password"
+              required
             />
             <Input
               onChange={(e) => setConfirmPassword(e.target.value)}
               name="confirm_password"
               placeholder="confirm password"
               type="password"
+              required
             />
-            {
-              password!==confirm_password?<Error>Password doesn't match</Error>:""
-            }
+            {password !== confirm_password ? (
+              <Error>Password doesn't match</Error>
+            ) : (
+              ""
+            )}
             <Agreement>
               By creating an account, I consent to the processing of my personal
               data in accordance with the <b>PRIVACY POLICY</b>
@@ -93,7 +103,13 @@ const Register = () => {
               >
                 Already Have an account? Log in
               </Link>
-              <Button onClick={handleRegistration}>Register Now</Button>
+              <Button
+                type="submit"
+                onClick={handleRegistration}
+                disabled={errorMessage}
+              >
+                Register Now
+              </Button>
             </ButtonWrapper>
           </Form>
         </Wrapper>
@@ -107,9 +123,9 @@ export default Register;
 const Error = styled.p`
   color: #c23e3e;
   margin: 12px 0px;
-`
+`;
 const ContainerWrapper = styled.div`
-overflow: hidden;
+  overflow: hidden;
 `;
 const Container = styled.div`
   width: 100vw;
@@ -176,6 +192,8 @@ const Button = styled.button`
   padding: 15px 26px;
   background-color: teal;
   color: white;
+  /* background-color: ${(props) => (props.disabled ? "#ccc" : "#007bff")};
+  color: ${(props) => (props.disabled ? "#666" : "#fff")}; */
   transition: ease 0.4s;
   cursor: pointer;
   &:hover {

@@ -4,7 +4,8 @@ import axios from "axios";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import { mobile } from "../responsive";
 import Feature from "./Feature";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 const Features = ({ cat, filters, sort }) => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
@@ -66,15 +67,31 @@ const Features = ({ cat, filters, sort }) => {
           <Button>View All</Button>
         </Link>
       </Titles>
-      <Wrapper>
-        {cat
-          ? filteredProducts.map((item) => (
-              <Feature item={item} loading={loading} key={item.id} />
-            ))
-          : products
-              .slice(0, 8)
-              .map((item) => <Feature loading={loading} item={item} key={item.id} />)}
-      </Wrapper>
+      {!loading ? (
+        <Wrapper>
+          {cat
+            ? filteredProducts.map((item) => (
+                <Feature item={item} loading={loading} key={item.id} />
+              ))
+            : products
+                .slice(0, 8)
+                .map((item) => (
+                  <Feature loading={loading} item={item} key={item.id} />
+                ))}
+        </Wrapper>
+      ) : (
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "12px",
+            flexWrap:"wrap"
+        }}>
+          <Skeleton height={200} width={280} />
+          <Skeleton height={200} width={280} />
+          <Skeleton height={200} width={280} />
+          <Skeleton height={200} width={280} />
+        </div>
+      )}
     </Container>
   );
 };

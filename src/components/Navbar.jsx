@@ -552,6 +552,8 @@ const LogoutButton = styled.button`
   color: #fff;
   font-size: 18px;
   font-weight: 500;
+  cursor: pointer;
+  border: 1.5px solid teal;
   transition: ease 0.3s;
   &:hover {
     background-color: transparent;

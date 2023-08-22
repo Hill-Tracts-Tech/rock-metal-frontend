@@ -8,10 +8,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
-import { mobile } from "../responsive";
-import Skeleton from "react-loading-skeleton";
 
-const AllProduct = ({ item, loading }) => {
+const AllProduct = ({ item}) => {
   const dispatch = useDispatch();
   const handleAddToCart = () => {
     try {
@@ -48,9 +46,6 @@ const AllProduct = ({ item, loading }) => {
   };
   return (
     <>
-      {loading ? (
-        <Skeleton width="280px" height="200px" style={{margin:"12px 0px"}}/>
-      ) : (
         <Container>
           <Circle />
           <Image src={item.img} />
@@ -69,36 +64,11 @@ const AllProduct = ({ item, loading }) => {
           </Info>
           <Toaster />
         </Container>
-      )}
     </>
   );
 };
 
 export default AllProduct;
-
-const FilterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Filter = styled.div`
-  margin: 20px;
-  ${mobile({ width: "0px 20px", display: "flex", flexDirection: "column" })}
-`;
-
-const FilterText = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-  margin-right: 20px;
-  ${mobile({ marginRight: "0px" })}
-`;
-
-const Select = styled.select`
-  padding: 10px;
-  margin-right: 20px;
-  ${mobile({ margin: "10px 0px" })}
-`;
-const Option = styled.option``;
 const Info = styled.div`
   opacity: 0;
   width: 100%;

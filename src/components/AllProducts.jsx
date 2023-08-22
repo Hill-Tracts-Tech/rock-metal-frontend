@@ -6,6 +6,7 @@ import { mobile } from "../responsive";
 import Announcement from "./Announcement";
 import Navbar from "./Navbar";
 import { useLocation } from "react-router-dom/cjs/react-router-dom";
+import Skeleton from "react-loading-skeleton";
 
 const AllProducts = () => {
   const [loading, setLoading] = useState(false);
@@ -27,9 +28,9 @@ const AllProducts = () => {
             : "http://localhost:5000/api/products"
         );
         setProducts(res.data);
-        setLoading(false)
+        setLoading(false);
       } catch (err) {
-        setLoading(false)
+        setLoading(false);
       }
     };
     getProducts();
@@ -106,15 +107,31 @@ const AllProducts = () => {
             </Select>
           </Filter>
         </FilterContainer>
-        <Wrapper>
-          {cat
-            ? filteredProducts.map((item) => (
-                <AllProduct item={item} loading={loading} key={item.id} />
-              ))
-            : products.map((item) => (
-                <AllProduct loading={loading} item={item} key={item.id} />
-              ))}
-        </Wrapper>
+        {!loading ? (
+          <Wrapper>
+            {cat
+              ? filteredProducts.map((item) => (
+                  <AllProduct item={item} loading={loading} key={item.id} />
+                ))
+              : products.map((item) => (
+                  <AllProduct item={item} key={item.id} />
+                ))}
+          </Wrapper>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "12px",
+              flexWrap: "wrap",
+            }}
+          >
+            <Skeleton width={280} height={200} />
+            <Skeleton width={280} height={200} />
+            <Skeleton width={280} height={200} />
+            <Skeleton width={280} height={200} />
+          </div>
+        )}
       </Container>
     </>
   );
