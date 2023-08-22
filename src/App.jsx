@@ -15,6 +15,8 @@ import { useSelector } from "react-redux";
 import AllProducts from "./components/AllProducts";
 import ScrollToTop from "./components/scroll/ScrollToTop";
 import WishList from "./pages/WishList";
+import { useState } from "react";
+import PrivateRoute from "./router/PrivateRoute ";
 
 const App = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -31,12 +33,6 @@ const App = () => {
         <Route path="/product/:id">
           <Product />
         </Route>
-        <Route path="/cart">
-          <Cart />
-        </Route>
-        <Route path="/wishList">
-          <WishList />
-        </Route>
         <Route path="/success">
           <Success />
         </Route>
@@ -48,6 +44,12 @@ const App = () => {
         <Route path="/register">
           {user ? <Redirect to="/" /> : <Register />}
         </Route>
+        <PrivateRoute path="/cart">
+          <Cart />
+        </PrivateRoute>
+        <PrivateRoute path="/wishList">
+          <WishList />
+        </PrivateRoute>
       </Switch>
     </Router>
   );

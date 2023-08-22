@@ -1,14 +1,18 @@
-import { Add, Remove } from "@material-ui/icons";
+import { Add, Delete, Remove } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
-import { clearFavorite, updateFavQuantity } from "../redux/cartRedux";
+import {
+  clearFavorite,
+  removeFromCart,
+  updateFavQuantity,
+} from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
-
+import "../index.css";
 const WishList = () => {
   const cart = useSelector((state) => state.cart);
 
@@ -22,7 +26,14 @@ const WishList = () => {
     const updatedQuantity = type === "inc" ? 1 : -1;
     dispatch(updateFavQuantity({ productId, quantity: updatedQuantity }));
   };
-
+  const handleRemoveFromCart = (productId) => {
+    const productToRemove = cart?.favorite.find(
+      (product) => product._id === productId
+    );
+    if (productToRemove) {
+      dispatch(removeFromCart(productToRemove));
+    }
+  };
   return (
     <Container>
       <Announcement />
@@ -57,6 +68,11 @@ const WishList = () => {
               {cart?.favorite?.map((product) => (
                 <Product key={product._id}>
                   <ProductDetail>
+                    <DeleteButton
+                      onClick={() => handleRemoveFromCart(product._id)}
+                    >
+                      <Delete className="icon" />
+                    </DeleteButton>
                     <ImageWrapper>
                       <Image src={product.img} />
                     </ImageWrapper>
@@ -349,5 +365,27 @@ const Button = styled.button`
   &:hover {
     background-color: transparent;
     color: teal;
+  }
+`;
+const DeleteButton = styled.div`
+  cursor: pointer;
+  position: relative;
+  width: 25px;
+  height: 25px;
+  margin-right: -10px;
+  margin-top: -10px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.148), 0 4px 15px rgba(0, 0, 0, 0.116);
+  border: 1.5px solid teal;
+  border-radius: 15px;
+  transition: "background-color 0.3s";
+  .icon {
+    color: teal;
+  }
+  &:hover {
+    background-color: teal;
+    .icon {
+      color: white;
+    }
   }
 `;

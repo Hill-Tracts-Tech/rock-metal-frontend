@@ -3,42 +3,72 @@ import {
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { addProduct } from "../redux/cartRedux";
-const Feature = ({ item }) => {
+import { addFavorite, addProduct } from "../redux/cartRedux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { toast } from "react-hot-toast";
+
+const Feature = ({ item, loading }) => {
+  const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
+  const history = useHistory();
   const handleAddToCart = () => {
-    dispatch(
-      addProduct({
-        ...item,
-        quantity: 1,
-        color: item?.color[0],
-        size: item?.size[0],
-      })
-    );
+    if (user) {
+      dispatch(
+        addProduct({
+          ...item,
+          quantity: 1,
+          color: item?.color[0],
+          size: item?.size[0],
+        })
+      );
+    } else {
+      history.push("/login");
+    }
+  };
+
+  // add to favorite
+  const handleAddToFavorite = () => {
+    if (user) {
+      try {
+        dispatch(
+          addFavorite({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+          })
+        );
+        toast.success("Added to favorite successfully");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! May be occurred ", error);
+      }
+    } else {
+      history.push("/login");
+    }
   };
 
   return (
-
-        <Container>
-          <Circle />
-          <Image src={item.img} />
-          <Info>
-            <Icon onClick={handleAddToCart}>
-              <ShoppingCartOutlined />
-            </Icon>
-            <Icon>
-              <Link to={`/product/${item._id}`}>
-                <SearchOutlined />
-              </Link>
-            </Icon>
-            <Icon>
-              <FavoriteBorderOutlined />
-            </Icon>
-          </Info>
-        </Container>
+    <Container>
+      <Circle />
+      <Image src={item.img} />
+      <Info>
+        <Icon onClick={handleAddToCart}>
+          <ShoppingCartOutlined />
+        </Icon>
+        <Icon>
+          <Link to={`/product/${item._id}`}>
+            <SearchOutlined />
+          </Link>
+        </Icon>
+        <Icon onClick={handleAddToFavorite}>
+          <FavoriteBorderOutlined />
+        </Icon>
+      </Info>
+    </Container>
   );
 };
 

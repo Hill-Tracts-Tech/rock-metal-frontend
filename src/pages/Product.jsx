@@ -5,11 +5,11 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethods";
 import { addProduct, updateProductQuantity } from "../redux/cartRedux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "react-hot-toast";
 
 const Product = () => {
@@ -20,7 +20,8 @@ const Product = () => {
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state.user.currentUser);
+  const history = useHistory();
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -43,19 +44,24 @@ const Product = () => {
   };
 
   const handleClick = () => {
-    try {
-      const selectedColor = color || (product.color && product.color[0]) || "";
-      const selectedSize = size || (product.size && product.size[0]) || "";
-      const data = {
-        ...product,
-        quantity: quantity,
-        color: selectedColor,
-        size: selectedSize,
-      };
-      dispatch(addProduct(data));
-      toast.success("Added to cart successfully!");
-    } catch (error) {
-      toast.error("Something went wrong! May be occurred ", error);
+    if (user) {
+      try {
+        const selectedColor =
+          color || (product.color && product.color[0]) || "";
+        const selectedSize = size || (product.size && product.size[0]) || "";
+        const data = {
+          ...product,
+          quantity: quantity,
+          color: selectedColor,
+          size: selectedSize,
+        };
+        dispatch(addProduct(data));
+        toast.success("Added to cart successfully!");
+      } catch (error) {
+        toast.error("Something went wrong! May be occurred ", error);
+      }
+    } else {
+      history.push("/login");
     }
   };
 
@@ -65,9 +71,9 @@ const Product = () => {
       <Announcement />
       <Navbar />
       <Wrapper>
-          <ImgContainer>
-            <Image src={product.img} />
-          </ImgContainer>
+        <ImgContainer>
+          <Image src={product.img} />
+        </ImgContainer>
         <InfoContainer>
           <Title>{product.title}</Title>
           <Desc>
