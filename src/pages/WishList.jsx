@@ -7,12 +7,12 @@ import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import {
   clearFavorite,
-  removeProduct,
+  removeFromCart,
   updateFavQuantity,
 } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
-
+import "../index.css";
 const WishList = () => {
   const cart = useSelector((state) => state.cart);
 
@@ -26,8 +26,13 @@ const WishList = () => {
     const updatedQuantity = type === "inc" ? 1 : -1;
     dispatch(updateFavQuantity({ productId, quantity: updatedQuantity }));
   };
-  const handleRemoveProduct = (productId) => {
-    dispatch(removeProduct(productId));
+  const handleRemoveFromCart = (productId) => {
+    const productToRemove = cart?.products.find(
+      (product) => product._id === productId
+    );
+    if (productToRemove) {
+      dispatch(removeFromCart(productToRemove));
+    }
   };
   return (
     <Container>
@@ -63,15 +68,10 @@ const WishList = () => {
               {cart?.favorite?.map((product) => (
                 <Product key={product._id}>
                   <ProductDetail>
-                    <DeleteButton onClick={handleRemoveProduct}>
-                      <Delete
-                        style={{
-                          color: "teal",
-                          marginLeft: "1px",
-                          marginTop: "1px",
-                          transition: "color 0.3s",
-                        }}
-                      ></Delete>
+                    <DeleteButton
+                      onClick={() => handleRemoveFromCart(product._id)}
+                    >
+                      <Delete className="icon" />
                     </DeleteButton>
                     <ImageWrapper>
                       <Image src={product.img} />
@@ -368,6 +368,7 @@ const Button = styled.button`
   }
 `;
 const DeleteButton = styled.div`
+  cursor: pointer;
   position: relative;
   width: 25px;
   height: 25px;
@@ -378,9 +379,12 @@ const DeleteButton = styled.div`
   border: 1.5px solid teal;
   border-radius: 15px;
   transition: "background-color 0.3s";
+  .icon {
+    color: teal;
+  }
   &:hover {
     background-color: teal;
-    p {
+    .icon {
       color: white;
     }
   }
