@@ -3,30 +3,65 @@ import {
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { addProduct } from "../redux/cartRedux";
+import { addFavorite, addProduct } from "../redux/cartRedux";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { toast } from "react-hot-toast";
 
 const Feature = ({ item, loading }) => {
+  const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
+  const history = useHistory();
   const handleAddToCart = () => {
-    dispatch(
-      addProduct({
-        ...item,
-        quantity: 1,
-        color: item?.color[0],
-        size: item?.size[0],
-      })
-    );
+    if (user) {
+      dispatch(
+        addProduct({
+          ...item,
+          quantity: 1,
+          color: item?.color[0],
+          size: item?.size[0],
+        })
+      );
+    } else {
+      history.push("/login");
+    }
+  };
+
+  // add to favorite
+  const handleAddToFavorite = () => {
+    if (user) {
+      try {
+        dispatch(
+          addFavorite({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+          })
+        );
+        toast.success("Added to favorite successfully");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! May be occurred ", error);
+      }
+    } else {
+      history.push("/login");
+    }
   };
 
   return (
     <>
       {loading ? (
-        <Skeleton width="280px" height="200px" count={1} style={{margin:"12px 0px"}}/>
+        <Skeleton
+          width="280px"
+          height="200px"
+          count={1}
+          style={{ margin: "12px 0px" }}
+        />
       ) : (
         <Container>
           <Circle />
@@ -40,7 +75,7 @@ const Feature = ({ item, loading }) => {
                 <SearchOutlined />
               </Link>
             </Icon>
-            <Icon>
+            <Icon onClick={handleAddToFavorite}>
               <FavoriteBorderOutlined />
             </Icon>
           </Info>

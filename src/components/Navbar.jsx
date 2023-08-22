@@ -458,9 +458,7 @@ const RegisterButton = styled.button`
   color: white;
   &:hover {
     background-color: transparent;
-     {
-      color: teal;
-    }
+    color: teal;
   }
   a {
     color: #fff;
@@ -479,9 +477,7 @@ const LoginButton = styled.button`
   transition: ease-in-out 0.5s;
   &:hover {
     background-color: transparent;
-     {
-      color: teal;
-    }
+    color: teal;
   }
   a {
     color: #fff;

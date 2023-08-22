@@ -3,47 +3,58 @@ import {
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Product = ({ item, loading }) => {
+  const user = useSelector((state) => state.user.currentUser);
+  const history = useHistory();
   const dispatch = useDispatch();
   console.log(item[0]);
   const handleAddToCart = () => {
-    try {
-      dispatch(
-        addProduct({
-          ...item,
-          quantity: 1,
-          color: item?.color[0],
-          size: item?.size[0],
-        })
-      );
-      toast.success("Added successfully!");
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-      toast.error("Something went wrong! May be occurred ", error);
+    if (user) {
+      try {
+        dispatch(
+          addProduct({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+          })
+        );
+        toast.success("Added successfully!");
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+        toast.error("Something went wrong! May be occurred ", error);
+      }
+    } else {
+      history.push("/login");
     }
   };
   const handleAddToWishList = () => {
-    try {
-      dispatch(
-        addFavorite({
-          ...item,
-          quantity: 1,
-          color: item?.color[0],
-          size: item?.size[0],
-        })
-      );
-      toast.success("Added successfully!");
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-      toast.error("Something went wrong! May be occurred ", error);
+    if (user) {
+      try {
+        dispatch(
+          addFavorite({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+          })
+        );
+        toast.success("Added successfully!");
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+        toast.error("Something went wrong! May be occurred ", error);
+      }
+    } else {
+      history.push("/login");
     }
   };
 
