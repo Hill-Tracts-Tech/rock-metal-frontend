@@ -38,19 +38,23 @@ const Trending = ({ item, loading }) => {
 
   // add to favorite
   const handleAddToFavorite = () => {
-    try {
-      dispatch(
-        addFavorite({
-          ...item,
-          quantity: 1,
-          color: item?.color[0],
-          size: item?.size[0],
-        })
-      );
-      toast.success("Added to favorite successfully");
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong! May be occurred ", error);
+    if (user) {
+      try {
+        dispatch(
+          addFavorite({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+          })
+        );
+        toast.success("Added to favorite successfully");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! May be occurred ", error);
+      }
+    } else {
+      history.push("/login");
     }
   };
 

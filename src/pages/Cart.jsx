@@ -13,7 +13,6 @@ import "../index.css";
 import {
   clearCart,
   removeFromCart,
-  removeProduct,
   updateProductQuantity,
 } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
