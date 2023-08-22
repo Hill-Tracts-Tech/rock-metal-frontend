@@ -111,7 +111,10 @@ const Cart = () => {
                       <Image src={product.img} />
                       <Details>
                         <ProductName>
-                          <b>Product:</b> {product.title}
+                          <b>Product:</b> {product.title}{" "}
+                          <b style={{ fontSize: "20px" }}>
+                            x {product.quantity}
+                          </b>
                         </ProductName>
                         <ProductId>
                           <b>ID:</b> {product._id}

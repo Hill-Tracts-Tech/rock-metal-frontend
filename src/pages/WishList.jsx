@@ -8,6 +8,7 @@ import { mobile } from "../responsive";
 import {
   clearFavorite,
   removeFromCart,
+  removeFromWishList,
   updateFavQuantity,
 } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
@@ -31,7 +32,7 @@ const WishList = () => {
       (product) => product._id === productId
     );
     if (productToRemove) {
-      dispatch(removeFromCart(productToRemove));
+      dispatch(removeFromWishList(productToRemove));
     }
   };
   return (
