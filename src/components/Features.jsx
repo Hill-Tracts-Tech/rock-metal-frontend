@@ -56,6 +56,10 @@ const Features = ({ cat, filters, sort }) => {
     }
   }, [sort]);
 
+  const data = products.filter((item) => item.isFeatured === true);
+
+  console.log(data);
+
   return (
     <Container>
       <Title>
@@ -70,22 +74,26 @@ const Features = ({ cat, filters, sort }) => {
       {!loading ? (
         <Wrapper>
           {cat
-            ? filteredProducts.map((item) => (
-                <Feature item={item} loading={loading} key={item.id} />
-              ))
+            ? filteredProducts
+                .filter((item) => item.isFeatured === true)
+                .map((item) => (
+                  <Feature item={item} loading={loading} key={item.id} />
+                ))
             : products
-                .slice(0, 8)
+                .filter((item) => item.isFeatured === true)
                 .map((item) => (
                   <Feature loading={loading} item={item} key={item.id} />
                 ))}
         </Wrapper>
       ) : (
-          <div style={{
+        <div
+          style={{
             display: "flex",
             justifyContent: "space-between",
             gap: "12px",
-            flexWrap:"wrap"
-        }}>
+            flexWrap: "wrap",
+          }}
+        >
           <Skeleton height={200} width={280} />
           <Skeleton height={200} width={280} />
           <Skeleton height={200} width={280} />
@@ -110,7 +118,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   gap: 12px;
   align-items: center;
-  ${mobile({justifyContent:"center"})}
+  ${mobile({ justifyContent: "center" })}
 `;
 
 const Title = styled.h2`

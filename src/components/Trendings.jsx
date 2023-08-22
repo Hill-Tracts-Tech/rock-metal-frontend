@@ -70,27 +70,29 @@ const Trendings = ({ cat, filters, sort }) => {
       {!loading ? (
         <Wrapper>
           {cat
-            ? filteredProducts.map((item) => (
-                <Trending item={item} key={item.id} />
-              ))
+            ? filteredProducts
+                .filter((item) => item.isTreding === true)
+                .map((item) => <Trending item={item} key={item.id} />)
             : products
-                .slice(0, 8)
+                .filter((item) => item.isTreding === true)
                 .map((item) => (
                   <Trending item={item} loading={loading} key={item.id} />
                 ))}
         </Wrapper>
       ) : (
-          <div style={{
+        <div
+          style={{
             display: "flex",
             justifyContent: "space-between",
             gap: "12px",
-            flexWrap:"wrap"
-        }}>
+            flexWrap: "wrap",
+          }}
+        >
           <Skeleton width={280} height={200} />
           <Skeleton width={280} height={200} />
           <Skeleton width={280} height={200} />
           <Skeleton width={280} height={200} />
-          <Skeleton width={280} height={200} />   
+          <Skeleton width={280} height={200} />
         </div>
       )}
     </Container>

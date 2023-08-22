@@ -25,21 +25,21 @@ export const sliderItems = [
 export const categories = [
   {
     id: 1,
-    img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    img: "https://mir-s3-cdn-cf.behance.net/project_modules/fs/abe698125439939.61198f0dc1e3c.jpg",
     title: "SHIRT STYLE!",
     cat: "shirt",
   },
   {
     id: 2,
-    img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    title: "LOUNGEWEAR LOVE",
-    cat: "coat",
+    img: "https://static.vecteezy.com/system/resources/previews/021/734/401/non_2x/sports-jersey-mockup-front-view-free-vector.jpg",
+    title: "GORGEOUS JERSEY",
+    cat: "jersey",
   },
   {
     id: 3,
-    img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-    title: "LIGHT JACKETS",
-    cat: "jeans",
+    img: "https://images.pexels.com/photos/4066292/pexels-photo-4066292.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    title: "SPECIAL COTTON",
+    cat: "cotton",
   },
 ];
 
