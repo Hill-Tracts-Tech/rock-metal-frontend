@@ -37,7 +37,7 @@ export const categories = [
   },
   {
     id: 3,
-    img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
+    img: "https://images.pexels.com/photos/4066292/pexels-photo-4066292.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     title: "SPECIAL COTTON",
     cat: "cotton",
   },
