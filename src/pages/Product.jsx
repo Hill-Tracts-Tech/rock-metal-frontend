@@ -11,9 +11,8 @@ import { publicRequest } from "../requestMethods";
 import { addProduct, updateProductQuantity } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
 import { Toaster, toast } from "react-hot-toast";
-import Skeleton from "react-loading-skeleton";
 
-const Product = ({ loading }) => {
+const Product = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [product, setProduct] = useState({});
@@ -66,13 +65,9 @@ const Product = ({ loading }) => {
       <Announcement />
       <Navbar />
       <Wrapper>
-        {loading ? (
-          <Skeleton width="280px" count={1} height="200px" />
-        ) : (
           <ImgContainer>
             <Image src={product.img} />
           </ImgContainer>
-        )}
         <InfoContainer>
           <Title>{product.title}</Title>
           <Desc>

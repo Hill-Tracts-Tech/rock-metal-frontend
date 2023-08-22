@@ -4,6 +4,7 @@ import Product from "./Product";
 import axios from "axios";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { mobile } from "../responsive";
+import Skeleton from "react-loading-skeleton";
 
 const Products = ({ cat, filters, sort }) => {
   const [loading, setLoading] = useState(false);
@@ -63,18 +64,55 @@ const Products = ({ cat, filters, sort }) => {
           <Button>View All</Button>
         </Link>
       </Titles>
-
-      <Wrapper>
-        {cat
-          ? filteredProducts.map((item) => (
-              <Product item={item} key={item._id} />
-            ))
-          : products
-              .slice(0, 8)
-              .map((item) => (
-                <Product item={item} loading={loading} key={item._id} />
-              ))}
-      </Wrapper>
+      {!loading ? (
+        <Wrapper>
+          {cat
+            ? filteredProducts.map((item) => (
+                <Product item={item} key={item.id} />
+              ))
+            : products
+                .slice(0, 8)
+                .map((item) => <Product item={item} key={item.id} />)}
+        </Wrapper>
+      ) : (
+        <div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: "12px",
+            }}
+          >
+            <Skeleton width={280} height={200} />
+            <Skeleton width={280} height={200} />
+            <Skeleton width={280} height={200} />
+            <Skeleton width={280} height={200} />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: "12px",
+              marginTop: "7px",
+            }}
+          >
+            <Skeleton width={280} height={25} count={1} />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: "12px",
+              marginTop: "7px",
+            }}
+          >
+            <Skeleton width={280} height={20} count={3} />
+          </div>
+        </div>
+      )}
     </Container>
   );
 };

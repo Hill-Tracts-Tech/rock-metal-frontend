@@ -7,10 +7,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addProduct } from "../redux/cartRedux";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-
-const Feature = ({ item, loading }) => {
+const Feature = ({ item }) => {
   const dispatch = useDispatch();
   const handleAddToCart = () => {
     dispatch(
@@ -24,10 +21,7 @@ const Feature = ({ item, loading }) => {
   };
 
   return (
-    <>
-      {loading ? (
-        <Skeleton width="280px" height="200px" count={1} style={{margin:"12px 0px"}}/>
-      ) : (
+
         <Container>
           <Circle />
           <Image src={item.img} />
@@ -45,8 +39,6 @@ const Feature = ({ item, loading }) => {
             </Icon>
           </Info>
         </Container>
-      )}
-    </>
   );
 };
 

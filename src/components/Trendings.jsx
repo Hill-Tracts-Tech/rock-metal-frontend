@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Trending from "./Trending";
 import { Link } from "react-router-dom/cjs/react-router-dom";
+import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { mobile } from "../responsive";
 const Trendings = ({ cat, filters, sort }) => {
@@ -66,17 +67,34 @@ const Trendings = ({ cat, filters, sort }) => {
           <Button>View All</Button>
         </Link>
       </Titles>
-      <Wrapper>
-        {cat
-          ? filteredProducts
-              .filter((item) => item.isFeatured === true)
-              .map((item) => <Trending item={item} key={item.id} />)
-          : products
-              .filter((item) => item.isTreding === true)
-              .map((item) => (
-                <Trending item={item} loading={loading} key={item.id} />
-              ))}
-      </Wrapper>
+      {!loading ? (
+        <Wrapper>
+          {cat
+            ? filteredProducts
+                .filter((item) => item.isTreding === true)
+                .map((item) => <Trending item={item} key={item.id} />)
+            : products
+                .filter((item) => item.isTreding === true)
+                .map((item) => (
+                  <Trending item={item} loading={loading} key={item.id} />
+                ))}
+        </Wrapper>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "12px",
+            flexWrap: "wrap",
+          }}
+        >
+          <Skeleton width={280} height={200} />
+          <Skeleton width={280} height={200} />
+          <Skeleton width={280} height={200} />
+          <Skeleton width={280} height={200} />
+          <Skeleton width={280} height={200} />
+        </div>
+      )}
     </Container>
   );
 };

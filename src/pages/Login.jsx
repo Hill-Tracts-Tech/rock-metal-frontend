@@ -6,18 +6,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Announcement from "../components/Announcement";
 import Navbar from "../components/Navbar";
+import { Toaster, toast } from "react-hot-toast";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const { isFetching, error } = useSelector((state) => state.user);
   const handleClick = (e) => {
     e.preventDefault();
     login(dispatch, { username, password });
+    if (error === true) {
+      setErrorMessage("Password or Username doesn't match.");
+    }
+    if (!errorMessage) {
+      toast.success("Successfully logged.");
+    } else {
+      toast.error("Password or Username doesn't match.");
+    }
   };
   return (
     <ContainerWrapper>
+      <Toaster />
       <Announcement />
       <Navbar />
       <Container>
@@ -28,12 +39,26 @@ const Login = () => {
               placeholder="username"
               onChange={(e) => setUsername(e.target.value)}
               type="text"
+              required
             />
             <Input
               placeholder="password"
               type="password"
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
+            {errorMessage ? (
+              <p
+                style={{
+                  color: "red",
+                  fontWeight: "500",
+                }}
+              >
+                {errorMessage}
+              </p>
+            ) : (
+              ""
+            )}
             <Link
               to="/forgotPassword"
               style={{
@@ -67,7 +92,9 @@ const Login = () => {
 
 export default Login;
 
-const ContainerWrapper = styled.div``;
+const ContainerWrapper = styled.div`
+  overflow: hidden;
+`;
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -84,7 +111,7 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: 40%;
+  width: 300px;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -118,6 +145,8 @@ const Button = styled.button`
   padding: 15px 26px;
   background-color: teal;
   color: white;
+  /* background-color: ${(props) => (props.disabled ? "#ccc" : "#007bff")};
+  color: ${(props) => (props.disabled ? "#666" : "#fff")}; */
   cursor: pointer;
   border-radius: 11px;
   transition: ease 0.4s;
