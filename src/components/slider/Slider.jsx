@@ -6,11 +6,11 @@ import "swiper/components/navigation/navigation.min.css";
 import "./styles.css";
 import { sliderItems } from "../../data";
 import styled from "styled-components";
-import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
+import SwiperCore, { Autoplay, Pagination } from "swiper";
 import { mobile } from "../../responsive";
 
 export default function Slider() {
-  SwiperCore.use([Autoplay, Pagination, Navigation]);
+  SwiperCore.use([Autoplay, Pagination]);
 
   return (
     <>
@@ -24,7 +24,6 @@ export default function Slider() {
           clickable: true,
         }}
         loop={true}
-        navigation={true}
         className="mySwiper"
       >
         {sliderItems.map((item) => (
