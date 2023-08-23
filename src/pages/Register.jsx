@@ -7,6 +7,8 @@ import { useState } from "react";
 import Announcement from "../components/Announcement";
 import Navbar from "../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
+import { useEffect } from "react";
+import { clear } from "../redux/userRedux";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -16,9 +18,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm_password, setConfirmPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const { isFetching, error } = useSelector((state) => state.user);
-console.log(error);
+  const { isLoading, error } = useSelector((state) => state.user);
+
   const user = {
     name,
     lastName,
@@ -31,6 +32,11 @@ console.log(error);
     e.preventDefault();
     register(dispatch, { user });
   };
+
+  // clearing the error
+  useEffect(() => {
+    dispatch(clear());
+  }, [dispatch]);
 
   return (
     <ContainerWrapper>
@@ -62,7 +68,7 @@ console.log(error);
               type="text"
               required
             />
-            
+
             <Input
               onChange={(e) => setEmail(e.target.value)}
               name="email"
@@ -89,6 +95,7 @@ console.log(error);
             ) : (
               ""
             )}
+            <Error>{error}</Error>
             <Agreement>
               By creating an account, I consent to the processing of my personal
               data in accordance with the <b>PRIVACY POLICY</b>
@@ -106,9 +113,9 @@ console.log(error);
               <Button
                 type="submit"
                 onClick={handleRegistration}
-                disabled={errorMessage}
+                disabled={isLoading}
               >
-                Register Now
+                {isLoading ? "Loading..." : "Register"}
               </Button>
             </ButtonWrapper>
           </Form>

@@ -7,25 +7,27 @@ import { Link } from "react-router-dom";
 import Announcement from "../components/Announcement";
 import Navbar from "../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
+import { useEffect } from "react";
+import { clear } from "../redux/userRedux";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
-  const { isFetching, error } = useSelector((state) => state.user);
+  const { isLoading, error } = useSelector((state) => state.user);
+
   const handleClick = (e) => {
     e.preventDefault();
-    login(dispatch, { username, password });
-    if (error === true) {
-      setErrorMessage("Password or Username doesn't match.");
-    }
-    if (!errorMessage) {
-      toast.success("Successfully logged.");
-    } else {
-      toast.error("Password or Username doesn't match.");
-    }
+    login(dispatch, { email, password });
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clear());
+    }
+  }, [error, dispatch]);
+
   return (
     <ContainerWrapper>
       <Toaster />
@@ -36,8 +38,8 @@ const Login = () => {
           <Title>SIGN IN</Title>
           <Form>
             <Input
-              placeholder="username"
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="email"
+              onChange={(e) => setEmail(e.target.value)}
               type="text"
               required
             />
@@ -47,18 +49,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {errorMessage ? (
-              <p
-                style={{
-                  color: "red",
-                  fontWeight: "500",
-                }}
-              >
-                {errorMessage}
-              </p>
-            ) : (
-              ""
-            )}
+
             <Link
               to="/forgotPassword"
               style={{
@@ -70,7 +61,7 @@ const Login = () => {
               Forgot Password?
             </Link>
             {/* {error && <Error>Something went wrong...</Error>} */}
-            <Button onClick={handleClick} disabled={isFetching}>
+            <Button onClick={handleClick} disabled={isLoading || error}>
               LOGIN
             </Button>
             <Link
