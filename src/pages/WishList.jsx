@@ -67,7 +67,10 @@ const WishList = () => {
             </TopButton>
           </Link>
           <TopTexts>
-            <TopText>Your Wishlist ({cart?.favorite?.length})</TopText>
+            <TopText>
+              Your Wishlist (
+              {isSameUser(loggedinUer, storedUser) && cart?.favorite?.length})
+            </TopText>
           </TopTexts>
         </Top>
         <Bottom>

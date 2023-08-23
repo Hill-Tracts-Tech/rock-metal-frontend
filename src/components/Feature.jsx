@@ -16,16 +16,26 @@ const Feature = ({ item, loading }) => {
   const history = useHistory();
   const handleAddToCart = () => {
     if (user) {
-      dispatch(
-        addProduct({
-          ...item,
-          quantity: 1,
-          color: item?.color[0],
-          size: item?.size[0],
-        })
-      );
+      try {
+        dispatch(
+          addProduct({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+            email: user?.email,
+          })
+        );
+        toast.success("Added to cart successfully");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! May be occurred ", error);
+      }
     } else {
-      history.push("/login");
+      history.push({
+        pathname: "/login",
+        state: { from: history.location },
+      });
     }
   };
 

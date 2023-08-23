@@ -99,9 +99,15 @@ const Cart = () => {
             </TopButton>
           </Link>
           <TopTexts>
-            <TopText>Shopping Bag({cart?.products?.length})</TopText>
+            <TopText>
+              Shopping Bag(
+              {isSameUser(loggedinUer, storedUser) && cart?.products?.length})
+            </TopText>
             <Link to="/wishList">
-              <TopText>Your Wishlist ({cart?.favorite?.length})</TopText>
+              <TopText>
+                Your Wishlist (
+                {isSameUser(loggedinUer, storedUser) && cart?.favorite?.length})
+              </TopText>
             </Link>
           </TopTexts>
         </Top>
@@ -180,7 +186,9 @@ const Cart = () => {
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>
+                ৳ {isSameUser(loggedinUer, storedUser) && cart.total}
+              </SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
@@ -192,7 +200,9 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>
+                ৳ {isSameUser(loggedinUer, storedUser) && cart.total}
+              </SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
               name="Lama Shop"
