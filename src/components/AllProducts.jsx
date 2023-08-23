@@ -5,16 +5,12 @@ import AllProduct from "./AllProduct";
 import { mobile } from "../responsive";
 import Announcement from "./Announcement";
 import Navbar from "./Navbar";
-import { useLocation } from "react-router-dom/cjs/react-router-dom";
 import Skeleton from "react-loading-skeleton";
 
 const AllProducts = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
-  const location = useLocation();
-  const cat = location.pathname.split("/")[2];
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState("newest");
 
@@ -23,9 +19,7 @@ const AllProducts = () => {
     const getProducts = async () => {
       try {
         const res = await axios.get(
-          cat
-            ? `http://localhost:5000/api/products?category=${cat}`
-            : "http://localhost:5000/api/products"
+            "http://localhost:5000/api/products"
         );
         setProducts(res.data);
         setLoading(false);
@@ -34,18 +28,17 @@ const AllProducts = () => {
       }
     };
     getProducts();
-  }, [cat]);
+  }, []);
 
   useEffect(() => {
-    cat &&
-      setFilteredProducts(
+      setFilteredProducts(() =>
         products.filter((item) =>
           Object.entries(filters).every(([key, value]) =>
             item[key].includes(value)
           )
         )
       );
-  }, [products, cat, filters]);
+  }, [products, filters]);
 
   useEffect(() => {
     if (sort === "newest") {
@@ -64,11 +57,20 @@ const AllProducts = () => {
   }, [sort]);
 
   const handleFilters = (e) => {
+    console.log("Filtering for: ", e.target.value, e.target.name);
     const value = e.target.value;
+    console.log(value);
     setFilters({
       ...filters,
       [e.target.name]: value,
     });
+    const filteredProducts = products.filter((item) =>
+      Object.entries({
+        ...filters,
+        [e.target.name]: value,
+      }).every(([key, value]) => item[key].includes(value))
+    );
+    setFilteredProducts(filteredProducts);
   };
 
   return (
@@ -109,9 +111,9 @@ const AllProducts = () => {
         </FilterContainer>
         {!loading ? (
           <Wrapper>
-            {cat
+            {filteredProducts
               ? filteredProducts.map((item) => (
-                  <AllProduct item={item} loading={loading} key={item.id} />
+                  <AllProduct item={item} key={item.id} />
                 ))
               : products.map((item) => (
                   <AllProduct item={item} key={item.id} />
@@ -138,11 +140,6 @@ const AllProducts = () => {
 };
 
 export default AllProducts;
-
-// styled component
-// const Title = styled.h1`
-//   margin: 20px;
-// `;
 
 const FilterContainer = styled.div`
   display: flex;

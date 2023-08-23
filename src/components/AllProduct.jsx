@@ -10,6 +10,7 @@ import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
+
 const AllProduct = ({ item }) => {
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
