@@ -26,6 +26,7 @@ const Product = ({ item, loading }) => {
             quantity: 1,
             color: item?.color[0],
             size: item?.size[0],
+            email: user?.email,
           })
         );
         toast.success("Added successfully!");

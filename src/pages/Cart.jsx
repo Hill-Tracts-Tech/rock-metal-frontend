@@ -17,11 +17,16 @@ import {
 } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
+import { isSameUser } from "../utils";
 
 const KEY = process.env.REACT_APP_STRIPE;
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  const { currentUser } = useSelector((state) => state.user);
+
+  const loggedinUer = currentUser.email;
+  const storedUser = cart.email;
 
   const [stripeToken, setStripeToken] = useState(null);
   const history = useHistory();
@@ -65,12 +70,16 @@ const Cart = () => {
       dispatch(removeFromCart(productToRemove));
     }
   };
+
   return (
     <Container>
       <Announcement />
       <Navbar />
       <Wrapper>
-        <Title>Your are shipping {cart.products.length}</Title>
+        <Title>
+          Your are shipping{" "}
+          {isSameUser(loggedinUer, storedUser) && cart.products.length}
+        </Title>
         <Top>
           <Link to="/" style={{ textDecoration: "none" }}>
             <TopButton
@@ -98,7 +107,7 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            {cart.products.length > 0 ? (
+            {isSameUser(loggedinUer, storedUser) && cart.products.length > 0 ? (
               <InfoWrapper>
                 {cart.products.map((product) => (
                   <Product>

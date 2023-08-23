@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 
-const Trending = ({ item, loading }) => {
+const Trending = ({ item }) => {
   const user = useSelector((state) => state.user.currentUser);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -24,6 +24,7 @@ const Trending = ({ item, loading }) => {
             quantity: 1,
             color: item?.color[0],
             size: item?.size[0],
+            email: user?.email,
           })
         );
         toast.success("Added to cart successfully");

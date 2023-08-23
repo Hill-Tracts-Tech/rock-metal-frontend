@@ -16,14 +16,17 @@ import { useDispatch, useSelector } from "react-redux";
 import profile from "../assets/profile.png";
 import { logout } from "../redux/userRedux";
 import gravatar from "gravatar";
+import { isSameUser } from "../utils";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
 
+  const loggedinUer = currentUser?.email;
   const dispatch = useDispatch();
 
   //for search input and button
   const cart = useSelector((state) => state.cart);
+  const storedUser = cart.email;
   const [searchValue, setSearchValue] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   // popup
@@ -97,7 +100,12 @@ const Navbar = () => {
         <Right>
           <Link to="/cart">
             <MenuItem title="Cart">
-              <Badge badgeContent={currentUser && cart.quantity} color="teal">
+              <Badge
+                badgeContent={
+                  isSameUser(loggedinUer, storedUser) && cart.quantity
+                }
+                color="teal"
+              >
                 <ShoppingCartOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
@@ -105,7 +113,9 @@ const Navbar = () => {
           <Link to="/wishList">
             <MenuItem title="WhishList">
               <Badge
-                badgeContent={currentUser && cart.favQuantity}
+                badgeContent={
+                  isSameUser(loggedinUer, storedUser) && cart.favQuantity
+                }
                 color="teal"
               >
                 <FavoriteBorderOutlined style={{ color: "teal" }} />
