@@ -102,6 +102,14 @@ const cartSlice = createSlice({
         state.favQuantity -= removedProduct.favQuantity;
       }
     },
+    clear: (state) => {
+      state.products = [];
+      state.favorite = [];
+      state.favQuantity = null;
+      state.quantity = null;
+      state.total = null;
+      state.email = null;
+    },
   },
 });
 
@@ -114,5 +122,6 @@ export const {
   updateFavQuantity,
   removeFromCart,
   removeFromWishList,
+  clear,
 } = cartSlice.actions;
 export default cartSlice.reducer;
