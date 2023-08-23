@@ -16,34 +16,15 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { isLoading, error, currentUser } = useSelector((state) => state.user);
+  const { isLoading, error } = useSelector((state) => state.user);
   const location = useLocation();
   const item = location.state?.item;
   console.log("login item:", item);
   const handleClick = async (e) => {
     e.preventDefault();
     await login(dispatch, { email, password });
+    localStorage.setItem("temp_item", JSON.stringify(item));
   };
-
-  useEffect(() => {
-    if (currentUser?.email && item) {
-      try {
-        dispatch(
-          addProduct({
-            ...item,
-            quantity: 1,
-            color: item?.color[0],
-            size: item?.size[0],
-            email: currentUser?.email,
-          })
-        );
-        toast.success("Added to cart automatically after login");
-      } catch (error) {
-        console.log(error);
-        toast.error("Something went wrong while adding to cart");
-      }
-    }
-  }, [currentUser, dispatch, item]);
 
   useEffect(() => {
     if (error) {
