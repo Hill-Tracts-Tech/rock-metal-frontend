@@ -21,6 +21,7 @@ import profile from "../assets/profile.png";
 import { logout } from "../redux/userRedux";
 import gravatar from "gravatar";
 import { isSameUser } from "../utils";
+import { clear, clearCart, clearFavorite } from "../redux/cartRedux";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -71,6 +72,11 @@ const Navbar = () => {
   }, []);
 
   const imageUrl = currentUser && gravatar.url(currentUser.email);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(clear());
+  };
 
   return (
     <>
@@ -323,9 +329,7 @@ const Navbar = () => {
             </Profile>
             <h3>{currentUser?.username}</h3>
             <span>{currentUser?.email}</span>
-            <LogoutButton onClick={() => dispatch(logout())}>
-              Logout
-            </LogoutButton>
+            <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
           </ProfilePopupContent>
         </ProfileOverlay>
       )}
