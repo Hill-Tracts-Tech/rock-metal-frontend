@@ -7,25 +7,51 @@ import { Link } from "react-router-dom";
 import Announcement from "../components/Announcement";
 import Navbar from "../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
+import { useEffect } from "react";
+import { clear } from "../redux/userRedux";
+import { addProduct } from "../redux/cartRedux";
+import { useLocation } from "react-router-dom/cjs/react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
-  const { isFetching, error } = useSelector((state) => state.user);
-  const handleClick = (e) => {
+  const { isLoading, error, currentUser } = useSelector((state) => state.user);
+  const location = useLocation();
+  const item = location.state?.item;
+  console.log("login item:", item);
+  const handleClick = async (e) => {
     e.preventDefault();
-    login(dispatch, { email, password });
-    if (error === true) {
-      setErrorMessage("Password or Email doesn't match.");
-    }
-    if (!errorMessage) {
-      toast.success("Successfully logged.");
-    } else {
-      toast.error("Password or Email doesn't match.");
-    }
+    await login(dispatch, { email, password });
   };
+
+  useEffect(() => {
+    if (currentUser?.email && item) {
+      try {
+        dispatch(
+          addProduct({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+            email: currentUser?.email,
+          })
+        );
+        toast.success("Added to cart automatically after login");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong while adding to cart");
+      }
+    }
+  }, [currentUser, dispatch, item]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clear());
+    }
+  }, [error, dispatch]);
+
   return (
     <ContainerWrapper>
       <Toaster />
@@ -47,18 +73,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {errorMessage ? (
-              <p
-                style={{
-                  color: "red",
-                  fontWeight: "500",
-                }}
-              >
-                {errorMessage}
-              </p>
-            ) : (
-              ""
-            )}
+
             <Link
               to="/forgotPassword"
               style={{
@@ -70,7 +85,7 @@ const Login = () => {
               Forgot Password?
             </Link>
             {/* {error && <Error>Something went wrong...</Error>} */}
-            <Button onClick={handleClick} disabled={isFetching}>
+            <Button onClick={handleClick} disabled={isLoading || error}>
               LOGIN
             </Button>
             <Link

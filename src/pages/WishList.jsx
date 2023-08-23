@@ -7,16 +7,19 @@ import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import {
   clearFavorite,
-  removeFromCart,
   removeFromWishList,
   updateFavQuantity,
 } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
 import "../index.css";
+import { isSameUser } from "../utils";
 const WishList = () => {
   const cart = useSelector((state) => state.cart);
+  const { currentUser } = useSelector((state) => state.user);
 
+  const loggedinUer = currentUser.email;
+  const storedUser = cart.email;
   const dispatch = useDispatch();
 
   const handleClearCart = () => {
@@ -35,12 +38,16 @@ const WishList = () => {
       dispatch(removeFromWishList(productToRemove));
     }
   };
+
   return (
     <Container>
       <Announcement />
       <Navbar />
       <Wrapper>
-        <Title>Your are shipping {cart?.favorite?.length}</Title>
+        <Title>
+          Your are shipping{" "}
+          {isSameUser(loggedinUer, storedUser) && cart?.favorite?.length}
+        </Title>
         <Top>
           <Link to="/" style={{ textDecoration: "none" }}>
             <TopButton
@@ -60,11 +67,14 @@ const WishList = () => {
             </TopButton>
           </Link>
           <TopTexts>
-            <TopText>Your Wishlist ({cart?.favorite?.length})</TopText>
+            <TopText>
+              Your Wishlist (
+              {isSameUser(loggedinUer, storedUser) && cart?.favorite?.length})
+            </TopText>
           </TopTexts>
         </Top>
         <Bottom>
-          {cart?.favorite?.length > 0 ? (
+          {isSameUser(loggedinUer, storedUser) && cart?.favorite?.length > 0 ? (
             <InfoWrapper>
               {cart?.favorite?.map((product) => (
                 <Product key={product._id}>

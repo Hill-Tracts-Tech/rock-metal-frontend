@@ -8,6 +8,7 @@ const cartSlice = createSlice({
     favQuantity: 0,
     quantity: 0,
     total: 0,
+    email: null,
   },
   reducers: {
     addProduct: (state, action) => {
@@ -26,6 +27,7 @@ const cartSlice = createSlice({
 
       state.quantity += action.payload.quantity;
       state.total += action.payload.price * action.payload.quantity;
+      state.email = action.payload.email;
     },
     clearCart: (state) => {
       state.quantity = null;

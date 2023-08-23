@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "@material-ui/core";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+
 import {
   Search,
   ShoppingCartOutlined,
@@ -9,6 +11,8 @@ import {
   FavoriteBorderOutlined,
   Menu,
   Close,
+  CancelIcon,
+  CloseRounded,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import logo from "../assets/logo.png";
@@ -16,14 +20,17 @@ import { useDispatch, useSelector } from "react-redux";
 import profile from "../assets/profile.png";
 import { logout } from "../redux/userRedux";
 import gravatar from "gravatar";
+import { isSameUser } from "../utils";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
 
+  const loggedinUer = currentUser?.email;
   const dispatch = useDispatch();
 
   //for search input and button
   const cart = useSelector((state) => state.cart);
+  const storedUser = cart.email;
   const [searchValue, setSearchValue] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   // popup
@@ -97,7 +104,12 @@ const Navbar = () => {
         <Right>
           <Link to="/cart">
             <MenuItem title="Cart">
-              <Badge badgeContent={currentUser && cart.quantity} color="teal">
+              <Badge
+                badgeContent={
+                  isSameUser(loggedinUer, storedUser) && cart.quantity
+                }
+                color="teal"
+              >
                 <ShoppingCartOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
@@ -105,7 +117,9 @@ const Navbar = () => {
           <Link to="/wishList">
             <MenuItem title="WhishList">
               <Badge
-                badgeContent={currentUser && cart.favQuantity}
+                badgeContent={
+                  isSameUser(loggedinUer, storedUser) && cart.favQuantity
+                }
                 color="teal"
               >
                 <FavoriteBorderOutlined style={{ color: "teal" }} />
@@ -172,28 +186,19 @@ const Navbar = () => {
           </SearchButton>
         </Center>
         <Right>
-          <MenuItem>
-            <AccountCircle
-              onClick={ProfileTogglePopup}
-              style={{ color: "teal" }}
-            />
-          </MenuItem>
-          <Link to="/cart">
-            <MenuItem title="Cart">
-              <Badge badgeContent={cart.quantity} color="teal">
-                <ShoppingCartOutlined style={{ color: "teal" }} />
-              </Badge>
-            </MenuItem>
-          </Link>
-          <Link to="/wishList">
-            <MenuItem title="WishList">
-              <Badge badgeContent={cart.favQuantity} color="teal">
-                <FavoriteBorderOutlined style={{ color: "teal" }} />
-              </Badge>
-            </MenuItem>
-          </Link>
           <MenuButton onClick={toggleDrawer}>
-            {drawerOpen ? "X" : <Menu />}{" "}
+            {drawerOpen ? (
+              <CloseRounded
+                style={{
+                  background: "teal",
+                  borderRadius: "20px",
+                  color: "white",
+                  marginRight: "-100px",
+                }}
+              />
+            ) : (
+              <Menu style={{ marginRight: "-100px" }} />
+            )}{" "}
           </MenuButton>
         </Right>
       </MobileViewNavbarContainer>
@@ -207,15 +212,40 @@ const Navbar = () => {
           </Link>
         </Logo>
         <DrawerInner>
-          <Profile>
-            <ProfileImage src={profile} />
-          </Profile>
-          <Link to="/cart">
-            <MenuItem title="Cart">My Cart</MenuItem>
-          </Link>
-          <Link to="/wishList">
-            <MenuItem title="WishList">My WishList</MenuItem>
-          </Link>
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt="profile"
+              style={{
+                height: "50px",
+                width: "50px",
+                borderRadius: "25px",
+                objectFit: "contain",
+              }}
+            />
+          ) : (
+            <AccountCircle
+              style={{ color: "teal", height: "50px", width: "50px" }}
+            />
+          )}
+          <h3>{currentUser?.username}</h3>
+          <span>{currentUser?.email}</span>
+          <div style={{ display: "flex" }}>
+            <Link to="/cart">
+              <MenuItem title="Cart">
+                <Badge badgeContent={cart.quantity} color="teal">
+                  <ShoppingCartOutlined style={{ color: "teal" }} />
+                </Badge>
+              </MenuItem>
+            </Link>
+            <Link to="/wishList">
+              <MenuItem title="WishList">
+                <Badge badgeContent={cart.favQuantity} color="teal">
+                  <FavoriteBorderOutlined style={{ color: "teal" }} />
+                </Badge>
+              </MenuItem>
+            </Link>
+          </div>
           {!currentUser?.username && (
             <AuthContainer>
               <Link
@@ -579,6 +609,7 @@ const Left = styled.div`
 const Center = styled.div`
   flex: 1;
   text-align: center;
+  justify-content: center;
 `;
 const Right = styled.div`
   flex: 1;

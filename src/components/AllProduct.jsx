@@ -3,67 +3,81 @@ import {
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
-const AllProduct = ({item}) => {
+
+const AllProduct = ({ item }) => {
+  const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const handleAddToCart = () => {
-    try {
-      dispatch(
-        addProduct({
-          ...item,
-          quantity: 1,
-          color: item?.color[0],
-          size: item?.size[0],
-        })
-      );
-      toast.success("Added to cart successfully");
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong! May be occurred ", error);
+    if (user) {
+      try {
+        dispatch(
+          addProduct({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+            email: user?.email,
+          })
+        );
+        toast.success("Added to cart successfully");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! May be occurred ", error);
+      }
+    } else {
+      history.push("/login");
     }
   };
 
   const handleAddToFavourite = () => {
-    try {
-      dispatch(
-        addFavorite({
-          ...item,
-          quantity: 1,
-          color: item?.color[0],
-          size: item?.size[0],
-        })
-      );
-      toast.success("Added to wish list successfully");
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong! May be occurred ", error);
+    if (user) {
+      try {
+        dispatch(
+          addFavorite({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+          })
+        );
+        toast.success("Added to wish list successfully");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! May be occurred ", error);
+      }
+    } else {
+      history.push("/login");
     }
   };
   return (
     <>
-        <Container>
-          <Circle />
-          <Image src={item.img} />
-          <Info>
-            <Icon onClick={handleAddToCart}>
-              <ShoppingCartOutlined />
-            </Icon>
-            <Icon>
-              <Link to={`/product/${item._id}`}>
-                <SearchOutlined />
-              </Link>
-            </Icon>
-            <Icon onClick={handleAddToFavourite}>
-              <FavoriteBorderOutlined />
-            </Icon>
-          </Info>
-          <Toaster />
-        </Container>
+      <Container>
+        <Circle />
+        <Image src={item.img} />
+        <Info>
+          <Icon onClick={handleAddToCart}>
+            <ShoppingCartOutlined />
+          </Icon>
+          <Icon>
+            <Link to={`/product/${item._id}`}>
+              <SearchOutlined />
+            </Link>
+          </Icon>
+          <Icon onClick={handleAddToFavourite}>
+            <FavoriteBorderOutlined />
+          </Icon>
+        </Info>
+        <Toaster />
+      </Container>
     </>
   );
 };
