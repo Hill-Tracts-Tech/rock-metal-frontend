@@ -7,25 +7,27 @@ import { Link } from "react-router-dom";
 import Announcement from "../components/Announcement";
 import Navbar from "../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
+import { useEffect } from "react";
+import { clear } from "../redux/userRedux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
-  const { isFetching, error } = useSelector((state) => state.user);
+  const { isLoading, error } = useSelector((state) => state.user);
+
   const handleClick = (e) => {
     e.preventDefault();
     login(dispatch, { email, password });
-    if (error === true) {
-      setErrorMessage("Password or Email doesn't match.");
-    }
-    if (!errorMessage) {
-      toast.success("Successfully logged.");
-    } else {
-      toast.error("Password or Email doesn't match.");
-    }
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clear());
+    }
+  }, [error, dispatch]);
+
   return (
     <ContainerWrapper>
       <Toaster />
@@ -47,18 +49,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {errorMessage ? (
-              <p
-                style={{
-                  color: "red",
-                  fontWeight: "500",
-                }}
-              >
-                {errorMessage}
-              </p>
-            ) : (
-              ""
-            )}
+
             <Link
               to="/forgotPassword"
               style={{
@@ -70,7 +61,7 @@ const Login = () => {
               Forgot Password?
             </Link>
             {/* {error && <Error>Something went wrong...</Error>} */}
-            <Button onClick={handleClick} disabled={isFetching}>
+            <Button onClick={handleClick} disabled={isLoading || error}>
               LOGIN
             </Button>
             <Link
