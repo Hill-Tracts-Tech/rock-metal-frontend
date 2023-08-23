@@ -9,17 +9,41 @@ import Navbar from "../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
 import { useEffect } from "react";
 import { clear } from "../redux/userRedux";
+import { addProduct } from "../redux/cartRedux";
+import { useLocation } from "react-router-dom/cjs/react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { isLoading, error } = useSelector((state) => state.user);
-
-  const handleClick = (e) => {
+  const { isLoading, error, currentUser } = useSelector((state) => state.user);
+  const location = useLocation();
+  const item = location.state?.item;
+  console.log("login item:", item);
+  const handleClick = async (e) => {
     e.preventDefault();
-    login(dispatch, { email, password });
+    await login(dispatch, { email, password });
   };
+
+  useEffect(() => {
+    if (currentUser?.email && item) {
+      try {
+        dispatch(
+          addProduct({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+            email: currentUser?.email,
+          })
+        );
+        toast.success("Added to cart automatically after login");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong while adding to cart");
+      }
+    }
+  }, [currentUser, dispatch, item]);
 
   useEffect(() => {
     if (error) {

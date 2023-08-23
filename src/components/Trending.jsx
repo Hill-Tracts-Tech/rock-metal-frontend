@@ -33,10 +33,17 @@ const Trending = ({ item }) => {
         toast.error("Something went wrong! May be occurred ", error);
       }
     } else {
-      history.push("/login");
+      history.push({
+        pathname: "/login",
+        state: {
+          from: history.location,
+          autoAddToCart: true,
+          item: item,
+        }, // Pass additional info
+      });
     }
   };
-
+  console.log(item);
   // add to favorite
   const handleAddToFavorite = () => {
     if (user) {
