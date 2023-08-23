@@ -55,6 +55,7 @@ const Product = () => {
           quantity: quantity,
           color: selectedColor,
           size: selectedSize,
+          email: user?.email,
         };
         dispatch(addProduct(data));
         toast.success("Added to cart successfully!");
