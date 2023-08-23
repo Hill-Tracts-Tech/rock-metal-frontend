@@ -9,21 +9,21 @@ import Navbar from "../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const { isFetching, error } = useSelector((state) => state.user);
   const handleClick = (e) => {
     e.preventDefault();
-    login(dispatch, { username, password });
+    login(dispatch, { email, password });
     if (error === true) {
-      setErrorMessage("Password or Username doesn't match.");
+      setErrorMessage("Password or Email doesn't match.");
     }
     if (!errorMessage) {
       toast.success("Successfully logged.");
     } else {
-      toast.error("Password or Username doesn't match.");
+      toast.error("Password or Email doesn't match.");
     }
   };
   return (
@@ -36,8 +36,8 @@ const Login = () => {
           <Title>SIGN IN</Title>
           <Form>
             <Input
-              placeholder="username"
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="email"
+              onChange={(e) => setEmail(e.target.value)}
               type="text"
               required
             />

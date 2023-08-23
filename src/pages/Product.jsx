@@ -11,6 +11,7 @@ import { publicRequest } from "../requestMethods";
 import { addProduct, updateProductQuantity } from "../redux/cartRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "react-hot-toast";
+import RelatedProducts from "../components/RelatedProducts";
 
 const Product = () => {
   const location = useLocation();
@@ -86,7 +87,12 @@ const Product = () => {
             <Filter>
               <FilterTitle>Color</FilterTitle>
               {product.color?.map((c) => (
-                <FilterColor color={c} key={c} onClick={() => setColor(c)} />
+                <FilterColor
+                  isSelected={c === color}
+                  color={c}
+                  key={c}
+                  onClick={() => setColor(c)}
+                />
               ))}
             </Filter>
             <Filter>
@@ -112,7 +118,7 @@ const Product = () => {
           </AddContainer>
         </InfoContainer>
       </Wrapper>
-      <Newsletter />
+      <RelatedProducts category={product.categories} />
       <Footer />
     </Container>
   );
@@ -189,6 +195,7 @@ const FilterColor = styled.div`
   background-color: ${(props) => props.color};
   margin: 0px 5px;
   cursor: pointer;
+  border: ${(props) => (props.isSelected ? "3px solid teal" : "")};
 `;
 
 const FilterSize = styled.select`

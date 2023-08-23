@@ -154,7 +154,7 @@ const Cart = () => {
                         </QuantityActionButton>
                       </ProductAmountContainer>
                       <ProductPrice>
-                        $ {product.price * product.quantity}
+                        ৳ {product.price * product.quantity}
                       </ProductPrice>
                     </PriceDetail>
                   </Product>
@@ -180,26 +180,26 @@ const Cart = () => {
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
+              <SummaryItemPrice>৳ 5.90</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
+              <SummaryItemPrice>৳ -5.90</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
               name="Lama Shop"
               image="https://avatars.githubusercontent.com/u/1486366?v=4"
               billingAddress
               shippingAddress
-              description={`Your total is $${cart.total}`}
+              description={`Your total is ৳ ${cart.total}`}
               amount={cart.total * 100}
               token={onToken}
               stripeKey={KEY}
@@ -337,6 +337,7 @@ const ProductColor = styled.div`
   height: 20px;
   border-radius: 50%;
   background-color: ${(props) => props.color};
+  border: 1px solid gray !important;
 `;
 
 const ProductSize = styled.span``;

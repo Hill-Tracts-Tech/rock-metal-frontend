@@ -67,36 +67,40 @@ const Product = ({ item, loading }) => {
         <Image src={item.img} alt="" />
       )}
       <Content>
-        {loading ? (
-          <Skeleton width="150px" count={1} />
-        ) : (
+        <Link to={`/product/${item._id}`} style={{ color: "black" }}>
           <Title>{item?.title}</Title>
-        )}
-        {loading ? (
-          <Skeleton width="280px" count={2} />
-        ) : (
-          <Description>
-            {item?.desc ||
-              "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups."}
-          </Description>
-        )}
-        {loading ? (
-          <Skeleton width="280px" height="35px" />
-        ) : (
-          <Icons>
-            <ShoppingCartOutlined
-              style={{ cursor: "pointer" }}
-              onClick={handleAddToCart}
+        </Link>
+        <Price>Price : ৳ {item?.price}</Price>
+        <Colors>
+          {item?.color.map((c) => (
+            <Color
+              style={{
+                width: "25px",
+                height: "25px",
+                borderRadius: "50%",
+                backgroundColor: c.toLowerCase(),
+              }}
             />
-            <Link to={`/product/${item._id}`} style={{ color: "black" }}>
-              <SearchOutlined style={{ cursor: "pointer" }} />
-            </Link>
-            <FavoriteBorderOutlined
-              onClick={handleAddToWishList}
-              style={{ cursor: "pointer" }}
-            />
-          </Icons>
-        )}
+          ))}
+        </Colors>
+        <Sizes>
+          {item?.size.map((s) => (
+            <Size>{s}</Size>
+          ))}
+        </Sizes>
+        <Icons>
+          <ShoppingCartOutlined
+            style={{ cursor: "pointer" }}
+            onClick={handleAddToCart}
+          />
+          <Link to={`/product/${item._id}`} style={{ color: "black" }}>
+            <SearchOutlined style={{ cursor: "pointer" }} />
+          </Link>
+          <FavoriteBorderOutlined
+            onClick={handleAddToWishList}
+            style={{ cursor: "pointer" }}
+          />
+        </Icons>
       </Content>
       <Toaster />
     </Container>
@@ -106,8 +110,9 @@ const Product = ({ item, loading }) => {
 export default Product;
 
 const Title = styled.h3`
-  font-size: 24px;
+  font-size: 18px;
   text-align: center;
+  margin: 10px;
 `;
 
 const Container = styled.div`
@@ -123,10 +128,36 @@ const Container = styled.div`
   padding: 10px;
 `;
 
-const Description = styled.div`
-  padding: 10px 0;
+const Price = styled.div`
+  font-size: 16px;
   text-align: center;
+  color: #3183ff;
 `;
+const Colors = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 15px 0;
+`;
+const Color = styled.div`
+  border: 1px solid gray;
+`;
+
+const Sizes = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+`;
+
+const Size = styled.div`
+  background-color: lightgray;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: bold;
+`;
+
 const Icons = styled.div`
   display: flex;
   gap: 30px;
@@ -135,6 +166,9 @@ const Icons = styled.div`
 `;
 const Content = styled.div`
   padding: 10px;
+  a {
+    text-decoration: none;
+  }
 `;
 
 const Image = styled.img`
