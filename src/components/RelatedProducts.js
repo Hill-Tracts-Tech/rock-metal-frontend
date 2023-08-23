@@ -2,16 +2,21 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import {
   FavoriteBorderOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
+import { mobile } from "../responsive";
 
 const RelatedProducts = ({ category }) => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const getProducts = async () => {
       try {
         if (category) {
@@ -19,9 +24,11 @@ const RelatedProducts = ({ category }) => {
             `http://localhost:5000/api/products?category=${category[0]}`
           );
           setProducts(res.data);
+          setLoading(false);
         }
       } catch (err) {
         console.log(err);
+        setLoading(false);
       }
     };
     getProducts();
@@ -31,67 +38,147 @@ const RelatedProducts = ({ category }) => {
 
   return (
     <Container>
-      <Wrapper>
-        {products.map((item) => (
-          <Content>
-            <Image src={item.img} alt="" />
-            <Link to={`/product/${item._id}`} style={{ color: "black" }}>
-              <Title>{item?.title}</Title>
-            </Link>
-            <Price>Price : ৳ {item?.price}</Price>
-            <Colors>
-              {item?.color.map((c) => (
-                <Color
+      <Heading>You may choice that also</Heading>
+      {!loading ? (
+        <Wrapper>
+          {products.map((item) => (
+            <Content>
+              <Image>
+                <img
                   style={{
-                    width: "25px",
-                    height: "25px",
-                    borderRadius: "50%",
-                    backgroundColor: c.toLowerCase(),
+                    borderRadius: "5px",
+                    width: "100%",
+                    height: "100%",
                   }}
+                  src={item.img}
+                  alt={item.img}
                 />
-              ))}
-            </Colors>
-            <Sizes>
-              {item?.size.map((s) => (
-                <Size>{s}</Size>
-              ))}
-            </Sizes>
-            <Icons>
-              <ShoppingCartOutlined
-                style={{ cursor: "pointer" }}
-                // onClick={handleAddToCart}
-              />
+              </Image>
               <Link to={`/product/${item._id}`} style={{ color: "black" }}>
-                <SearchOutlined style={{ cursor: "pointer" }} />
+                <Title>{item?.title}</Title>
               </Link>
-              <FavoriteBorderOutlined
-                // onClick={handleAddToWishList}
-                style={{ cursor: "pointer" }}
-              />
-            </Icons>
-          </Content>
-        ))}
-      </Wrapper>
+              <Price>Price : ৳ {item?.price}</Price>
+              <Colors>
+                {item?.color.map((c) => (
+                  <Color
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      borderRadius: "50%",
+                      backgroundColor: c.toLowerCase(),
+                    }}
+                  />
+                ))}
+              </Colors>
+              <Sizes>
+                {item?.size.map((s) => (
+                  <Size>{s}</Size>
+                ))}
+              </Sizes>
+              <Icons>
+                <ShoppingCartOutlined
+                  style={{ cursor: "pointer" }}
+                  // onClick={handleAddToCart}
+                />
+                <Link to={`/product/${item._id}`} style={{ color: "black" }}>
+                  <SearchOutlined style={{ cursor: "pointer" }} />
+                </Link>
+                <FavoriteBorderOutlined
+                  // onClick={handleAddToWishList}
+                  style={{ cursor: "pointer" }}
+                />
+              </Icons>
+            </Content>
+          ))}
+        </Wrapper>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            gap: "12px",
+            flexWrap: "wrap",
+            width: "90%",
+            margin: "0 auto",
+          }}
+        >
+          <div style={{}}>
+            <Skeleton width={280} height={200} />
+            <Skeleton width={200} height={20} />
+            <Skeleton width={160} height={20} />
+          </div>
+          <div style={{}}>
+            <Skeleton width={280} height={200} />
+            <Skeleton width={200} height={20} />
+            <Skeleton width={160} height={20} />
+          </div>
+          <div style={{}}>
+            <Skeleton width={280} height={200} />
+            <Skeleton width={200} height={20} />
+            <Skeleton width={160} height={20} />
+          </div>
+          <div style={{}}>
+            <Skeleton width={280} height={200} />
+            <Skeleton width={200} height={20} />
+            <Skeleton width={160} height={20} />
+          </div>
+          <div style={{}}>
+            <Skeleton width={280} height={200} />
+            <Skeleton width={200} height={20} />
+            <Skeleton width={160} height={20} />
+          </div>
+          <div style={{}}>
+            <Skeleton width={280} height={200} />
+            <Skeleton width={200} height={20} />
+            <Skeleton width={160} height={20} />
+          </div>
+          <div style={{}}>
+            <Skeleton width={280} height={200} />
+            <Skeleton width={200} height={20} />
+            <Skeleton width={160} height={20} />
+          </div>
+          <div style={{}}>
+            <Skeleton width={280} height={200} />
+            <Skeleton width={200} height={20} />
+            <Skeleton width={160} height={20} />
+          </div>
+        </div>
+      )}
     </Container>
   );
 };
 
 export default RelatedProducts;
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 90%;
+  margin: auto;
+`;
 const Wrapper = styled.div`
-  flex: 1;
   margin: 5px;
   min-width: 280px;
-  /* height: 350px; */
-  background-color: #f5fbfd;
   display: flex;
   justify-content: center;
+  gap: 12px;
   flex-wrap: wrap;
   align-items: center;
   padding: 10px;
+  ${mobile({ justifyContent: "center", width: "100%" })}
 `;
-const Title = styled.div``;
+const Title = styled.div`
+  margin: 10px 0px;
+  font-weight: 500;
+`;
+const Heading = styled.h1`
+  font-size: 36px;
+  font-weight: bold;
+  padding: 50px 0px;
+  text-transform: uppercase;
+  text-align: center;
+  background: -webkit-linear-gradient(#07ffa8, #ff5607);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  ${mobile({ fontSize: "20px", padding: "12px 0px" })};
+`;
 const Price = styled.div`
   font-size: 16px;
   text-align: center;
@@ -135,8 +222,11 @@ const Content = styled.div`
   }
 `;
 
-const Image = styled.img`
-  height: 200px;
-  z-index: 2;
+const Image = styled.div`
+  width: 280px;
+  height: 280px;
   mix-blend-mode: darken;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
+    rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  border-radius: 5px;
 `;

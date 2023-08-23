@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 
-const AllProduct = ({ item}) => {
+const AllProduct = ({item}) => {
   const dispatch = useDispatch();
   const handleAddToCart = () => {
     try {
