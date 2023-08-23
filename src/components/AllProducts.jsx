@@ -18,10 +18,8 @@ const AllProducts = () => {
     setLoading(true);
     const getProducts = async () => {
       try {
-        const res = await axios.get(
-            "http://localhost:5000/api/products"
-        );
-        setProducts(res.data);
+        const res = await axios.get("http://localhost:5000/api/products");
+        setProducts(res.data.data);
         setLoading(false);
       } catch (err) {
         setLoading(false);
@@ -31,13 +29,13 @@ const AllProducts = () => {
   }, []);
 
   useEffect(() => {
-      setFilteredProducts(() =>
-        products.filter((item) =>
-          Object.entries(filters).every(([key, value]) =>
-            item[key].includes(value)
-          )
+    setFilteredProducts(() =>
+      products.filter((item) =>
+        Object.entries(filters).every(([key, value]) =>
+          item[key].includes(value)
         )
-      );
+      )
+    );
   }, [products, filters]);
 
   useEffect(() => {

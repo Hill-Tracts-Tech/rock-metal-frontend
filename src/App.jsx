@@ -38,7 +38,9 @@ const App = () => {
     }
   }, []);
 
-  if (currentUser?.email && product) {
+  console.log(product, "product");
+
+  if (currentUser?.email && Object.keys(product).length > 0) {
     try {
       dispatch(
         addProduct({
