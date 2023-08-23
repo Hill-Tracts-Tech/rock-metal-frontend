@@ -20,7 +20,7 @@ const Trendings = ({ cat, filters, sort }) => {
             ? `http://localhost:5000/api/products?category=${cat}`
             : "http://localhost:5000/api/products"
         );
-        setProducts(res.data);
+        setProducts(res.data.data);
         setLoading(false);
       } catch (err) {
         setLoading(false);
