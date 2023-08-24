@@ -50,10 +50,17 @@ const Title = styled.h1`
 `;
 
 const Button = styled.button`
-  border: none;
-  padding: 10px;
-  background-color: white;
-  color: gray;
   cursor: pointer;
   font-weight: 600;
+  padding: 10px;
+  background-color: teal;
+  color: white;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 1.5px solid teal;
+  transition: ease 0.5s;
+  &:hover {
+    background-color: white;
+    color: teal;
+  }
 `;

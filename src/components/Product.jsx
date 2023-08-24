@@ -2,6 +2,7 @@ import {
   FavoriteBorderOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
+  Visibility,
 } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -99,15 +100,18 @@ const Product = ({ item }) => {
         </Sizes>
         <Icons>
           <ShoppingCartOutlined
-            style={{ cursor: "pointer" }}
+            style={{
+              cursor: "pointer",
+              color: "teal",
+            }}
             onClick={handleAddToCart}
           />
           <Link to={`/product/${item._id}`} style={{ color: "black" }}>
-            <SearchOutlined style={{ cursor: "pointer" }} />
+            <Visibility style={{ cursor: "pointer", color: "teal" }} />
           </Link>
           <FavoriteBorderOutlined
             onClick={handleAddToWishList}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", color: "teal" }}
           />
         </Icons>
       </Content>

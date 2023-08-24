@@ -2,6 +2,7 @@ import {
   FavoriteBorderOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
+  Visibility,
 } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
@@ -80,15 +81,24 @@ const Trending = ({ item }) => {
         <Image src={item.img} />
       </ImageWrapper>
       <Info>
-        <Icon onClick={handleAddToCart}>
+        <Icon
+          onClick={handleAddToCart}
+          style={{ cursor: "pointer", color: "teal" }}
+        >
           <ShoppingCartOutlined />
         </Icon>
         <Icon>
-          <Link to={`/product/${item._id}`}>
-            <SearchOutlined />
+          <Link
+            to={`/product/${item._id}`}
+            style={{ cursor: "pointer", color: "teal" }}
+          >
+            <Visibility />
           </Link>
         </Icon>
-        <Icon onClick={handleAddToFavorite}>
+        <Icon
+          onClick={handleAddToFavorite}
+          style={{ cursor: "pointer", color: "teal" }}
+        >
           <FavoriteBorderOutlined />
         </Icon>
       </Info>

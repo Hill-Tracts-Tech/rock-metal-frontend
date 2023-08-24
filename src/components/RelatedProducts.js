@@ -8,6 +8,7 @@ import {
   FavoriteBorderOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
+  Visibility,
 } from "@material-ui/icons";
 import { mobile } from "../responsive";
 import { toast } from "react-hot-toast";
@@ -140,15 +141,18 @@ const RelatedProducts = ({ category }) => {
               </Sizes>
               <Icons>
                 <ShoppingCartOutlined
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", color: "teal" }}
                   onClick={() => handleAddToCart(item._id)}
                 />
-                <Link to={`/product/${item._id}`} style={{ color: "black" }}>
-                  <SearchOutlined style={{ cursor: "pointer" }} />
+                <Link
+                  to={`/product/${item._id}`}
+                  style={{ cursor: "pointer", color: "teal" }}
+                >
+                  <Visibility />
                 </Link>
                 <FavoriteBorderOutlined
                   onClick={() => handleAddToFavorite(item._id)}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", color: "teal" }}
                 />
               </Icons>
             </Content>

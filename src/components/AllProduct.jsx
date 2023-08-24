@@ -2,6 +2,7 @@ import {
   FavoriteBorderOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
+  Visibility,
 } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -9,7 +10,6 @@ import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
-
 
 const AllProduct = ({ item }) => {
   const user = useSelector((state) => state.user.currentUser);
@@ -69,7 +69,7 @@ const AllProduct = ({ item }) => {
           </Icon>
           <Icon>
             <Link to={`/product/${item._id}`}>
-              <SearchOutlined />
+              <Visibility />
             </Link>
           </Icon>
           <Icon onClick={handleAddToFavourite}>

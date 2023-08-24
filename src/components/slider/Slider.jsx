@@ -89,7 +89,8 @@ const Desc = styled.p`
 const Button = styled.button`
   padding: 10px;
   font-size: 20px;
-  background-color: transparent;
+  background-color: teal;
+  color: white;
   cursor: pointer;
   border: none;
   border: 0.5px solid gray;
@@ -97,6 +98,7 @@ const Button = styled.button`
   font-weight: 500;
   transition: all 0.5s;
   &:hover {
-    background-color: lightblue;
+    background-color: white;
+    color: teal;
   }
 `;
