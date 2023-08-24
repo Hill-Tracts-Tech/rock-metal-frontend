@@ -138,10 +138,13 @@ const AllProducts = () => {
               flexWrap: "wrap",
             }}
           >
-            <Skeleton width={280} height={200} />
-            <Skeleton width={280} height={200} />
-            <Skeleton width={280} height={200} />
-            <Skeleton width={280} height={200} />
+            {[...Array(8)].map((_, index) => (
+              <div key={index}>
+                <Skeleton width={280} height={200} />
+                <Skeleton width={280} height={20} />
+                <Skeleton width={200} height={20} />
+              </div>
+            ))}
           </div>
         )}
       </Container>

@@ -101,46 +101,13 @@ const RelatedProducts = ({ category }) => {
             margin: "0 auto",
           }}
         >
-          <div style={{}}>
-            <Skeleton width={280} height={200} />
-            <Skeleton width={200} height={20} />
-            <Skeleton width={160} height={20} />
-          </div>
-          <div style={{}}>
-            <Skeleton width={280} height={200} />
-            <Skeleton width={200} height={20} />
-            <Skeleton width={160} height={20} />
-          </div>
-          <div style={{}}>
-            <Skeleton width={280} height={200} />
-            <Skeleton width={200} height={20} />
-            <Skeleton width={160} height={20} />
-          </div>
-          <div style={{}}>
-            <Skeleton width={280} height={200} />
-            <Skeleton width={200} height={20} />
-            <Skeleton width={160} height={20} />
-          </div>
-          <div style={{}}>
-            <Skeleton width={280} height={200} />
-            <Skeleton width={200} height={20} />
-            <Skeleton width={160} height={20} />
-          </div>
-          <div style={{}}>
-            <Skeleton width={280} height={200} />
-            <Skeleton width={200} height={20} />
-            <Skeleton width={160} height={20} />
-          </div>
-          <div style={{}}>
-            <Skeleton width={280} height={200} />
-            <Skeleton width={200} height={20} />
-            <Skeleton width={160} height={20} />
-          </div>
-          <div style={{}}>
-            <Skeleton width={280} height={200} />
-            <Skeleton width={200} height={20} />
-            <Skeleton width={160} height={20} />
-          </div>
+          {[...Array(8)].map((_, index) => (
+            <div key={index}>
+              <Skeleton width={280} height={200} />
+              <Skeleton width={200} height={20} />
+              <Skeleton width={160} height={20} />
+            </div>
+          ))}
         </div>
       )}
     </Container>

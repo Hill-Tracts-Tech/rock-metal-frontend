@@ -86,42 +86,21 @@ const Products = ({ cat, filters, sort }) => {
           )}
         </Wrapper>
       ) : (
-        <div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: "12px",
-            }}
-          >
-            <Skeleton width={280} height={200} />
-            <Skeleton width={280} height={200} />
-            <Skeleton width={280} height={200} />
-            <Skeleton width={280} height={200} />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: "12px",
-              marginTop: "7px",
-            }}
-          >
-            <Skeleton width={280} height={25} count={1} />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: "12px",
-              marginTop: "7px",
-            }}
-          >
-            <Skeleton width={280} height={20} count={3} />
-          </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "12px",
+          }}
+        >
+          {[...Array(8)].map((_, index) => (
+            <div key={index}>
+              <Skeleton width={280} height={200} />
+              <Skeleton width={200} height={20} />
+              <Skeleton width={160} height={20} />
+            </div>
+          ))}
         </div>
       )}
     </Container>
