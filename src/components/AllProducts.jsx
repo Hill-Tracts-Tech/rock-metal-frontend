@@ -6,6 +6,7 @@ import { mobile } from "../responsive";
 import Announcement from "./Announcement";
 import Navbar from "./Navbar";
 import Skeleton from "react-loading-skeleton";
+import img from "../assets/sad.png";
 
 const AllProducts = () => {
   const [loading, setLoading] = useState(false);
@@ -109,13 +110,24 @@ const AllProducts = () => {
         </FilterContainer>
         {!loading ? (
           <Wrapper>
-            {filteredProducts
-              ? filteredProducts.map((item) => (
+            {products ? (
+              filteredProducts.length > 0 ? (
+                filteredProducts.map((item) => (
                   <AllProduct item={item} key={item.id} />
                 ))
-              : products.map((item) => (
-                  <AllProduct item={item} key={item.id} />
-                ))}
+              ) : (
+                <EmptyMessage>
+                  <EmptyMessageImg src={img} alt="EmptyProduct" />
+                  <p style={{ marginBottom: "10px" }}>
+                    Sorry, We cannot find any matched product.
+                  </p>
+                </EmptyMessage>
+              )
+            ) : products.length > 0 ? (
+              products.map((item) => <AllProduct item={item} key={item.id} />)
+            ) : (
+              <EmptyMessage>No products available.</EmptyMessage>
+            )}
           </Wrapper>
         ) : (
           <div
@@ -145,6 +157,19 @@ const FilterContainer = styled.div`
   margin-bottom: 15px;
 `;
 
+const EmptyMessage = styled.div`
+  width: 300px;
+  height: 300px;
+  margin: auto;
+  text-align: center;
+  border-radius: 6px;
+`;
+const EmptyMessageImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+`;
 const Filter = styled.div`
   /* margin: 20px; */
   ${mobile({ width: "0px 20px", display: "flex", flexDirection: "column" })}

@@ -5,6 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { mobile } from "../responsive";
 import Skeleton from "react-loading-skeleton";
+import img from "../assets/sad.png";
 
 const Products = ({ cat, filters, sort }) => {
   const [loading, setLoading] = useState(false);
@@ -65,13 +66,24 @@ const Products = ({ cat, filters, sort }) => {
       </Titles>
       {!loading ? (
         <Wrapper>
-          {cat
-            ? filteredProducts.map((item) => (
+          {cat ? (
+            filteredProducts.length > 0 ? (
+              filteredProducts.map((item) => (
                 <Product item={item} key={item.id} />
               ))
-            : products
-                .slice(0, 8)
-                .map((item) => <Product item={item} key={item.id} />)}
+            ) : (
+              <EmptyMessage>
+                <EmptyMessageImg src={img} alt="EmptyProduct" />
+                <p style={{ marginBottom: "10px" }}>
+                  Sorry, We cannot find any matched product.
+                </p>
+              </EmptyMessage>
+            )
+          ) : products.length > 0 ? (
+            products.map((item) => <Product item={item} key={item.id} />)
+          ) : (
+            <EmptyMessage>No products available.</EmptyMessage>
+          )}
         </Wrapper>
       ) : (
         <div>
@@ -130,6 +142,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-bottom: 30px;
 `;
 
 const Title = styled.h2`
@@ -148,7 +161,19 @@ const Titles = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-
+const EmptyMessage = styled.div`
+  width: 300px;
+  height: 300px;
+  margin: auto;
+  text-align: center;
+  border-radius: 6px;
+`;
+const EmptyMessageImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+`;
 const Button = styled.button`
   border: 1.5px solid teal;
   font-size: 16px;
