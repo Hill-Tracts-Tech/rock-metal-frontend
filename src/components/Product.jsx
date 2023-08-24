@@ -12,11 +12,10 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-const Product = ({ item, loading }) => {
+const Product = ({ item }) => {
   const user = useSelector((state) => state.user.currentUser);
   const history = useHistory();
   const dispatch = useDispatch();
-  console.log(item[0]);
   const handleAddToCart = () => {
     if (user) {
       try {
@@ -61,11 +60,7 @@ const Product = ({ item, loading }) => {
 
   return (
     <Container>
-      {loading ? (
-        <Skeleton width="280px" height="200px" count={1} />
-      ) : (
-        <Image src={item.img} alt="" />
-      )}
+      <Image src={item.img} alt="" />
       <Content>
         <Link to={`/product/${item._id}`} style={{ color: "black" }}>
           <Title>{item?.title}</Title>
