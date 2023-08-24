@@ -34,7 +34,14 @@ const Product = ({ item }) => {
         toast.error("Something went wrong! May be occurred ", error);
       }
     } else {
-      history.push("/login");
+      history.push({
+        pathname: "/login",
+        state: {
+          from: history.location,
+          autoAddToCart: true,
+          item: item,
+        },
+      });
     }
   };
   const handleAddToWishList = () => {
@@ -54,7 +61,14 @@ const Product = ({ item }) => {
         toast.error("Something went wrong! May be occurred ", error);
       }
     } else {
-      history.push("/login");
+      history.push({
+        pathname: "/login",
+        state: {
+          from: history.location,
+          autoAddToCart: false,
+          item: item,
+        },
+      });
     }
   };
 
@@ -147,10 +161,16 @@ const Sizes = styled.div`
 `;
 
 const Size = styled.div`
-  background-color: lightgray;
+  background-color: teal;
+  text-align: center;
+  font-size: 14px;
+  color: white;
   padding: 5px;
-  border-radius: 5px;
+  height: 25px;
+  width: 25px;
   font-weight: bold;
+  padding-top: 10px;
+  border-radius: 25px;
 `;
 
 const Icons = styled.div`

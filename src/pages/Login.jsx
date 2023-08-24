@@ -19,11 +19,13 @@ const Login = () => {
   const { isLoading, error } = useSelector((state) => state.user);
   const location = useLocation();
   const item = location.state?.item;
+  const autoAddToCart = location.state?.autoAddToCart;
   console.log("login item:", item);
   const handleClick = async (e) => {
     e.preventDefault();
     await login(dispatch, { email, password });
-    localStorage.setItem("temp_item", JSON.stringify(item));
+    localStorage.setItem("temp_item", JSON.stringify(item, autoAddToCart));
+    localStorage.setItem("cartType", JSON.stringify(autoAddToCart));
   };
 
   useEffect(() => {
@@ -36,8 +38,6 @@ const Login = () => {
   return (
     <ContainerWrapper>
       <Toaster />
-      <Announcement />
-      <Navbar />
       <Container>
         <Wrapper>
           <Title>SIGN IN</Title>

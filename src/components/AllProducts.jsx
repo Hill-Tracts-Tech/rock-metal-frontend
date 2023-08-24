@@ -74,8 +74,6 @@ const AllProducts = () => {
 
   return (
     <>
-      <Announcement />
-      <Navbar />
       <Container>
         <Title>All Products</Title>
         <FilterContainer>

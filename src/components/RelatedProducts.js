@@ -10,11 +10,17 @@ import {
   ShoppingCartOutlined,
 } from "@material-ui/icons";
 import { mobile } from "../responsive";
+import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorite, addProduct } from "../redux/cartRedux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const RelatedProducts = ({ category }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.currentUser);
   useEffect(() => {
     setLoading(true);
     const getProducts = async () => {
@@ -36,6 +42,63 @@ const RelatedProducts = ({ category }) => {
 
   console.log(products);
 
+  const handleAddToCart = (Id) => {
+    const item = products?.find((product) => product._id === Id);
+    if (user) {
+      try {
+        dispatch(
+          addProduct({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+            email: user?.email,
+          })
+        );
+        toast.success("Added to cart successfully");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! May be occurred ", error);
+      }
+    } else {
+      history.push({
+        pathname: "/login",
+        state: {
+          from: history.location,
+          autoAddToCart: true,
+          item: item,
+        },
+      });
+    }
+  };
+  const handleAddToFavorite = (Id) => {
+    const item = products?.find((product) => product._id === Id);
+    if (user) {
+      try {
+        dispatch(
+          addFavorite({
+            ...item,
+            quantity: 1,
+            color: item?.color[0],
+            size: item?.size[0],
+          })
+        );
+        toast.success("Added to favorite successfully");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! May be occurred ", error);
+      }
+    } else {
+      history.push({
+        pathname: "/login",
+        state: {
+          from: history.location,
+          autoAddToCart: false,
+          item: item,
+        },
+      });
+    }
+  };
   return (
     <Container>
       <Heading>You may choice that also</Heading>
@@ -78,13 +141,13 @@ const RelatedProducts = ({ category }) => {
               <Icons>
                 <ShoppingCartOutlined
                   style={{ cursor: "pointer" }}
-                  // onClick={handleAddToCart}
+                  onClick={() => handleAddToCart(item._id)}
                 />
                 <Link to={`/product/${item._id}`} style={{ color: "black" }}>
                   <SearchOutlined style={{ cursor: "pointer" }} />
                 </Link>
                 <FavoriteBorderOutlined
-                  // onClick={handleAddToWishList}
+                  onClick={() => handleAddToFavorite(item._id)}
                   style={{ cursor: "pointer" }}
                 />
               </Icons>
@@ -132,6 +195,7 @@ const Wrapper = styled.div`
   ${mobile({ justifyContent: "center", width: "100%" })}
 `;
 const Title = styled.div`
+  text-align: center;
   margin: 10px 0px;
   font-weight: 500;
 `;
@@ -170,10 +234,16 @@ const Sizes = styled.div`
 `;
 
 const Size = styled.div`
-  background-color: lightgray;
+  background-color: teal;
+  text-align: center;
+  font-size: 14px;
+  color: white;
   padding: 5px;
-  border-radius: 5px;
+  height: 25px;
+  width: 25px;
   font-weight: bold;
+  padding-top: 10px;
+  border-radius: 25px;
 `;
 
 const Icons = styled.div`

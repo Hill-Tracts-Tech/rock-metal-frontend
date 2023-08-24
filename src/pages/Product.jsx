@@ -70,8 +70,6 @@ const Product = () => {
   return (
     <Container>
       <Toaster />
-      <Announcement />
-      <Navbar />
       <Wrapper>
         <ImgContainer>
           <Image src={product.img} />
@@ -120,7 +118,6 @@ const Product = () => {
         </InfoContainer>
       </Wrapper>
       <RelatedProducts category={product.categories} />
-      <Footer />
     </Container>
   );
 };
@@ -256,8 +253,8 @@ const Button = styled.button`
   border: 1.5px solid teal;
   font-size: 16px;
   background-color: teal;
-  border-radius: 30px;
-  padding: 10px 40px;
+  border-radius: 12px;
+  padding: 10px 20px;
   color: #fff;
   cursor: pointer;
   transition: ease 0.3s;

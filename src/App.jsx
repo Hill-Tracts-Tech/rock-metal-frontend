@@ -17,14 +17,18 @@ import ScrollToTop from "./components/scroll/ScrollToTop";
 import WishList from "./pages/WishList";
 import PrivateRoute from "./router/PrivateRoute ";
 import { useEffect, useState } from "react";
-import { addProduct } from "./redux/cartRedux";
+import { addFavorite, addProduct } from "./redux/cartRedux";
 import { toast } from "react-hot-toast";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Announcement from "./components/Announcement";
 
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
 
   const [product, setProduct] = useState({});
+  // const [cartType, setcartype] = useState({});
 
   useEffect(() => {
     const temp_data = localStorage.getItem("temp_item");
@@ -37,31 +41,64 @@ const App = () => {
       }
     }
   }, []);
+  const cartType = localStorage.getItem("cartType");
+  // useEffect(() => {
 
-  console.log(product, "product");
+  //   if (cartTypes) {
+  //     try {
+  //       setcartype(JSON.parse(cartTypes));
+  //     } catch (error) {
+  //       console.error("Error parsing JSON:", error);
+  //     }
+  //   }
+  // }, []);
+
+  // console.log(product, "product");
+  // console.log(cartType, "cartType");
 
   if (currentUser?.email && Object.keys(product).length > 0) {
-    try {
-      dispatch(
-        addProduct({
-          ...product,
-          quantity: 1,
-          color: product?.color[0],
-          size: product?.size[0],
-          email: currentUser?.email,
-        })
-      );
-      toast.success("Added to cart automatically after login");
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong while adding to cart");
+    if (cartType === "true") {
+      try {
+        dispatch(
+          addProduct({
+            ...product,
+            quantity: 1,
+            color: product?.color[0],
+            size: product?.size[0],
+            email: currentUser?.email,
+          })
+        );
+        toast.success("Added to cart automatically after login");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong while adding to cart");
+      }
+      localStorage.removeItem("temp_item");
+    } else if (cartType === "false") {
+      try {
+        dispatch(
+          addFavorite({
+            ...product,
+            quantity: 1,
+            color: product?.color[0],
+            size: product?.size[0],
+            email: currentUser?.email,
+          })
+        );
+        toast.success("Added to cart automatically after login");
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong while adding to cart");
+      }
+      localStorage.removeItem("temp_item");
     }
-    localStorage.removeItem("temp_item");
   }
 
   return (
     <Router>
       <ScrollToTop />
+      <Navbar />
+      <Announcement />
       <Switch>
         <Route exact path="/">
           <Home />
@@ -92,6 +129,7 @@ const App = () => {
           <WishList />
         </PrivateRoute>
       </Switch>
+      <Footer />
     </Router>
   );
 };

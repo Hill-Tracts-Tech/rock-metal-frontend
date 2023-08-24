@@ -73,8 +73,6 @@ const Cart = () => {
 
   return (
     <Container>
-      <Announcement />
-      <Navbar />
       <Wrapper>
         <Title>
           Your are shipping{" "}
@@ -219,7 +217,6 @@ const Cart = () => {
           </Summary>
         </Bottom>
       </Wrapper>
-      <Footer />
     </Container>
   );
 };
