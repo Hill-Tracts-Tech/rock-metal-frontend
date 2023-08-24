@@ -1,6 +1,5 @@
 import {
   FavoriteBorderOutlined,
-  SearchOutlined,
   ShoppingCartOutlined,
   Visibility,
 } from "@material-ui/icons";
@@ -15,19 +14,18 @@ const Trending = ({ item }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const cartData = {
+    ...item,
+    quantity: 1,
+    color: item?.color[0],
+    size: item?.size[0],
+  };
+
   // handle add to cart
   const handleAddToCart = () => {
     if (user) {
       try {
-        dispatch(
-          addProduct({
-            ...item,
-            quantity: 1,
-            color: item?.color[0],
-            size: item?.size[0],
-            email: user?.email,
-          })
-        );
+        dispatch(addProduct(cartData));
         toast.success("Added to cart successfully");
       } catch (error) {
         console.log(error);
@@ -39,24 +37,17 @@ const Trending = ({ item }) => {
         state: {
           from: history.location,
           autoAddToCart: true,
-          item: item,
+          item: cartData,
         },
       });
     }
   };
-  console.log(item);
+
   // add to favorite
   const handleAddToFavorite = () => {
     if (user) {
       try {
-        dispatch(
-          addFavorite({
-            ...item,
-            quantity: 1,
-            color: item?.color[0],
-            size: item?.size[0],
-          })
-        );
+        dispatch(addFavorite(cartData));
         toast.success("Added to favorite successfully");
       } catch (error) {
         console.log(error);
@@ -67,8 +58,7 @@ const Trending = ({ item }) => {
         pathname: "/login",
         state: {
           from: history.location,
-          autoAddToCart: false,
-          item: item,
+          item: cartData,
         },
       });
     }

@@ -1,9 +1,6 @@
 import { Add, Remove, Delete } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
@@ -17,16 +14,11 @@ import {
 } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
-import { isSameUser } from "../utils";
 
 const KEY = process.env.REACT_APP_STRIPE;
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-  const { currentUser } = useSelector((state) => state.user);
-
-  const loggedinUer = currentUser.email;
-  const storedUser = cart.email;
 
   const [stripeToken, setStripeToken] = useState(null);
   const history = useHistory();
@@ -74,10 +66,7 @@ const Cart = () => {
   return (
     <Container>
       <Wrapper>
-        <Title>
-          Your are shipping{" "}
-          {isSameUser(loggedinUer, storedUser) && cart.products.length}
-        </Title>
+        <Title>Your are shipping {cart.products.length}</Title>
         <Top>
           <Link to="/" style={{ textDecoration: "none" }}>
             <TopButton
@@ -99,19 +88,16 @@ const Cart = () => {
           <TopTexts>
             <TopText>
               Shopping Bag(
-              {isSameUser(loggedinUer, storedUser) && cart?.products?.length})
+              {cart?.products?.length})
             </TopText>
             <Link to="/wishList">
-              <TopText>
-                Your Wishlist (
-                {isSameUser(loggedinUer, storedUser) && cart?.favorite?.length})
-              </TopText>
+              <TopText>Your Wishlist ({cart?.favorite?.length})</TopText>
             </Link>
           </TopTexts>
         </Top>
         <Bottom>
           <Info>
-            {isSameUser(loggedinUer, storedUser) && cart.products.length > 0 ? (
+            {cart.products.length > 0 ? (
               <InfoWrapper>
                 {cart.products.map((product) => (
                   <Product>
@@ -184,9 +170,7 @@ const Cart = () => {
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>
-                ৳ {isSameUser(loggedinUer, storedUser) && cart.total}
-              </SummaryItemPrice>
+              <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
@@ -198,9 +182,7 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>
-                ৳ {isSameUser(loggedinUer, storedUser) && cart.total}
-              </SummaryItemPrice>
+              <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
               name="Lama Shop"

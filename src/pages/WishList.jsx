@@ -1,9 +1,6 @@
 import { Add, Delete, Remove } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import {
   addProduct,
@@ -14,14 +11,11 @@ import {
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
 import "../index.css";
-import { isSameUser } from "../utils";
 import { toast } from "react-hot-toast";
 const WishList = () => {
   const cart = useSelector((state) => state.cart);
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const loggedinUer = currentUser.email;
-  const storedUser = cart.email;
 
   const handleClearCart = () => {
     dispatch(clearFavorite());
@@ -61,10 +55,7 @@ const WishList = () => {
   return (
     <Container>
       <Wrapper>
-        <Title>
-          Your are shipping{" "}
-          {isSameUser(loggedinUer, storedUser) && cart?.favorite?.length}
-        </Title>
+        <Title>Your are shipping {cart?.favorite?.length}</Title>
         <Top>
           <Link to="/" style={{ textDecoration: "none" }}>
             <TopButton
@@ -84,14 +75,11 @@ const WishList = () => {
             </TopButton>
           </Link>
           <TopTexts>
-            <TopText>
-              Your Wishlist (
-              {isSameUser(loggedinUer, storedUser) && cart?.favorite?.length})
-            </TopText>
+            <TopText>Your Wishlist ({cart?.favorite?.length})</TopText>
           </TopTexts>
         </Top>
         <Bottom>
-          {isSameUser(loggedinUer, storedUser) && cart?.favorite?.length > 0 ? (
+          {cart?.favorite?.length > 0 ? (
             <InfoWrapper>
               {cart?.favorite?.map((product) => (
                 <Product key={product._id}>

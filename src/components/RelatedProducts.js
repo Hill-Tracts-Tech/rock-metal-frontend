@@ -45,17 +45,16 @@ const RelatedProducts = ({ category }) => {
 
   const handleAddToCart = (Id) => {
     const item = products?.find((product) => product._id === Id);
+    const data = {
+      ...item,
+      quantity: 1,
+      color: item?.color[0],
+      size: item?.size[0],
+      email: user?.email,
+    };
     if (user) {
       try {
-        dispatch(
-          addProduct({
-            ...item,
-            quantity: 1,
-            color: item?.color[0],
-            size: item?.size[0],
-            email: user?.email,
-          })
-        );
+        dispatch(addProduct(data));
         toast.success("Added to cart successfully");
       } catch (error) {
         console.log(error);
@@ -67,23 +66,22 @@ const RelatedProducts = ({ category }) => {
         state: {
           from: history.location,
           autoAddToCart: true,
-          item: item,
+          item: data,
         },
       });
     }
   };
   const handleAddToFavorite = (Id) => {
     const item = products?.find((product) => product._id === Id);
+    const data = {
+      ...item,
+      quantity: 1,
+      color: item?.color[0],
+      size: item?.size[0],
+    };
     if (user) {
       try {
-        dispatch(
-          addFavorite({
-            ...item,
-            quantity: 1,
-            color: item?.color[0],
-            size: item?.size[0],
-          })
-        );
+        dispatch(addFavorite(data));
         toast.success("Added to favorite successfully");
       } catch (error) {
         console.log(error);
@@ -94,8 +92,7 @@ const RelatedProducts = ({ category }) => {
         pathname: "/login",
         state: {
           from: history.location,
-          autoAddToCart: false,
-          item: item,
+          item: data,
         },
       });
     }
