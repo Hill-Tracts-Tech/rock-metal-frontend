@@ -2,6 +2,7 @@ import {
   FavoriteBorderOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
+  Visibility,
 } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -78,15 +79,24 @@ const Feature = ({ item, loading }) => {
       <Circle />
       <Image src={item.img} />
       <Info>
-        <Icon onClick={handleAddToCart}>
+        <Icon
+          onClick={handleAddToCart}
+          style={{ cursor: "pointer", color: "teal" }}
+        >
           <ShoppingCartOutlined />
         </Icon>
         <Icon>
-          <Link to={`/product/${item._id}`}>
-            <SearchOutlined />
+          <Link
+            to={`/product/${item._id}`}
+            style={{ cursor: "pointer", color: "teal" }}
+          >
+            <Visibility />
           </Link>
         </Icon>
-        <Icon onClick={handleAddToFavorite}>
+        <Icon
+          onClick={handleAddToFavorite}
+          style={{ cursor: "pointer", color: "teal" }}
+        >
           <FavoriteBorderOutlined />
         </Icon>
       </Info>
