@@ -17,18 +17,17 @@ const Product = ({ item }) => {
   const user = useSelector((state) => state.user.currentUser);
   const history = useHistory();
   const dispatch = useDispatch();
+
   const handleAddToCart = () => {
+    const data = {
+      ...item,
+      quantity: 1,
+      color: item?.color[0],
+      size: item?.size[0],
+    };
     if (user) {
       try {
-        dispatch(
-          addProduct({
-            ...item,
-            quantity: 1,
-            color: item?.color[0],
-            size: item?.size[0],
-            email: user?.email,
-          })
-        );
+        dispatch(addProduct(data));
         toast.success("Added successfully!");
       } catch (error) {
         console.error("Error adding to cart:", error);
@@ -40,22 +39,21 @@ const Product = ({ item }) => {
         state: {
           from: history.location,
           autoAddToCart: true,
-          item: item,
+          item: data,
         },
       });
     }
   };
   const handleAddToWishList = () => {
+    const data = {
+      ...item,
+      quantity: 1,
+      color: item?.color[0],
+      size: item?.size[0],
+    };
     if (user) {
       try {
-        dispatch(
-          addFavorite({
-            ...item,
-            quantity: 1,
-            color: item?.color[0],
-            size: item?.size[0],
-          })
-        );
+        dispatch(addFavorite(data));
         toast.success("Added successfully!");
       } catch (error) {
         console.error("Error adding to cart:", error);
@@ -66,8 +64,7 @@ const Product = ({ item }) => {
         pathname: "/login",
         state: {
           from: history.location,
-          autoAddToCart: false,
-          item: item,
+          item: data,
         },
       });
     }

@@ -4,12 +4,9 @@ import { login } from "../redux/apiCalls";
 import { mobile } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Announcement from "../components/Announcement";
-import Navbar from "../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
 import { useEffect } from "react";
 import { clear } from "../redux/userRedux";
-import { addProduct } from "../redux/cartRedux";
 import { useLocation } from "react-router-dom/cjs/react-router-dom";
 
 const Login = () => {
@@ -20,12 +17,24 @@ const Login = () => {
   const location = useLocation();
   const item = location.state?.item;
   const autoAddToCart = location.state?.autoAddToCart;
-  console.log("login item:", item);
+
+  item &&
+    localStorage.setItem(
+      "temp_product",
+      JSON.stringify({ item, autoAddToCart })
+    );
+
+  const data = localStorage.getItem("temp_product");
+
+  const { item: product, autoAddToCart: condition } = JSON.parse(data) || {};
+
   const handleClick = async (e) => {
     e.preventDefault();
-    await login(dispatch, { email, password });
-    localStorage.setItem("temp_item", JSON.stringify(item, autoAddToCart));
-    localStorage.setItem("cartType", JSON.stringify(autoAddToCart));
+    await login(dispatch, {
+      email,
+      password,
+      ...(product && { item: product, autoAddToCart: condition }),
+    });
   };
 
   useEffect(() => {

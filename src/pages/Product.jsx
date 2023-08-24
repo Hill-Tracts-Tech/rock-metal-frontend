@@ -1,9 +1,5 @@
 import { Add, Remove } from "@material-ui/icons";
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
-import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
 import { useLocation, useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -45,25 +41,30 @@ const Product = () => {
   };
 
   const handleClick = () => {
+    const selectedColor = color || (product.color && product.color[0]) || "";
+    const selectedSize = size || (product.size && product.size[0]) || "";
+    const data = {
+      ...product,
+      quantity: quantity,
+      color: selectedColor,
+      size: selectedSize,
+    };
     if (user) {
       try {
-        const selectedColor =
-          color || (product.color && product.color[0]) || "";
-        const selectedSize = size || (product.size && product.size[0]) || "";
-        const data = {
-          ...product,
-          quantity: quantity,
-          color: selectedColor,
-          size: selectedSize,
-          email: user?.email,
-        };
         dispatch(addProduct(data));
         toast.success("Added to cart successfully!");
       } catch (error) {
         toast.error("Something went wrong! May be occurred ", error);
       }
     } else {
-      history.push("/login");
+      history.push({
+        pathname: "/login",
+        state: {
+          from: history.location,
+          autoAddToCart: true,
+          item: data,
+        },
+      });
     }
   };
 

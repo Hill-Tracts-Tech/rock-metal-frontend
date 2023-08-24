@@ -1,6 +1,5 @@
 import {
   FavoriteBorderOutlined,
-  SearchOutlined,
   ShoppingCartOutlined,
   Visibility,
 } from "@material-ui/icons";
@@ -16,17 +15,15 @@ const Feature = ({ item, loading }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const handleAddToCart = () => {
+    const data = {
+      ...item,
+      quantity: 1,
+      color: item?.color[0],
+      size: item?.size[0],
+    };
     if (user) {
       try {
-        dispatch(
-          addProduct({
-            ...item,
-            quantity: 1,
-            color: item?.color[0],
-            size: item?.size[0],
-            email: user?.email,
-          })
-        );
+        dispatch(addProduct(data));
         toast.success("Added to cart successfully");
       } catch (error) {
         console.log(error);
@@ -38,25 +35,24 @@ const Feature = ({ item, loading }) => {
         state: {
           from: history.location,
           autoAddToCart: true,
-          item: item,
+          item: data,
         },
       });
     }
   };
 
   // add to favorite
-  const handleAddToFavorite = () => {
+  const handleAddToFavorite = async () => {
+    const data = {
+      ...item,
+      quantity: 1,
+      color: item?.color[0],
+      size: item?.size[0],
+      email: user?.email,
+    };
     if (user) {
       try {
-        dispatch(
-          addFavorite({
-            ...item,
-            quantity: 1,
-            color: item?.color[0],
-            size: item?.size[0],
-            email: user?.email,
-          })
-        );
+        dispatch(addFavorite(data));
         toast.success("Added to favorite successfully");
       } catch (error) {
         console.log(error);
@@ -67,8 +63,7 @@ const Feature = ({ item, loading }) => {
         pathname: "/login",
         state: {
           from: history.location,
-          autoAddToCart: false,
-          item: item,
+          item: data,
         },
       });
     }

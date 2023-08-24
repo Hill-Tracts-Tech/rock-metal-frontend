@@ -16,16 +16,13 @@ import {
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import profile from "../assets/profile.png";
 import { logout } from "../redux/userRedux";
 import gravatar from "gravatar";
-import { isSameUser } from "../utils";
 import { clear, clearCart, clearFavorite } from "../redux/cartRedux";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
 
-  const loggedinUer = currentUser?.email;
   const dispatch = useDispatch();
 
   //for search input and button
@@ -73,6 +70,7 @@ const Navbar = () => {
   const imageUrl = currentUser && gravatar.url(currentUser.email);
 
   const handleLogout = () => {
+    setIsPopupProfileOpen(!isPopupProfileOpen);
     dispatch(logout());
     dispatch(clear());
   };
@@ -109,24 +107,14 @@ const Navbar = () => {
         <Right>
           <Link to="/cart">
             <MenuItem title="Cart">
-              <Badge
-                badgeContent={
-                  isSameUser(loggedinUer, storedUser) && cart.quantity
-                }
-                color="teal"
-              >
+              <Badge badgeContent={cart.quantity} color="teal">
                 <ShoppingCartOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
           </Link>
           <Link to="/wishList">
             <MenuItem title="WhishList">
-              <Badge
-                badgeContent={
-                  isSameUser(loggedinUer, storedUser) && cart.favQuantity
-                }
-                color="teal"
-              >
+              <Badge badgeContent={cart.favQuantity} color="teal">
                 <FavoriteBorderOutlined style={{ color: "teal" }} />
               </Badge>
             </MenuItem>
@@ -238,24 +226,14 @@ const Navbar = () => {
           <div style={{ display: "flex" }}>
             <Link to="/cart">
               <MenuItem title="Cart">
-                <Badge
-                  badgeContent={
-                    isSameUser(loggedinUer, storedUser) && cart.quantity
-                  }
-                  color="teal"
-                >
+                <Badge badgeContent={cart.quantity} color="teal">
                   <ShoppingCartOutlined style={{ color: "teal" }} />
                 </Badge>
               </MenuItem>
             </Link>
             <Link to="/wishList">
               <MenuItem title="WishList">
-                <Badge
-                  badgeContent={
-                    isSameUser(loggedinUer, storedUser) && cart.favQuantity
-                  }
-                  color="teal"
-                >
+                <Badge badgeContent={cart.favQuantity} color="teal">
                   <FavoriteBorderOutlined style={{ color: "teal" }} />
                 </Badge>
               </MenuItem>
@@ -305,46 +283,44 @@ const Navbar = () => {
           </SearchContainer>
         </PopupContent>
       </Overlay>
-      {currentUser?.username && (
-        <ProfileOverlay isOpenProfile={isPopupProfileOpen}>
-          <ProfilePopupContent>
-            <button
-              style={{
-                position: "absolute",
-                right: "3px",
-                top: "6px",
-                backgroundColor: "none",
-                border: "none",
-                outline: "none",
-                cursor: "pointer",
-                title: "Close",
-              }}
-              onClick={ProfileTogglePopup}
-            >
-              <Close />
-            </button>
-            <Profile>
-              {imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt="profile"
-                  style={{
-                    height: "50px",
-                    width: "50px",
-                    borderRadius: "25px",
-                    objectFit: "contain",
-                  }}
-                />
-              ) : (
-                <AccountCircle style={{ color: "teal" }} />
-              )}
-            </Profile>
-            <h3>{currentUser?.username}</h3>
-            <span>{currentUser?.email}</span>
-            <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
-          </ProfilePopupContent>
-        </ProfileOverlay>
-      )}
+      <ProfileOverlay isOpenProfile={isPopupProfileOpen}>
+        <ProfilePopupContent>
+          <button
+            style={{
+              position: "absolute",
+              right: "3px",
+              top: "6px",
+              backgroundColor: "none",
+              border: "none",
+              outline: "none",
+              cursor: "pointer",
+              title: "Close",
+            }}
+            onClick={ProfileTogglePopup}
+          >
+            <Close />
+          </button>
+          <Profile>
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="profile"
+                style={{
+                  height: "50px",
+                  width: "50px",
+                  borderRadius: "25px",
+                  objectFit: "contain",
+                }}
+              />
+            ) : (
+              <AccountCircle style={{ color: "teal" }} />
+            )}
+          </Profile>
+          <h3>{currentUser?.username}</h3>
+          <span>{currentUser?.email}</span>
+          <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+        </ProfilePopupContent>
+      </ProfileOverlay>
     </>
   );
 };

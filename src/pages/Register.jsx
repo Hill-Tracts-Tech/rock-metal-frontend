@@ -20,17 +20,20 @@ const Register = () => {
   const [confirm_password, setConfirmPassword] = useState("");
   const { isLoading, error } = useSelector((state) => state.user);
 
+  const data = localStorage.getItem("temp_product");
+
+  const product = data && JSON.parse(data);
+
   const user = {
-    name,
-    lastName,
     username,
     email,
     password,
-    confirm_password,
+    ...(data && { item: product?.item, autoAddToCart: product?.autoAddToCart }),
   };
+
   const handleRegistration = (e) => {
     e.preventDefault();
-    register(dispatch, { user });
+    register(dispatch, user);
   };
 
   // clearing the error
