@@ -10,7 +10,6 @@ const Products = ({ cat, filters, sort }) => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
   useEffect(() => {
     setLoading(true);
     const getProducts = async () => {
@@ -124,7 +123,8 @@ const Container = styled.div`
   width: 90%;
   margin: auto;
   padding: 20px;
-  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
+    rgba(17, 17, 26, 0.1) 0px 0px 8px;
 `;
 const Wrapper = styled.div`
   display: flex;
