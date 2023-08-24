@@ -19,6 +19,9 @@ import PrivateRoute from "./router/PrivateRoute ";
 import { useEffect, useState } from "react";
 import { addFavorite, addProduct } from "./redux/cartRedux";
 import { toast } from "react-hot-toast";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Announcement from "./components/Announcement";
 
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -94,6 +97,8 @@ const App = () => {
   return (
     <Router>
       <ScrollToTop />
+      <Navbar />
+      <Announcement />
       <Switch>
         <Route exact path="/">
           <Home />
@@ -124,6 +129,7 @@ const App = () => {
           <WishList />
         </PrivateRoute>
       </Switch>
+      <Footer />
     </Router>
   );
 };

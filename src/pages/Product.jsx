@@ -70,8 +70,6 @@ const Product = () => {
   return (
     <Container>
       <Toaster />
-      <Announcement />
-      <Navbar />
       <Wrapper>
         <ImgContainer>
           <Image src={product.img} />
@@ -120,7 +118,6 @@ const Product = () => {
         </InfoContainer>
       </Wrapper>
       <RelatedProducts category={product.categories} />
-      <Footer />
     </Container>
   );
 };

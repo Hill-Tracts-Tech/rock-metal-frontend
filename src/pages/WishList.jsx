@@ -60,8 +60,6 @@ const WishList = () => {
   };
   return (
     <Container>
-      <Announcement />
-      <Navbar />
       <Wrapper>
         <Title>
           Your are shipping{" "}
@@ -166,7 +164,6 @@ const WishList = () => {
           )}
         </Bottom>
       </Wrapper>
-      <Footer />
     </Container>
   );
 };

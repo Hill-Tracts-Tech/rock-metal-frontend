@@ -24,8 +24,6 @@ const ProductList = () => {
 
   return (
     <Container>
-      <Announcement />
-      <Navbar />
       <Title>{cat.toUpperCase()}</Title>
       <FilterContainer>
         <Filter>
@@ -58,8 +56,6 @@ const ProductList = () => {
         </Filter>
       </FilterContainer>
       <Products cat={cat} filters={filters} sort={sort} />
-      <Newsletter />
-      <Footer />
     </Container>
   );
 };

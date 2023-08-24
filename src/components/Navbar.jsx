@@ -11,7 +11,6 @@ import {
   FavoriteBorderOutlined,
   Menu,
   Close,
-  CancelIcon,
   CloseRounded,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom/cjs/react-router-dom";
@@ -418,6 +417,10 @@ const ProfilePopupContent = styled.div`
 const MobileViewNavbarContainer = styled.nav`
   display: none;
   @media (max-width: 768px) {
+    position: fixed; /* Make the Navbar sticky */
+    top: 0; /* Position it at the top */
+    width: 96%;
+    z-index: 1000;
     background-color: #ffffff;
     color: teal;
     padding: 1rem;
@@ -427,6 +430,10 @@ const MobileViewNavbarContainer = styled.nav`
   }
 `;
 const NavbarContainer = styled.nav`
+  position: fixed; /* Make the Navbar sticky */
+  top: 0; /* Position it at the top */
+  width: 96%;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -38,8 +38,6 @@ const Login = () => {
   return (
     <ContainerWrapper>
       <Toaster />
-      <Announcement />
-      <Navbar />
       <Container>
         <Wrapper>
           <Title>SIGN IN</Title>
