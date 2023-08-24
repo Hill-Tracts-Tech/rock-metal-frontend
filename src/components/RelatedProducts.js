@@ -23,7 +23,7 @@ const RelatedProducts = ({ category }) => {
           const res = await axios.get(
             `http://localhost:5000/api/products?category=${category[0]}`
           );
-          setProducts(res.data);
+          setProducts(res.data.data);
           setLoading(false);
         }
       } catch (err) {

@@ -39,7 +39,7 @@ const Trending = ({ item }) => {
           from: history.location,
           autoAddToCart: true,
           item: item,
-        }, // Pass additional info
+        },
       });
     }
   };
