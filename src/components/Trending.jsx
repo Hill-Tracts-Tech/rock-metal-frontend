@@ -62,7 +62,14 @@ const Trending = ({ item }) => {
         toast.error("Something went wrong! May be occurred ", error);
       }
     } else {
-      history.push("/login");
+      history.push({
+        pathname: "/login",
+        state: {
+          from: history.location,
+          autoAddToCart: false,
+          item: item,
+        },
+      });
     }
   };
 

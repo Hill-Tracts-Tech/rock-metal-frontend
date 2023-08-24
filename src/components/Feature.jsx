@@ -34,7 +34,11 @@ const Feature = ({ item, loading }) => {
     } else {
       history.push({
         pathname: "/login",
-        state: { from: history.location },
+        state: {
+          from: history.location,
+          autoAddToCart: true,
+          item: item,
+        },
       });
     }
   };
@@ -58,7 +62,14 @@ const Feature = ({ item, loading }) => {
         toast.error("Something went wrong! May be occurred ", error);
       }
     } else {
-      history.push("/login");
+      history.push({
+        pathname: "/login",
+        state: {
+          from: history.location,
+          autoAddToCart: false,
+          item: item,
+        },
+      });
     }
   };
 

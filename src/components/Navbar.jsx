@@ -239,19 +239,32 @@ const Navbar = () => {
           <div style={{ display: "flex" }}>
             <Link to="/cart">
               <MenuItem title="Cart">
-                <Badge badgeContent={cart.quantity} color="teal">
+                <Badge
+                  badgeContent={
+                    isSameUser(loggedinUer, storedUser) && cart.quantity
+                  }
+                  color="teal"
+                >
                   <ShoppingCartOutlined style={{ color: "teal" }} />
                 </Badge>
               </MenuItem>
             </Link>
             <Link to="/wishList">
               <MenuItem title="WishList">
-                <Badge badgeContent={cart.favQuantity} color="teal">
+                <Badge
+                  badgeContent={
+                    isSameUser(loggedinUer, storedUser) && cart.favQuantity
+                  }
+                  color="teal"
+                >
                   <FavoriteBorderOutlined style={{ color: "teal" }} />
                 </Badge>
               </MenuItem>
             </Link>
           </div>
+          {currentUser?.username && (
+            <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+          )}
           {!currentUser?.username && (
             <AuthContainer>
               <Link

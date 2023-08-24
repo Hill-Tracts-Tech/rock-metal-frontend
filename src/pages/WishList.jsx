@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import {
+  addProduct,
   clearFavorite,
   removeFromWishList,
   updateFavQuantity,
@@ -14,13 +15,13 @@ import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
 import "../index.css";
 import { isSameUser } from "../utils";
+import { toast } from "react-hot-toast";
 const WishList = () => {
   const cart = useSelector((state) => state.cart);
   const { currentUser } = useSelector((state) => state.user);
-
+  const dispatch = useDispatch();
   const loggedinUer = currentUser.email;
   const storedUser = cart.email;
-  const dispatch = useDispatch();
 
   const handleClearCart = () => {
     dispatch(clearFavorite());
@@ -38,7 +39,25 @@ const WishList = () => {
       dispatch(removeFromWishList(productToRemove));
     }
   };
+  const handleAddToCart = (Id) => {
+    const item = cart?.favorite.find((product) => product._id === Id);
 
+    try {
+      dispatch(
+        addProduct({
+          ...item,
+          quantity: 1,
+          color: item?.color[0],
+          size: item?.size[0],
+          email: currentUser?.email,
+        })
+      );
+      toast.success("Added to cart successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong! May be occurred ", error);
+    }
+  };
   return (
     <Container>
       <Announcement />
@@ -124,7 +143,11 @@ const WishList = () => {
                     <ProductPrice>
                       ৳ {product.price * product.favQuantity}
                     </ProductPrice>
-                    <AddToCartButton>Add To Cart</AddToCartButton>
+                    <AddToCartButton
+                      onClick={() => handleAddToCart(product._id)}
+                    >
+                      Add To Cart
+                    </AddToCartButton>
                   </PriceDetail>
                 </Product>
               ))}
