@@ -18,7 +18,6 @@ import WishList from "./pages/WishList";
 import PrivateRoute from "./router/PrivateRoute ";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Announcement from "./components/Announcement";
 
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -27,7 +26,6 @@ const App = () => {
     <Router>
       <ScrollToTop />
       <Navbar />
-      <Announcement />
       <Switch>
         <Route exact path="/">
           <Home />

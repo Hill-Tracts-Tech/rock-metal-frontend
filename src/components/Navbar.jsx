@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userRedux";
 import gravatar from "gravatar";
 import { clear, clearCart, clearFavorite } from "../redux/cartRedux";
+import Announcement from "./Announcement";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);

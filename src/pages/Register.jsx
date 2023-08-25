@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../redux/apiCalls";
 import { useState } from "react";
-import Announcement from "../components/Announcement";
-import Navbar from "../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
 import { useEffect } from "react";
 import { clear } from "../redux/userRedux";
