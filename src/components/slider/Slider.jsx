@@ -8,6 +8,7 @@ import { sliderItems } from "../../data";
 import styled from "styled-components";
 import SwiperCore, { Autoplay, Pagination } from "swiper";
 import { mobile } from "../../responsive";
+import { Link } from "react-router-dom";
 
 export default function Slider() {
   SwiperCore.use([Autoplay, Pagination]);
@@ -35,7 +36,9 @@ export default function Slider() {
               <InfoContainer>
                 <Title>{item.title}</Title>
                 <Desc>{item.desc}</Desc>
-                <Button>SHOW NOW</Button>
+                <Link to="/all-products">
+                  <Button>SHOW NOW</Button>
+                </Link>
               </InfoContainer>
             </Slide>
           </SwiperSlide>

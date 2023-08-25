@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AllProduct from "./AllProduct";
 import { mobile } from "../responsive";
-import Announcement from "./Announcement";
-import Navbar from "./Navbar";
 import Skeleton from "react-loading-skeleton";
 import img from "../assets/sad.png";
 
