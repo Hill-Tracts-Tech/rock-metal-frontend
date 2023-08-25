@@ -19,21 +19,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userRedux";
 import gravatar from "gravatar";
 import { clear, clearCart, clearFavorite } from "../redux/cartRedux";
-import Announcement from "./Announcement";
+import SearchItem from "./SearchItem";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
-
   const dispatch = useDispatch();
 
   //for search input and button
   const cart = useSelector((state) => state.cart);
-  const storedUser = cart.email;
   const [searchValue, setSearchValue] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   // popup
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isPopupProfileOpen, setIsPopupProfileOpen] = useState(false);
+  const [searchPopup, setSearchPopup] = useState(false);
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -44,7 +43,7 @@ const Navbar = () => {
   };
 
   const handleSearch = () => {
-    console.log("Searching for:", searchValue);
+    setSearchPopup(true);
   };
 
   const togglePopup = () => {
@@ -322,6 +321,13 @@ const Navbar = () => {
           <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
         </ProfilePopupContent>
       </ProfileOverlay>
+      {searchPopup && searchValue?.length >= 3 && (
+        <SearchItem
+          searchPopup={searchPopup}
+          setSearchPopup={setSearchPopup}
+          searchValue={searchValue}
+        />
+      )}
     </>
   );
 };
@@ -407,9 +413,10 @@ const MobileViewNavbarContainer = styled.nav`
   }
 `;
 const NavbarContainer = styled.nav`
-  position: fixed; /* Make the Navbar sticky */
-  top: 0; /* Position it at the top */
+  position: fixed;
+  top: 0;
   width: 96%;
+  height: 50px;
   z-index: 1000;
   display: flex;
   justify-content: space-between;

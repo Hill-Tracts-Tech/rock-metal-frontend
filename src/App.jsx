@@ -27,34 +27,36 @@ const App = () => {
       <ScrollToTop />
       <Navbar />
       <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/products/:category">
-          <ProductList />
-        </Route>
-        <Route path="/product/:id">
-          <Product />
-        </Route>
-        <Route path="/success">
-          <Success />
-        </Route>
-        <Route path="/all-products">
-          <AllProducts />
-        </Route>
+        <div style={{ marginTop: "50px" }}>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/products/:category">
+            <ProductList />
+          </Route>
+          <Route path="/product/:id">
+            <Product />
+          </Route>
+          <Route path="/success">
+            <Success />
+          </Route>
+          <Route path="/all-products">
+            <AllProducts />
+          </Route>
 
-        <Route path="/login">
-          {currentUser?.email ? <Redirect to="/" /> : <Login />}
-        </Route>
-        <Route path="/register">
-          {currentUser?.email ? <Redirect to="/" /> : <Register />}
-        </Route>
-        <PrivateRoute path="/cart">
-          <Cart />
-        </PrivateRoute>
-        <PrivateRoute path="/wishList">
-          <WishList />
-        </PrivateRoute>
+          <Route path="/login">
+            {currentUser?.email ? <Redirect to="/" /> : <Login />}
+          </Route>
+          <Route path="/register">
+            {currentUser?.email ? <Redirect to="/" /> : <Register />}
+          </Route>
+          <PrivateRoute path="/cart">
+            <Cart />
+          </PrivateRoute>
+          <PrivateRoute path="/wishList">
+            <WishList />
+          </PrivateRoute>
+        </div>
       </Switch>
       <Footer />
     </Router>

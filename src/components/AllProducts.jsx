@@ -198,8 +198,8 @@ const Option = styled.option`
 `;
 const Container = styled.div`
   width: 90%;
-  margin: auto;
   padding: 20px;
+  margin: auto;
 `;
 const Wrapper = styled.div`
   display: flex;
