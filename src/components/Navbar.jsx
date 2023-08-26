@@ -532,7 +532,7 @@ const LoginButton = styled.button`
   border: 1.3px solid teal;
   transition: ease-in-out 0.5s;
   &:hover {
-    background-color: #a8a6a6;
+    background-color: transparent;
     color: teal;
   }
 `;
