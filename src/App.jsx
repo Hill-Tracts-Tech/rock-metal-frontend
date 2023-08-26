@@ -18,6 +18,8 @@ import WishList from "./pages/WishList";
 import PrivateRoute from "./router/PrivateRoute ";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import styled from "styled-components";
+import { mobile } from "./responsive";
 
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -27,7 +29,7 @@ const App = () => {
       <ScrollToTop />
       <Navbar />
       <Switch>
-        <div style={{ marginTop: "50px" }}>
+        <Div>
           <Route exact path="/">
             <Home />
           </Route>
@@ -56,7 +58,7 @@ const App = () => {
           <PrivateRoute path="/wishList">
             <WishList />
           </PrivateRoute>
-        </div>
+        </Div>
       </Switch>
       <Footer />
     </Router>
@@ -64,3 +66,8 @@ const App = () => {
 };
 
 export default App;
+
+const Div = styled.div`
+  margin-top: 50px;
+  ${mobile({ marginTop: "70px" })}
+`;
