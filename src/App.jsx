@@ -27,7 +27,7 @@ const App = () => {
       <ScrollToTop />
       <Navbar />
       <Switch>
-        <div style={{ marginTop: "50px" }}>
+        <div style={{ marginTop: "60px" }}>
           <Route exact path="/">
             <Home />
           </Route>
