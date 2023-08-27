@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "@material-ui/core";
 import styled from "styled-components";
@@ -239,7 +238,12 @@ const Navbar = () => {
             </Link>
           </div>
           {currentUser?.username && (
-            <LoginButton1 onClick={handleLogout1}>Logout</LoginButton1>
+            <>
+              <Link to="/orders" onClick={toggleDrawer}>
+                <LoginButton1>Orders</LoginButton1>
+              </Link>
+              <LoginButton1 onClick={handleLogout1}>Logout</LoginButton1>
+            </>
           )}
           {!currentUser?.username && (
             <AuthContainer>
@@ -319,7 +323,19 @@ const Navbar = () => {
           </Profile>
           <h3>{currentUser?.username}</h3>
           <span>{currentUser?.email}</span>
-          <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "end",
+              gap: "10px",
+            }}
+          >
+            <Link to="/orders" onClick={() => setIsPopupProfileOpen(false)}>
+              <Button>Orders</Button>
+            </Link>
+            <Button onClick={handleLogout}>Logout</Button>
+          </div>
         </ProfilePopupContent>
       </ProfileOverlay>
       {searchPopup && searchValue?.length >= 3 && (
@@ -386,10 +402,15 @@ const ProfilePopupContent = styled.div`
   padding: 20px;
   background-color: white;
   border-radius: 5px;
-  width: 30%;
+  width: 250px;
   height: auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 999999999999999;
+
+  a {
+    text-decoration: none;
+  }
+
   @media screen and (max-width: 500px) {
     width: 50%;
     top: 31%;
@@ -598,7 +619,7 @@ const DrawerInner = styled.div`
   }
 `;
 
-const LogoutButton = styled.button`
+const Button = styled.button`
   padding: 12px 20px;
   border: none;
   border-radius: 12px;

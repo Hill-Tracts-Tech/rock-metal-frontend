@@ -72,7 +72,7 @@ export default Footer;
 
 const Container = styled.div`
   width: 90%;
-  margin: auto;
+  margin: 150px auto 0;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -6,7 +6,6 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import {
   FavoriteBorderOutlined,
-  SearchOutlined,
   ShoppingCartOutlined,
   Visibility,
 } from "@material-ui/icons";
@@ -16,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
-const RelatedProducts = ({ category }) => {
+const RelatedProducts = ({ category, productId }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -97,82 +96,91 @@ const RelatedProducts = ({ category }) => {
       });
     }
   };
+
+  const relatedProducts = products.filter(
+    (product) => product._id !== productId
+  );
+
   return (
     <Container>
-      <Heading>You may choice that also</Heading>
-      {!loading ? (
-        <Wrapper>
-          {products.map((item) => (
-            <Content>
-              <Image>
-                <img
-                  style={{
-                    borderRadius: "5px",
-                    width: "100%",
-                    height: "100%",
-                  }}
-                  src={item.img}
-                  alt={item.img}
-                />
-              </Image>
-              <Link to={`/product/${item._id}`} style={{ color: "black" }}>
-                <Title>{item?.title}</Title>
-              </Link>
-              <Price>Price : ৳ {item?.price}</Price>
-              <Colors>
-                {item?.color.map((c) => (
-                  <Color
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      borderRadius: "50%",
-                      backgroundColor: c.toLowerCase(),
-                    }}
-                  />
-                ))}
-              </Colors>
-              <Sizes>
-                {item?.size.map((s) => (
-                  <Size>{s}</Size>
-                ))}
-              </Sizes>
-              <Icons>
-                <ShoppingCartOutlined
-                  style={{ cursor: "pointer", color: "teal" }}
-                  onClick={() => handleAddToCart(item._id)}
-                />
-                <Link
-                  to={`/product/${item._id}`}
-                  style={{ cursor: "pointer", color: "teal" }}
-                >
-                  <Visibility />
-                </Link>
-                <FavoriteBorderOutlined
-                  onClick={() => handleAddToFavorite(item._id)}
-                  style={{ cursor: "pointer", color: "teal" }}
-                />
-              </Icons>
-            </Content>
-          ))}
-        </Wrapper>
-      ) : (
-        <div
-          style={{
-            display: "flex",
-            gap: "12px",
-            flexWrap: "wrap",
-            width: "90%",
-            margin: "0 auto",
-          }}
-        >
-          {[...Array(8)].map((_, index) => (
-            <div key={index}>
-              <Skeleton width={280} height={200} />
-              <Skeleton width={200} height={20} />
-              <Skeleton width={160} height={20} />
+      {relatedProducts.length > 0 && (
+        <>
+          <Heading>You may choice that also</Heading>
+          {!loading ? (
+            <Wrapper>
+              {relatedProducts.map((item) => (
+                <Content>
+                  <Image>
+                    <img
+                      style={{
+                        borderRadius: "5px",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      src={item.img}
+                      alt={item.img}
+                    />
+                  </Image>
+                  <Link to={`/product/${item._id}`} style={{ color: "black" }}>
+                    <Title>{item?.title}</Title>
+                  </Link>
+                  <Price>Price : ৳ {item?.price}</Price>
+                  <Colors>
+                    {item?.color.map((c) => (
+                      <Color
+                        style={{
+                          width: "25px",
+                          height: "25px",
+                          borderRadius: "50%",
+                          backgroundColor: c.toLowerCase(),
+                        }}
+                      />
+                    ))}
+                  </Colors>
+                  <Sizes>
+                    {item?.size.map((s) => (
+                      <Size>{s}</Size>
+                    ))}
+                  </Sizes>
+                  <Icons>
+                    <ShoppingCartOutlined
+                      style={{ cursor: "pointer", color: "teal" }}
+                      onClick={() => handleAddToCart(item._id)}
+                    />
+                    <Link
+                      to={`/product/${item._id}`}
+                      style={{ cursor: "pointer", color: "teal" }}
+                    >
+                      <Visibility />
+                    </Link>
+                    <FavoriteBorderOutlined
+                      onClick={() => handleAddToFavorite(item._id)}
+                      style={{ cursor: "pointer", color: "teal" }}
+                    />
+                  </Icons>
+                </Content>
+              ))}
+            </Wrapper>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                flexWrap: "wrap",
+                width: "90%",
+                margin: "0 auto",
+              }}
+            >
+              {[...Array(8)].map((_, index) => (
+                <div key={index}>
+                  <Skeleton width={280} height={200} />
+                  <Skeleton width={200} height={20} />
+                  <Skeleton width={160} height={20} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </Container>
   );

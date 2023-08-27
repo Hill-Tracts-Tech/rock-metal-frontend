@@ -118,7 +118,7 @@ const Product = () => {
           </AddContainer>
         </InfoContainer>
       </Wrapper>
-      <RelatedProducts category={product.categories} />
+      <RelatedProducts category={product.categories} productId={product._id} />
     </Container>
   );
 };
