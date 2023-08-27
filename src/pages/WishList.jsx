@@ -33,19 +33,19 @@ const WishList = () => {
       dispatch(removeFromWishList(productToRemove));
     }
   };
-  const handleAddToCart = (Id) => {
+  const handleAddToCart = (Id, quantity) => {
     const item = cart?.favorite.find((product) => product._id === Id);
-
     try {
       dispatch(
         addProduct({
           ...item,
-          quantity: 1,
+          quantity: quantity,
           color: item?.color[0],
           size: item?.size[0],
           email: currentUser?.email,
         })
       );
+      handleRemoveFromCart(Id);
       toast.success("Added to cart successfully");
     } catch (error) {
       console.log(error);
@@ -130,7 +130,9 @@ const WishList = () => {
                       ৳ {product.price * product.favQuantity}
                     </ProductPrice>
                     <AddToCartButton
-                      onClick={() => handleAddToCart(product._id)}
+                      onClick={() =>
+                        handleAddToCart(product._id, product.favQuantity)
+                      }
                     >
                       Add To Cart
                     </AddToCartButton>
