@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "@material-ui/core";
 import styled from "styled-components";
@@ -71,6 +70,10 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setIsPopupProfileOpen(!isPopupProfileOpen);
+    dispatch(logout());
+    dispatch(clear());
+  };
+  const handleLogout1 = () => {
     dispatch(logout());
     dispatch(clear());
   };
@@ -199,11 +202,6 @@ const Navbar = () => {
       {/*  */}
       {/* Navbar drawer */}
       <DrawerWrapper open={drawerOpen}>
-        <Logo style={{ margin: "20px 0px 0px 20px" }}>
-          <Link to="/" style={{ color: "teal", textDecoration: "none" }}>
-            <img src={logo} alt="" />
-          </Link>
-        </Logo>
         <DrawerInner>
           {imageUrl ? (
             <img
@@ -224,23 +222,28 @@ const Navbar = () => {
           <h3>{currentUser?.username}</h3>
           <span>{currentUser?.email}</span>
           <div style={{ display: "flex" }}>
-            <Link to="/cart">
+            <Link to="/cart" onClick={toggleDrawer}>
               <MenuItem title="Cart">
                 <Badge badgeContent={cart.quantity} color="teal">
-                  <ShoppingCartOutlined style={{ color: "teal" }} />
+                  <ShoppingCartOutlined style={{ color: "white" }} />
                 </Badge>
               </MenuItem>
             </Link>
-            <Link to="/wishList">
+            <Link to="/wishList" onClick={toggleDrawer}>
               <MenuItem title="WishList">
                 <Badge badgeContent={cart.favQuantity} color="teal">
-                  <FavoriteBorderOutlined style={{ color: "teal" }} />
+                  <FavoriteBorderOutlined style={{ color: "white" }} />
                 </Badge>
               </MenuItem>
             </Link>
           </div>
           {currentUser?.username && (
-            <Button onClick={handleLogout}>Logout</Button>
+            <>
+              <Link to="/orders" onClick={toggleDrawer}>
+                <LoginButton1>Orders</LoginButton1>
+              </Link>
+              <LoginButton1 onClick={handleLogout1}>Logout</LoginButton1>
+            </>
           )}
           {!currentUser?.username && (
             <AuthContainer>
@@ -248,13 +251,15 @@ const Navbar = () => {
                 to="/register"
                 style={{ textDecoration: "none", fontWeight: "semibold" }}
               >
-                <RegisterButton>Register</RegisterButton>
+                <RegisterButton1 onClick={toggleDrawer}>
+                  Register
+                </RegisterButton1>
               </Link>
               <Link
                 to="/login"
                 style={{ textDecoration: "none", fontWeight: "semibold" }}
               >
-                <LoginButton>Sign In</LoginButton>
+                <LoginButton1 onClick={toggleDrawer}>Sign In</LoginButton1>
               </Link>
             </AuthContainer>
           )}
@@ -417,7 +422,7 @@ const ProfilePopupContent = styled.div`
 const MobileViewNavbarContainer = styled.nav`
   display: none;
   @media (max-width: 768px) {
-    position: fixed; /* Make the Navbar sticky */
+    position: fixed; //Make the Navbar sticky
     top: 0; /* Position it at the top */
     width: 96%;
     z-index: 1000;
@@ -441,7 +446,6 @@ const NavbarContainer = styled.nav`
   padding: 1rem 2rem;
   background-color: #ffffff;
   color: teal;
-
   @media (max-width: 768px) {
     padding: 1rem;
     display: none;
@@ -524,6 +528,21 @@ const RegisterButton = styled.button`
     font-weight: 500;
   }
 `;
+const RegisterButton1 = styled.button`
+  padding: 0.5rem 1rem;
+  background-color: #ffff;
+  border: none;
+  margin-right: 1rem;
+  cursor: pointer;
+  border: 1.3px solid teal;
+  border-radius: 4px;
+  transition: ease-in-out 0.5s;
+  color: teal;
+  &:hover {
+    background-color: #a8a6a6;
+    color: white;
+  }
+`;
 const LoginButton = styled.button`
   padding: 0.5rem 1rem;
   background-color: teal;
@@ -537,10 +556,20 @@ const LoginButton = styled.button`
     background-color: transparent;
     color: teal;
   }
-  a {
+`;
+const LoginButton1 = styled.button`
+  padding: 0.5rem 1rem;
+  background-color: white;
+  font-family: 700;
+  border: none;
+  border-radius: 4px;
+  color: teal;
+  cursor: pointer;
+  border: 1.3px solid teal;
+  transition: ease-in-out 0.5s;
+  &:hover {
+    background-color: #a8a6a6;
     color: #fff;
-    text-decoration: none;
-    font-weight: 500;
   }
 `;
 const MenuButton = styled.button`
@@ -558,12 +587,12 @@ const MenuButton = styled.button`
 `;
 const DrawerWrapper = styled.div`
   position: fixed;
-  top: 30px;
-  z-index: 100;
+  z-index: 2000;
+  padding-top: 30px;
   right: ${({ open }) => (open ? "0" : "-3000px")};
   width: 250px;
   height: 100%;
-  background-color: #333;
+  background-color: teal;
   color: #fff;
   transition: right 0.3s ease-in-out;
   @media (max-width: 768px) {
