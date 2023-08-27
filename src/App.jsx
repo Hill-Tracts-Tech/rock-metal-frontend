@@ -18,6 +18,7 @@ import WishList from "./pages/WishList";
 import PrivateRoute from "./router/PrivateRoute ";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Orders from "./pages/Orders";
 
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -27,7 +28,7 @@ const App = () => {
       <ScrollToTop />
       <Navbar />
       <Switch>
-        <div style={{ marginTop: "60px" }}>
+        <div style={{ marginTop: "100px" }}>
           <Route exact path="/">
             <Home />
           </Route>
@@ -55,6 +56,9 @@ const App = () => {
           </PrivateRoute>
           <PrivateRoute path="/wishList">
             <WishList />
+          </PrivateRoute>
+          <PrivateRoute path="/orders">
+            <Orders />
           </PrivateRoute>
         </div>
       </Switch>
