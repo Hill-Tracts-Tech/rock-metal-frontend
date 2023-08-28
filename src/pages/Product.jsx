@@ -8,6 +8,7 @@ import { addProduct, updateProductQuantity } from "../redux/cartRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster, toast } from "react-hot-toast";
 import RelatedProducts from "../components/RelatedProducts";
+import Skeleton from "react-loading-skeleton";
 
 const Product = () => {
   const location = useLocation();
@@ -16,6 +17,7 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
   const history = useHistory();
@@ -24,7 +26,11 @@ const Product = () => {
       try {
         const res = await publicRequest.get("/products/find/" + id);
         setProduct(res.data.data);
-      } catch {}
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
     };
     getProduct();
   }, [id]);
@@ -71,53 +77,75 @@ const Product = () => {
   return (
     <Container>
       <Toaster />
-      <Wrapper>
-        <ImgContainer>
-          <Image src={product.img} />
-        </ImgContainer>
-        <InfoContainer>
-          <Title>{product.title}</Title>
-          <Desc>
-            {product.desc
-              ? product.desc
-              : "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Inventore, ab. Quisquam tempora adipisci vitae saepe"}
-          </Desc>
-          <Price>৳ {product.price}</Price>
-          <FilterContainer>
-            <Filter>
-              <FilterTitle>Color</FilterTitle>
-              {product.color?.map((c) => (
-                <FilterColor
-                  isSelected={c === color}
-                  color={c}
-                  key={c}
-                  onClick={() => setColor(c)}
-                />
-              ))}
-            </Filter>
-            <Filter>
-              <FilterTitle>Size</FilterTitle>
-              <FilterSize onChange={(e) => setSize(e.target.value)}>
-                {product.size?.map((s) => (
-                  <FilterSizeOption key={s}>{s}</FilterSizeOption>
+      {loading ? (
+        <ContentStyled>
+          <div>
+            <Skeleton width={400} height={300} />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+            }}
+          >
+            <Skeleton width={400} height={30} />
+            <Skeleton width={400} height={20} />
+            <Skeleton width={350} height={20} />
+            <Skeleton width={100} height={40} />
+            <Skeleton width={180} height={50} />
+            <Skeleton width={200} height={50} />
+          </div>
+        </ContentStyled>
+      ) : (
+        <Wrapper>
+          <ImgContainer>
+            <Image src={product.img} />
+          </ImgContainer>
+          <InfoContainer>
+            <Title>{product.title}</Title>
+            <Desc>
+              {product.desc
+                ? product.desc
+                : "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Inventore, ab. Quisquam tempora adipisci vitae saepe"}
+            </Desc>
+            <Price>৳ {product.price}</Price>
+            <FilterContainer>
+              <Filter>
+                <FilterTitle>Color</FilterTitle>
+                {product.color?.map((c) => (
+                  <FilterColor
+                    isSelected={c === color}
+                    color={c}
+                    key={c}
+                    onClick={() => setColor(c)}
+                  />
                 ))}
-              </FilterSize>
-            </Filter>
-          </FilterContainer>
-          <AddContainer>
-            <AmountContainer>
-              <QuantityActionButton>
-                <Remove onClick={() => handleQuantity("dec")} />
-              </QuantityActionButton>
-              <Amount>{quantity}</Amount>
-              <QuantityActionButton>
-                <Add onClick={() => handleQuantity("inc")} />
-              </QuantityActionButton>
-            </AmountContainer>
-            <Button onClick={handleClick}>ADD TO CART</Button>
-          </AddContainer>
-        </InfoContainer>
-      </Wrapper>
+              </Filter>
+              <Filter>
+                <FilterTitle>Size</FilterTitle>
+                <FilterSize onChange={(e) => setSize(e.target.value)}>
+                  {product.size?.map((s) => (
+                    <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                  ))}
+                </FilterSize>
+              </Filter>
+            </FilterContainer>
+            <AddContainer>
+              <AmountContainer>
+                <QuantityActionButton>
+                  <Remove onClick={() => handleQuantity("dec")} />
+                </QuantityActionButton>
+                <Amount>{quantity}</Amount>
+                <QuantityActionButton>
+                  <Add onClick={() => handleQuantity("inc")} />
+                </QuantityActionButton>
+              </AmountContainer>
+              <Button onClick={handleClick}>ADD TO CART</Button>
+            </AddContainer>
+          </InfoContainer>
+        </Wrapper>
+      )}
       <RelatedProducts category={product.categories} productId={product._id} />
     </Container>
   );
@@ -126,7 +154,19 @@ const Product = () => {
 export default Product;
 
 const Container = styled.div``;
+const ContentStyled = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 90%;
+  margin: auto;
+  padding: 20px;
 
+  /* Media Query */
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
