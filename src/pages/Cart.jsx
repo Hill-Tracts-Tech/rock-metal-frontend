@@ -14,10 +14,9 @@ import {
 } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
-
 const KEY = process.env.REACT_APP_STRIPE;
 
-const Cart = () => {
+const Cart = ({ handleNext }) => {
   const cart = useSelector((state) => state.cart);
 
   const [stripeToken, setStripeToken] = useState(null);
@@ -184,7 +183,7 @@ const Cart = () => {
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            <StripeCheckout
+            {/* <StripeCheckout
               name="Lama Shop"
               image="https://avatars.githubusercontent.com/u/1486366?v=4"
               billingAddress
@@ -194,8 +193,12 @@ const Cart = () => {
               token={onToken}
               stripeKey={KEY}
             >
-              <Button>CHECKOUT NOW</Button>
-            </StripeCheckout>
+            </StripeCheckout> */}
+            {cart.products.length ? (
+              <Button onClick={handleNext}>PROCEED NOW</Button>
+            ) : (
+              <Button style={{ backgroundColor: "gray" }}>PROCEED NOW</Button>
+            )}
           </Summary>
         </Bottom>
       </Wrapper>
@@ -210,9 +213,6 @@ export default Cart;
 const Container = styled.div``;
 
 const Wrapper = styled.div`
-  padding: 20px;
-  width: 90%;
-  margin: 0 auto;
   ${mobile({ padding: "10px" })}
 `;
 
