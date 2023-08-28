@@ -1,6 +1,5 @@
 import {
   FavoriteBorderOutlined,
-  SearchOutlined,
   ShoppingCartOutlined,
   Visibility,
 } from "@material-ui/icons";
@@ -9,7 +8,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
