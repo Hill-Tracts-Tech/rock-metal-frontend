@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Cart from "./pages/Cart";
 import {
   BrowserRouter as Router,
   Switch,
@@ -21,6 +20,7 @@ import Footer from "./components/Footer";
 import Orders from "./pages/Orders";
 import styled from "styled-components";
 import { mobile } from "./responsive";
+import HorizontalLinearStepper from "./components/Stepper";
 
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -54,7 +54,7 @@ const App = () => {
             {currentUser?.email ? <Redirect to="/" /> : <Register />}
           </Route>
           <PrivateRoute path="/cart">
-            <Cart />
+            <HorizontalLinearStepper />
           </PrivateRoute>
           <PrivateRoute path="/wishList">
             <WishList />
