@@ -31,7 +31,7 @@ const Orders = () => {
         <Heading>Your Orders</Heading>
         {isLoading ? (
           <>
-            {[...Array(2)].map((_, index) => (
+            {[...Array(5)].map((_, index) => (
               <div key={index} style={{ marginBottom: "10px" }}>
                 <Skeleton height={100} />
               </div>
@@ -75,11 +75,11 @@ const Orders = () => {
                           </div>
                           <div style={{ flex: 1 }}>
                             <h4>Payment</h4>
-                            <small>{order.status}</small>
+                            <small>{order.paymentStatus}</small>
                           </div>
                           <div style={{ flex: 1 }}>
                             <h4>Shipping Address</h4>
-                            <small>{order?.address?.present}</small>
+                            <small>{order.data.ship_add1}</small>
                           </div>
                           <div style={{ flex: 1 }}>
                             <h4>Shipping Status</h4>
