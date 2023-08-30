@@ -101,6 +101,7 @@ const OrderDetails = ({ handleNext }) => {
                     required
                     onChange={(e) => setCity(e.target.value)}
                   >
+                    <Option>Select your City</Option>
                     {districts.map((district, i) => (
                       <Option value={district}>{district}</Option>
                     ))}
@@ -165,7 +166,15 @@ const OrderDetails = ({ handleNext }) => {
                 {number && name && city && address && postcode && email ? (
                   <Button onClick={handleRegistration}>PROCEED NOW</Button>
                 ) : (
-                  <Bottom>Complete the details</Bottom>
+                  <p
+                    style={{
+                      color: "gray",
+                      marginTop: "15px",
+                      fontSize: "20px",
+                    }}
+                  >
+                    Complete the details
+                  </p>
                 )}
               </div>
             </Form>
@@ -199,11 +208,12 @@ export default OrderDetails;
 
 const Form = styled.form`
   padding: 30px 15px 0px 15px;
+  ${mobile({ padding: "10px 15px 10px 15px" })}
 `;
 const FormItem = styled.div`
   display: grid;
   grid-template-columns: auto auto;
-  ${mobile({ gridTemplateColumns: "auto auto" })}
+  ${mobile({ gridTemplateColumns: "auto" })}
 `;
 
 const InputItem = styled.div`
@@ -286,6 +296,7 @@ const Info = styled.div`
   flex: 3;
   border: 0.5px solid lightgray;
   border-radius: 10px;
+  ${mobile({ width: "100%" })}
 `;
 
 const Summary = styled.div`
@@ -294,7 +305,7 @@ const Summary = styled.div`
   border-radius: 10px;
   padding: 20px;
   height: 50vh;
-  ${mobile({ marginTop: "20px" })}
+  ${mobile({ marginTop: "20px", width: "90%" })}
 `;
 
 const SummaryTitle = styled.h1`
@@ -323,8 +334,10 @@ const Button = styled.button`
   border-radius: 12px;
   border: 1.5px solid teal;
   transition: ease 0.5s;
+  cursor: pointer;
   &:hover {
     background-color: transparent;
     color: teal;
+    cursor: pointer;
   }
 `;

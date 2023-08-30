@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { userRequest } from "../requestMethods";
+import { publicRequest, userRequest } from "../requestMethods";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 
@@ -14,7 +14,7 @@ const Orders = () => {
     setLoading(true);
     const getOrders = async () => {
       try {
-        const res = await userRequest.get(`orders/find/${userId}`);
+        const res = await publicRequest.get(`orders/find/${userId}`);
         setOrders(res.data.data);
         setLoading(false);
       } catch (error) {

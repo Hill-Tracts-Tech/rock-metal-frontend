@@ -72,6 +72,6 @@ const App = () => {
 export default App;
 
 const Div = styled.div`
-  margin-top: 100px;
+  margin-top: 70px;
   ${mobile({ marginTop: "70px" })}
 `;
