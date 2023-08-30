@@ -123,8 +123,11 @@ const Button1 = styled.button`
   border-radius: 5px;
   border: 1.5px solid teal;
   transition: ease 0.5s;
+  cursor: pointer;
   &:hover {
     background-color: transparent;
     color: teal;
+    cursor: pointer;
   }
+  ${mobile({ width: "20%" })}
 `;

@@ -226,7 +226,9 @@ const Cart = ({ handleNext }) => {
             {cart.products.length ? (
               <Button onClick={handleProceed}>PROCEED NOW</Button>
             ) : (
-              <Button style={{ backgroundColor: "gray" }}>PROCEED NOW</Button>
+              <Button style={{ backgroundColor: "gray", color: "gray" }}>
+                PROCEED NOW
+              </Button>
             )}
           </Summary>
         </Bottom>
@@ -440,9 +442,11 @@ const Button = styled.button`
   border-radius: 12px;
   border: 1.5px solid teal;
   transition: ease 0.5s;
+  cursor: pointer;
   &:hover {
     background-color: transparent;
     color: teal;
+    cursor: pointer;
   }
 `;
 const DeleteButton = styled.div`

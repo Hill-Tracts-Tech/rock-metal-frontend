@@ -316,7 +316,7 @@ const Navbar = () => {
                   alt="profile"
                   style={{
                     height: "50px",
-                    width: "50px",
+                    // width: "50px",
                     borderRadius: "25px",
                     objectFit: "contain",
                   }}
@@ -327,6 +327,7 @@ const Navbar = () => {
               <SubDiv>
                 <h3 style={{ color: "teal", marginBottom: "3px" }}>
                   {currentUser?.name}
+                  <br />
                 </h3>
                 <span style={{ color: "teal" }}>{currentUser?.email}</span>
               </SubDiv>
@@ -625,14 +626,14 @@ const DrawerInner = styled.div`
 
 const Profile = styled.div`
   gap: 5px;
-  width: 64px;
+
+  margin: 0px auto 0px 0px;
   height: 64px;
   border: none;
   border-radius: 100%;
   display: flex;
   justify-content: end;
   align-items: center;
-  margin-left: 50px;
 `;
 
 const MenuItem = styled.div`
@@ -684,8 +685,10 @@ const Exit = styled.div`
   justify-content: start;
   align-items: center;
   gap: 5px;
+  cursor: pointer;
   &&:hover {
     background-color: teal;
+    cursor: pointer;
     border-radius: 4px;
     color: white;
     width: 100%;
