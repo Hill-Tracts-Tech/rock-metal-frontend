@@ -18,6 +18,7 @@ const KEY = process.env.REACT_APP_STRIPE;
 
 const Cart = ({ handleNext }) => {
   const cart = useSelector((state) => state.cart);
+  const { _id } = useSelector((state) => state.user.currentUser);
 
   const [stripeToken, setStripeToken] = useState(null);
   const history = useHistory();
@@ -59,6 +60,34 @@ const Cart = ({ handleNext }) => {
     );
     if (productToRemove) {
       dispatch(removeFromCart(productToRemove));
+    }
+  };
+
+  const productData = cart.products.map((product) => ({
+    title: product.title,
+    desc: product.desc,
+    img: product.img,
+    size: product.size,
+    color: product.color,
+    price: product.price,
+    quantity: product.quantity,
+  }));
+  const total = Number(cart.total);
+  const userId = _id;
+
+  const handleProceed = async () => {
+    try {
+      const res = await userRequest.post("carts", {
+        products: productData,
+        amount: total,
+        user: userId,
+      });
+      if (res.data.data) {
+        console.log(res.data);
+        handleNext();
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -195,7 +224,7 @@ const Cart = ({ handleNext }) => {
             >
             </StripeCheckout> */}
             {cart.products.length ? (
-              <Button onClick={handleNext}>PROCEED NOW</Button>
+              <Button onClick={handleProceed}>PROCEED NOW</Button>
             ) : (
               <Button style={{ backgroundColor: "gray" }}>PROCEED NOW</Button>
             )}

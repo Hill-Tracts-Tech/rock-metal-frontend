@@ -3,27 +3,39 @@ import styled from "styled-components";
 import { mobile } from "../responsive";
 import { useSelector } from "react-redux";
 import { districts } from "../data";
+import { userRequest } from "../requestMethods";
 
 const OrderDetails = ({ handleNext }) => {
   const cart = useSelector((state) => state.cart);
-  const [name, setName] = useState("");
+  const { email, _id, phone, name } = useSelector(
+    (state) => state.user.currentUser
+  );
+  const [username, setName] = useState(name);
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
-  const [number, setNumber] = useState("");
+  const [number, setNumber] = useState(phone);
   const [postcode, setPostCode] = useState("");
-  const { email } = useSelector((state) => state.user.currentUser);
-  const handleRegistration = (e) => {
+  const handleRegistration = async (e) => {
     e.preventDefault();
-    handleNext();
     const data = {
-      name,
-      number,
+      name: username,
+      phone: number,
       city,
       address,
       postcode,
       email,
+      _id: _id,
     };
-    console.log(data, "DATA");
+
+    try {
+      const res = await userRequest.post("/orders/payment", data);
+      if (res.data) {
+        window.location.replace(res.data.data);
+        handleNext();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -70,10 +82,12 @@ const OrderDetails = ({ handleNext }) => {
                     Name <span style={{ fontWeight: "900" }}>:</span>
                   </Lable>
                   <Input
-                    onChange={(e) => setName(e.target.value)}
+                    value={username}
                     name="name"
                     type="text"
                     required
+                    disabled
+                    placeholder={username}
                   />
                 </InputItem>
                 <InputItem>
@@ -81,7 +95,12 @@ const OrderDetails = ({ handleNext }) => {
                     City <span style={{ fontWeight: "900" }}>:</span>
                   </Lable>
 
-                  <Select name="city" type="text" required>
+                  <Select
+                    name="city"
+                    type="text"
+                    required
+                    onChange={(e) => setCity(e.target.value)}
+                  >
                     {districts.map((district, i) => (
                       <Option value={district}>{district}</Option>
                     ))}
@@ -96,6 +115,7 @@ const OrderDetails = ({ handleNext }) => {
                     name="email"
                     placeholder={email}
                     type="email"
+                    pattern={`/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,`}
                     required
                     disabled
                     value={email}
@@ -107,13 +127,12 @@ const OrderDetails = ({ handleNext }) => {
                   </Lable>
 
                   <Input
-                    onChange={(e) => setNumber(e.target.value)}
                     name="number"
                     type="number"
+                    value={number}
+                    pattern={/^01[3-9]\d{8}$/}
+                    placeholder={number}
                     required
-                    style={{
-                      appearance: "none",
-                    }}
                   />
                 </InputItem>
                 <InputItem>
@@ -143,7 +162,11 @@ const OrderDetails = ({ handleNext }) => {
               </FormItem>
 
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <Button onClick={handleRegistration}>PROCEED NOW</Button>
+                {number && name && city && address && postcode && email ? (
+                  <Button onClick={handleRegistration}>PROCEED NOW</Button>
+                ) : (
+                  <Bottom>Complete the details</Bottom>
+                )}
               </div>
             </Form>
           </Info>

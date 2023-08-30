@@ -12,10 +12,9 @@ const Register = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
+  const [userNumber, setUserNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirm_password, setConfirmPassword] = useState("");
   const { isLoading, error } = useSelector((state) => state.user);
 
   const data = localStorage.getItem("temp_product");
@@ -23,8 +22,9 @@ const Register = () => {
   const product = data && JSON.parse(data);
 
   const user = {
-    username,
+    name,
     email,
+    userNumber,
     password,
     ...(data && { item: product?.item, autoAddToCart: product?.autoAddToCart }),
   };
@@ -61,10 +61,10 @@ const Register = () => {
               type="text"
             />
             <Input
-              onChange={(e) => setUsername(e.target.value)}
-              name="username"
-              placeholder="username"
-              type="text"
+              onChange={(e) => setUserNumber(e.target.value)}
+              name="userNumber"
+              placeholder="Phone Number"
+              type="number"
               required
             />
 
@@ -82,24 +82,19 @@ const Register = () => {
               type="password"
               required
             />
-            <Input
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              name="confirm_password"
-              placeholder="confirm password"
-              type="password"
-              required
-            />
-            {password !== confirm_password ? (
-              <Error>Password doesn't match</Error>
-            ) : (
-              ""
-            )}
-            <Error>{error}</Error>
+
             <Agreement>
               By creating an account, I consent to the processing of my personal
               data in accordance with the <b>PRIVACY POLICY</b>
             </Agreement>
             <ButtonWrapper>
+              <Button
+                type="submit"
+                onClick={handleRegistration}
+                disabled={isLoading}
+              >
+                {isLoading ? "Loading..." : "Register"}
+              </Button>
               <Link
                 to="/login"
                 style={{
@@ -109,13 +104,6 @@ const Register = () => {
               >
                 Already Have an account? Log in
               </Link>
-              <Button
-                type="submit"
-                onClick={handleRegistration}
-                disabled={isLoading}
-              >
-                {isLoading ? "Loading..." : "Register"}
-              </Button>
             </ButtonWrapper>
           </Form>
         </Wrapper>
@@ -149,12 +137,12 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: 40%;
+  width: 300px;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   background-color: white;
-  ${mobile({ width: "75%" })}
+  ${mobile({ width: "50%" })}
 `;
 
 const Title = styled.h1`
@@ -166,17 +154,22 @@ const Title = styled.h1`
 
 const Form = styled.form`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
 `;
 
 const Input = styled.input`
-  flex: 1;
   min-width: 40%;
   margin: 20px 10px 0px 0px;
   padding: 10px;
   outline: none;
   border-radius: 6px;
   font-size: 17pxx;
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
 `;
 
 const Agreement = styled.span`
@@ -186,6 +179,7 @@ const Agreement = styled.span`
 
 const ButtonWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: start;
   gap: 20px;
   align-items: center;
@@ -193,11 +187,11 @@ const ButtonWrapper = styled.div`
 const Button = styled.button`
   border: none;
   border-radius: 11px;
-  font-weight: 600;
   border: 1.5px solid teal;
-  padding: 15px 26px;
+  padding: 10px 26px;
   background-color: teal;
   color: white;
+  width: 100%;
   /* background-color: ${(props) => (props.disabled ? "#ccc" : "#007bff")};
   color: ${(props) => (props.disabled ? "#666" : "#fff")}; */
   transition: ease 0.4s;

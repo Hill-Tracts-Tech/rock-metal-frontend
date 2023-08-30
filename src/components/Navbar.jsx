@@ -11,6 +11,8 @@ import {
   Menu,
   Close,
   CloseRounded,
+  ExitToApp,
+  ShoppingBasketOutlined,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import logo from "../assets/logo.png";
@@ -122,7 +124,7 @@ const Navbar = () => {
               </Badge>
             </MenuItem>
           </Link>
-          {!currentUser?.username ? (
+          {!currentUser?.email ? (
             <AuthContainer>
               <Link
                 to="/register"
@@ -219,7 +221,7 @@ const Navbar = () => {
               style={{ color: "teal", height: "50px", width: "50px" }}
             />
           )}
-          <h3>{currentUser?.username}</h3>
+          <h3>{currentUser?.name}</h3>
           <span>{currentUser?.email}</span>
           <div style={{ display: "flex" }}>
             <Link to="/cart" onClick={toggleDrawer}>
@@ -237,7 +239,7 @@ const Navbar = () => {
               </MenuItem>
             </Link>
           </div>
-          {currentUser?.username && (
+          {currentUser?.email && (
             <>
               <Link to="/orders" onClick={toggleDrawer}>
                 <LoginButton1>Orders</LoginButton1>
@@ -245,7 +247,7 @@ const Navbar = () => {
               <LoginButton1 onClick={handleLogout1}>Logout</LoginButton1>
             </>
           )}
-          {!currentUser?.username && (
+          {!currentUser?.email && (
             <AuthContainer>
               <Link
                 to="/register"
@@ -288,54 +290,60 @@ const Navbar = () => {
           </SearchContainer>
         </PopupContent>
       </Overlay>
+      {/* Profile Section............. */}
       <ProfileOverlay isOpenProfile={isPopupProfileOpen}>
         <ProfilePopupContent>
-          <button
-            style={{
-              position: "absolute",
-              right: "3px",
-              top: "6px",
-              backgroundColor: "none",
-              border: "none",
-              outline: "none",
-              cursor: "pointer",
-              title: "Close",
-            }}
-            onClick={ProfileTogglePopup}
-          >
-            <Close />
-          </button>
-          <Profile>
-            {imageUrl ? (
-              <img
-                src={imageUrl}
-                alt="profile"
-                style={{
-                  height: "50px",
-                  width: "50px",
-                  borderRadius: "25px",
-                  objectFit: "contain",
-                }}
-              />
-            ) : (
-              <AccountCircle style={{ color: "teal" }} />
-            )}
-          </Profile>
-          <h3>{currentUser?.username}</h3>
-          <span>{currentUser?.email}</span>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "end",
-              gap: "10px",
-            }}
-          >
+          <ProfilTop>
+            <CloseRounded
+              onClick={ProfileTogglePopup}
+              style={{
+                position: "absolute",
+                right: "3px",
+                top: "6px",
+                background: "teal",
+                borderRadius: "20px",
+                color: "white",
+                marginRight: "4px",
+                cursor: "pointer",
+                title: "Close",
+              }}
+            />
+
+            <Profile>
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt="profile"
+                  style={{
+                    height: "50px",
+                    width: "50px",
+                    borderRadius: "25px",
+                    objectFit: "contain",
+                  }}
+                />
+              ) : (
+                <AccountCircle style={{ color: "teal" }} />
+              )}
+              <SubDiv>
+                <h3 style={{ color: "teal", marginBottom: "3px" }}>
+                  {currentUser?.name}
+                </h3>
+                <span style={{ color: "teal" }}>{currentUser?.email}</span>
+              </SubDiv>
+            </Profile>
+            <Hr />
+          </ProfilTop>
+          <ButtonList>
             <Link to="/orders" onClick={() => setIsPopupProfileOpen(false)}>
-              <Button>Orders</Button>
+              <Exit>
+                <ShoppingBasketOutlined />
+                Orders
+              </Exit>
             </Link>
-            <Button onClick={handleLogout}>Logout</Button>
-          </div>
+            <Exit onClick={handleLogout}>
+              <ExitToApp onClick={handleLogout} /> Log Out
+            </Exit>
+          </ButtonList>
         </ProfilePopupContent>
       </ProfileOverlay>
       {searchPopup && searchValue?.length >= 3 && (
@@ -393,11 +401,6 @@ const ProfilePopupContent = styled.div`
   position: absolute;
   top: 40%;
   right: 1%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
   transform: translate(0%, -77%);
   padding: 20px;
   background-color: white;
@@ -585,6 +588,7 @@ const MenuButton = styled.button`
     z-index: 200;
   }
 `;
+
 const DrawerWrapper = styled.div`
   position: fixed;
   z-index: 2000;
@@ -619,39 +623,18 @@ const DrawerInner = styled.div`
   }
 `;
 
-const Button = styled.button`
-  padding: 12px 20px;
-  border: none;
-  border-radius: 12px;
-  outline: none;
-  background-color: teal;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1.5px solid teal;
-  transition: ease 0.3s;
-  &:hover {
-    background-color: transparent;
-    color: teal;
-  }
-`;
-
 const Profile = styled.div`
+  gap: 5px;
   width: 64px;
   height: 64px;
   border: none;
   border-radius: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
+  margin-left: 50px;
 `;
-const ProfileImage = styled.img`
-  margin-top: 12px;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
+
 const MenuItem = styled.div`
   padding: 1rem;
 `;
@@ -672,3 +655,40 @@ const Right = styled.div`
   justify-content: flex-end;
   ${mobile({ flex: 2, justifyContent: "center" })}
 `;
+
+//pofileCSS
+
+const ProfilTop = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+`;
+const Hr = styled.hr`
+  background-color: teal;
+  color: teal;
+  height: 1px;
+  width: 100%;
+`;
+const ButtonList = styled.div`
+  text-align: left;
+  margin-top: 10px;
+  font-weight: 700;
+`;
+const Exit = styled.div`
+  color: teal;
+  padding: 5px 6px;
+  margin-bottom: 13px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 5px;
+  &&:hover {
+    background-color: teal;
+    border-radius: 4px;
+    color: white;
+    width: 100%;
+  }
+`;
+const SubDiv = styled.div``;
