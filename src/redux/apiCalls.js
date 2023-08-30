@@ -36,14 +36,15 @@ export const login = async (
 
 export const register = async (
   dispatch,
-  { username, email, password, item, autoAddToCart }
+  { name, email, password, item, autoAddToCart, userNumber }
 ) => {
-  console.log(username);
+  console.log(name);
   dispatch(registrationStart());
   try {
     const res = await publicRequest.post("/auth/register", {
-      username,
+      name,
       email,
+      userNumber,
       password,
     });
     dispatch(registrationSuccess(res.data.data));

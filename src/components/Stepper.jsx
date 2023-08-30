@@ -82,10 +82,6 @@ export default function HorizontalLinearStepper() {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
-            {activeStep === 0 && <Cart handleNext={handleNext} />}
-            {activeStep === 1 && <OrderDetails handleNext={handleNext} />}
-            {activeStep === 2 && <p>Payment Method</p>}
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               {activeStep === 0 ? (
                 <Button disabled>Back</Button>
@@ -101,6 +97,10 @@ export default function HorizontalLinearStepper() {
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
               </Button1>
             </Box>
+            {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
+            {activeStep === 0 && <Cart handleNext={handleNext} />}
+            {activeStep === 1 && <OrderDetails handleNext={handleNext} />}
+            {activeStep === 2 && <p>Payment Method</p>}
           </React.Fragment>
         )}
       </Box>
@@ -120,7 +120,7 @@ const Button1 = styled.button`
   background-color: teal;
   color: white;
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 5px;
   border: 1.5px solid teal;
   transition: ease 0.5s;
   &:hover {
