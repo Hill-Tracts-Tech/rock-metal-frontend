@@ -9,11 +9,15 @@ import {
 } from "@material-ui/icons";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import { Link } from "react-router-dom/cjs/react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Footer = () => {
+  const location = useLocation();
+
+  const payemnt = location.pathname.split("/").includes("payment");
+
   return (
-    <Container>
+    <Container style={{ display: payemnt ? "none" : "" }}>
       <Top>
         <Left>
           <Logo>ROCK METAL</Logo>
