@@ -14,7 +14,7 @@ const Orders = () => {
     setLoading(true);
     const getOrders = async () => {
       try {
-        const res = await publicRequest.get(`orders/find/${userId}`);
+        const res = await userRequest.get(`orders/find/${userId}`);
         setOrders(res.data.data);
         setLoading(false);
       } catch (error) {
@@ -24,6 +24,8 @@ const Orders = () => {
     };
     getOrders();
   }, [userId]);
+
+  console.log(orders);
 
   return (
     <Container>

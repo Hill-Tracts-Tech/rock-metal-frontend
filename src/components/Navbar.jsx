@@ -21,11 +21,14 @@ import { logout } from "../redux/userRedux";
 import gravatar from "gravatar";
 import { clear, clearCart, clearFavorite } from "../redux/cartRedux";
 import SearchItem from "./SearchItem";
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const location = useLocation();
 
+  const payemnt = location.pathname.split("/").includes("payment");
   //for search input and button
   const cart = useSelector((state) => state.cart);
   const [searchValue, setSearchValue] = useState("");
@@ -81,7 +84,7 @@ const Navbar = () => {
   };
 
   return (
-    <>
+    <div style={{ display: payemnt ? "none" : "" }}>
       <NavbarContainer>
         <Left>
           <Link to="/" style={{ color: "teal", textDecoration: "none" }}>
@@ -354,7 +357,7 @@ const Navbar = () => {
           searchValue={searchValue}
         />
       )}
-    </>
+    </div>
   );
 };
 
@@ -564,7 +567,7 @@ const LoginButton = styled.button`
 const LoginButton1 = styled.button`
   padding: 0.5rem 1rem;
   background-color: white;
-  font-family: 700;
+  font-weight: 700;
   border: none;
   border-radius: 4px;
   color: teal;
