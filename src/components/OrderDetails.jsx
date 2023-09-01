@@ -15,7 +15,33 @@ const OrderDetails = ({ handleNext }) => {
   const [city, setCity] = useState("");
   const [number, setNumber] = useState(phone);
   const [postcode, setPostCode] = useState("");
-  const handleRegistration = async (e) => {
+  const [post, setPost] = useState("");
+  const orderHandler = async (e) => {
+    e.preventDefault();
+    console.log(post);
+    const data = {
+      name: username,
+      phone: number,
+      city,
+      address,
+      postcode,
+      email,
+      _id: _id,
+    };
+
+    console.log(data);
+    // try {
+    //   const res = await userRequest.post("/orders/payment", data);
+    //   if (res.data) {
+    //     window.location.replace(res.data.data);
+    //     handleNext();
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  };
+
+  const cashHandler = async (e) => {
     e.preventDefault();
     const data = {
       name: username,
@@ -28,7 +54,7 @@ const OrderDetails = ({ handleNext }) => {
     };
 
     try {
-      const res = await userRequest.post("/orders/payment", data);
+      const res = await userRequest.post("/orders/cash-on-delivery", data);
       if (res.data) {
         window.location.replace(res.data.data);
         handleNext();
@@ -75,7 +101,7 @@ const OrderDetails = ({ handleNext }) => {
         </Top>
         <Bottom>
           <Info>
-            <Form onSubmit={handleRegistration}>
+            <Form onSubmit={orderHandler}>
               <FormItem>
                 <InputItem>
                   <Lable>
@@ -164,7 +190,18 @@ const OrderDetails = ({ handleNext }) => {
 
               <div style={{ display: "flex", justifyContent: "center" }}>
                 {number && name && city && address && postcode && email ? (
-                  <Button onClick={handleRegistration}>PROCEED NOW</Button>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "250px",
+                    }}
+                  >
+                    <Button onClick={orderHandler}>Checkout</Button>
+                    <Button value="kolo" onClick={cashHandler}>
+                      Cash On Delivery
+                    </Button>
+                  </div>
                 ) : (
                   <p
                     style={{
@@ -325,7 +362,6 @@ const SummaryItemText = styled.span``;
 const SummaryItemPrice = styled.span``;
 
 const Button = styled.button`
-  width: 50%;
   padding: 10px;
   margin: 20px auto;
   background-color: teal;
