@@ -42,7 +42,7 @@ const SuccessView = () => {
             <Bottom>
               <Div>
                 <Button>
-                  <Link to="/orders">Order tracking </Link>
+                  <Link to="/orders">Order Tracking </Link>
                 </Button>
               </Div>
             </Bottom>

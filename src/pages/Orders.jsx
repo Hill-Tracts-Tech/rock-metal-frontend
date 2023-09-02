@@ -25,7 +25,7 @@ const Orders = () => {
     getOrders();
   }, [userId]);
 
-  console.log(orders);
+  console.log(orders[0]);
 
   return (
     <Container>
@@ -44,6 +44,16 @@ const Orders = () => {
             {orders.map((order) => (
               <div key={order._id}>
                 <div>
+                  {/* <p>{order?._id}</p>
+                  <p>{order?.total_amount}</p>
+                  <p>{order?.paymentStatus}</p>
+                  <p>{order?.products[0].title}</p>
+                  <p>{order?.products.length}</p>
+                  <img
+                    style={{ width: "80px" }}
+                    src={order?.products[0].img}
+                    alt="product"
+                  /> */}
                   {order.products.map((product) => {
                     return (
                       <div key={product._id}>
