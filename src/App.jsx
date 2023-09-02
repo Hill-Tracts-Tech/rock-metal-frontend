@@ -21,51 +21,54 @@ import Orders from "./pages/Orders";
 import styled from "styled-components";
 import { mobile } from "./responsive";
 import HorizontalLinearStepper from "./components/Stepper";
+import ErrorBoundary from "./utils/ErrorBoundary";
 
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
 
   return (
-    <Router>
-      <ScrollToTop />
-      <Navbar />
-      <Switch>
-        <Div>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/products/:category">
-            <ProductList />
-          </Route>
-          <Route path="/product/:id">
-            <Product />
-          </Route>
-          <Route path="/success">
-            <Success />
-          </Route>
-          <Route path="/all-products">
-            <AllProducts />
-          </Route>
+    <ErrorBoundary>
+      <Router>
+        <ScrollToTop />
+        <Navbar />
+        <Switch>
+          <Div>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/products/:category">
+              <ProductList />
+            </Route>
+            <Route path="/product/:id">
+              <Product />
+            </Route>
+            <Route path="/success">
+              <Success />
+            </Route>
+            <Route path="/all-products">
+              <AllProducts />
+            </Route>
 
-          <Route path="/login">
-            {currentUser?.email ? <Redirect to="/" /> : <Login />}
-          </Route>
-          <Route path="/register">
-            {currentUser?.email ? <Redirect to="/" /> : <Register />}
-          </Route>
-          <PrivateRoute path="/cart">
-            <HorizontalLinearStepper />
-          </PrivateRoute>
-          <PrivateRoute path="/wishList">
-            <WishList />
-          </PrivateRoute>
-          <PrivateRoute path="/orders">
-            <Orders />
-          </PrivateRoute>
-        </Div>
-      </Switch>
-      <Footer />
-    </Router>
+            <Route path="/login">
+              {currentUser?.email ? <Redirect to="/" /> : <Login />}
+            </Route>
+            <Route path="/register">
+              {currentUser?.email ? <Redirect to="/" /> : <Register />}
+            </Route>
+            <PrivateRoute path="/cart">
+              <HorizontalLinearStepper />
+            </PrivateRoute>
+            <PrivateRoute path="/wishList">
+              <WishList />
+            </PrivateRoute>
+            <PrivateRoute path="/orders">
+              <Orders />
+            </PrivateRoute>
+          </Div>
+        </Switch>
+        <Footer />
+      </Router>
+    </ErrorBoundary>
   );
 };
 
