@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import warning from "../utils/warning.png";
+import warning from "../assets/warning.png";
 
 class ErrorBoundary extends Component {
   constructor(props) {
