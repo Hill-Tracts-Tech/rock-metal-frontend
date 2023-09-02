@@ -2,6 +2,7 @@ import { Add, Delete, Remove } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import Swal from "sweetalert2";
 import {
   addProduct,
   clearFavorite,
@@ -18,7 +19,25 @@ const WishList = () => {
   const dispatch = useDispatch();
 
   const handleClearCart = () => {
-    dispatch(clearFavorite());
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "teal",
+      cancelButtonColor: "teal",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(clearFavorite());
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your Order has been deleted.",
+          icon: "success",
+          confirmButtonColor: "teal",
+        });
+      }
+    });
   };
 
   const handleQuantity = (type, productId) => {
@@ -46,7 +65,11 @@ const WishList = () => {
         })
       );
       handleRemoveFromCart(Id);
-      toast.success("Added to cart successfully");
+      Swal.fire({
+        title: "Added to cart successfully",
+        icon: "success",
+        confirmButtonColor: "teal",
+      });
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong! May be occurred ", error);

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
 import "../index.css";
+import Swal from "sweetalert2";
 import {
   clearCart,
   removeFromCart,
@@ -14,9 +15,8 @@ import {
 } from "../redux/cartRedux";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import emptyCart from "../assets/cart-empty.png";
-const KEY = process.env.REACT_APP_STRIPE;
 
-const Cart = ({ handleNext }) => {
+const Cart = ({ handleNext, setIsLoading }) => {
   const cart = useSelector((state) => state.cart);
   const { _id } = useSelector((state) => state.user.currentUser);
 
@@ -30,7 +30,25 @@ const Cart = ({ handleNext }) => {
   };
 
   const handleClearCart = () => {
-    dispatch(clearCart());
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "teal",
+      cancelButtonColor: "teal",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(clearCart());
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your Order has been deleted.",
+          icon: "success",
+          confirmButtonColor: "teal",
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -55,12 +73,30 @@ const Cart = ({ handleNext }) => {
     dispatch(updateProductQuantity({ productId, quantity: updatedQuantity }));
   };
   const handleRemoveFromCart = (productId) => {
-    const productToRemove = cart?.products.find(
-      (product) => product._id === productId
-    );
-    if (productToRemove) {
-      dispatch(removeFromCart(productToRemove));
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "teal",
+      cancelButtonColor: "teal",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const productToRemove = cart?.products.find(
+          (product) => product._id === productId
+        );
+        if (productToRemove) {
+          dispatch(removeFromCart(productToRemove));
+        }
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your Order has been deleted.",
+          icon: "success",
+          confirmButtonColor: "teal",
+        });
+      }
+    });
   };
 
   const productData = cart.products.map((product) => ({
@@ -77,17 +113,22 @@ const Cart = ({ handleNext }) => {
 
   const handleProceed = async () => {
     try {
+      setIsLoading(true); // Set isLoading to true before making the request
+
       const res = await userRequest.post("carts", {
         products: productData,
         amount: total,
         user: userId,
       });
+
       if (res.data.data) {
         console.log(res.data);
         handleNext();
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false); // Set isLoading to false when the request is completed (whether it succeeded or failed)
     }
   };
 
@@ -212,17 +253,6 @@ const Cart = ({ handleNext }) => {
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            {/* <StripeCheckout
-              name="Lama Shop"
-              image="https://avatars.githubusercontent.com/u/1486366?v=4"
-              billingAddress
-              shippingAddress
-              description={`Your total is ৳ ${cart.total}`}
-              amount={cart.total * 100}
-              token={onToken}
-              stripeKey={KEY}
-            >
-            </StripeCheckout> */}
             {cart.products.length ? (
               <Button onClick={handleProceed}>PROCEED NOW</Button>
             ) : (
