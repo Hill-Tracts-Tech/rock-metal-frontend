@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { userRequest } from "../requestMethods";
+import { publicRequest, userRequest } from "../requestMethods";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 
@@ -25,6 +25,8 @@ const Orders = () => {
     getOrders();
   }, [userId]);
 
+  console.log(orders[0]);
+
   return (
     <Container>
       <OrdersContainer>
@@ -42,6 +44,16 @@ const Orders = () => {
             {orders.map((order) => (
               <div key={order._id}>
                 <div>
+                  {/* <p>{order?._id}</p>
+                  <p>{order?.total_amount}</p>
+                  <p>{order?.paymentStatus}</p>
+                  <p>{order?.products[0].title}</p>
+                  <p>{order?.products.length}</p>
+                  <img
+                    style={{ width: "80px" }}
+                    src={order?.products[0].img}
+                    alt="product"
+                  /> */}
                   {order.products.map((product) => {
                     return (
                       <div key={product._id}>

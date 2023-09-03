@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { districts } from "../data";
 import { userRequest } from "../requestMethods";
+import { clearCart } from "../redux/cartRedux";
 
-const OrderDetails = ({ handleNext }) => {
+const OrderDetails = ({ handleNext, setIsLoading }) => {
   const cart = useSelector((state) => state.cart);
   const { email, _id, phone, name } = useSelector(
     (state) => state.user.currentUser
@@ -15,7 +16,43 @@ const OrderDetails = ({ handleNext }) => {
   const [city, setCity] = useState("");
   const [number, setNumber] = useState(phone);
   const [postcode, setPostCode] = useState("");
-  const handleRegistration = async (e) => {
+  const [showCards, setShowCards] = useState(false);
+  const [paymentType, setPaymentType] = useState("COD");
+  const dispatch = useDispatch();
+  const showCard = (value) => {
+    if (value === "card") {
+      setShowCards(true);
+    } else {
+      setShowCards(false);
+    }
+  };
+  const orderHandler = async (e) => {
+    e.preventDefault();
+    const data = {
+      name: username,
+      phone: number,
+      city,
+      address,
+      postcode,
+      email,
+      _id: _id,
+    };
+    try {
+      setIsLoading(true);
+      const res = await userRequest.post("/orders/payment", data);
+      if (res.data) {
+        window.location.replace(res.data.data);
+        dispatch(clearCart());
+        handleNext();
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const cashHandler = async (e) => {
     e.preventDefault();
     const data = {
       name: username,
@@ -27,13 +64,16 @@ const OrderDetails = ({ handleNext }) => {
       _id: _id,
     };
 
+    setIsLoading(true);
     try {
-      const res = await userRequest.post("/orders/payment", data);
+      const res = await userRequest.post("/orders/cash-on-delivery", data);
+      setIsLoading(false);
       if (res.data) {
-        window.location.replace(res.data.data);
+        dispatch(clearCart());
         handleNext();
       }
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
   };
@@ -74,8 +114,8 @@ const OrderDetails = ({ handleNext }) => {
           </TopButton>
         </Top>
         <Bottom>
-          <Info>
-            <Form onSubmit={handleRegistration}>
+          <Form onSubmit={orderHandler}>
+            <FormPart>
               <FormItem>
                 <InputItem>
                   <Lable>
@@ -101,6 +141,7 @@ const OrderDetails = ({ handleNext }) => {
                     required
                     onChange={(e) => setCity(e.target.value)}
                   >
+                    <Option>Select your City</Option>
                     {districts.map((district, i) => (
                       <Option value={district}>{district}</Option>
                     ))}
@@ -160,35 +201,127 @@ const OrderDetails = ({ handleNext }) => {
                   />
                 </InputItem>
               </FormItem>
+            </FormPart>
 
-              <div style={{ display: "flex", justifyContent: "center" }}>
+            {/* <div style={{ display: "flex", justifyContent: "center" }}>
                 {number && name && city && address && postcode && email ? (
-                  <Button onClick={handleRegistration}>PROCEED NOW</Button>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "250px",
+                    }}
+                  >
+                    <Button onClick={orderHandler}>Checkout</Button>
+                    <Button value="kolo" onClick={cashHandler}>
+                      Cash On Delivery
+                    </Button>
+                  </div>
                 ) : (
-                  <Bottom>Complete the details</Bottom>
+                  <p
+                    style={{
+                      color: "gray",
+                      marginTop: "15px",
+                      fontSize: "20px",
+                    }}
+                  >
+                    Complete the details
+                  </p>
                 )}
-              </div>
-            </Form>
-          </Info>
-          <Summary>
-            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>৳ 5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>৳ -5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem type="total">
-              <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
-            </SummaryItem>
-          </Summary>
+              </div> */}
+            <Summary>
+              <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+              <SummaryItem>
+                <SummaryItemText>Subtotal</SummaryItemText>
+                <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem>
+                <SummaryItemText>Estimated Shipping</SummaryItemText>
+                <SummaryItemPrice>৳ 5.90</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem>
+                <SummaryItemText>Shipping Discount</SummaryItemText>
+                <SummaryItemPrice>৳ -5.90</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem type="total">
+                <SummaryItemText>Total</SummaryItemText>
+                <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
+              </SummaryItem>
+              {number && name && city && address && postcode && email ? (
+                <>
+                  <Card className="card bg-base-100 shadow-xl mb-10 ">
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "5px",
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        value="COD"
+                        name="payment-type"
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          padding: "10px",
+                          background: "teal",
+                        }}
+                        onChange={(event) => setPaymentType(event.target.value)}
+                        checked={paymentType === "COD"}
+                        onClick={(e) => showCard(e.target.value)}
+                      />
+                      <p>Cash On Delivery</p>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "5px",
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        value="card"
+                        name="payment-type"
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                        }}
+                        onChange={(event) => setPaymentType(event.target.value)}
+                        checked={paymentType === "card"}
+                        onClick={(e) => showCard(e.target.value)}
+                      />
+                      <p>Pay With Bkash</p>
+                    </div>
+                  </Card>
+                  {/* akdjfg;ljgd */}
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    {showCards ? (
+                      <>
+                        <Button onClick={orderHandler}>Proceed Now </Button>
+                      </>
+                    ) : (
+                      <Button value="kolo" onClick={cashHandler}>
+                        Cash On Delivery
+                      </Button>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <p
+                  style={{
+                    color: "gray",
+                    marginTop: "15px",
+                    fontSize: "20px",
+                    textAlign: "center",
+                  }}
+                >
+                  Complete the details
+                </p>
+              )}
+            </Summary>
+          </Form>
         </Bottom>
       </Wrapper>
     </Container>
@@ -198,12 +331,25 @@ const OrderDetails = ({ handleNext }) => {
 export default OrderDetails;
 
 const Form = styled.form`
+  display: flex;
   padding: 30px 15px 0px 15px;
+  border: none;
+  gap: 20px;
+  ${mobile({ padding: "10px 15px 10px 15px", display: "block" })}
+`;
+const FormPart = styled.form`
+  display: flex;
+  flex: 2;
+  border: 0.5px solid lightgray;
+  border-radius: 10px;
+  padding: 30px 15px 30px 15px;
+  ${mobile({ padding: "10px 15px 10px 15px" })}
 `;
 const FormItem = styled.div`
+  width: 100%;
   display: grid;
   grid-template-columns: auto auto;
-  ${mobile({ gridTemplateColumns: "auto auto" })}
+  ${mobile({ gridTemplateColumns: "auto" })}
 `;
 
 const InputItem = styled.div`
@@ -230,7 +376,6 @@ const Option = styled.option`
   color: teal;
 `;
 const Input = styled.input`
-  min-width: 40%;
   margin: 20px 10px 0px 0px;
   padding: 10px;
   outline: none;
@@ -270,8 +415,6 @@ const TopButton = styled.button`
 `;
 
 const Bottom = styled.div`
-  display: flex;
-  justify-content: space-between;
   ${mobile({
     flexDirection: "column",
     justifyContent: "center",
@@ -281,20 +424,13 @@ const Bottom = styled.div`
   gap: 20px;
 `;
 
-const Info = styled.div`
-  padding-left: 10px;
-  flex: 3;
-  border: 0.5px solid lightgray;
-  border-radius: 10px;
-`;
-
 const Summary = styled.div`
   flex: 1;
   border: 0.5px solid lightgray;
   border-radius: 10px;
   padding: 20px;
-  height: 50vh;
-  ${mobile({ marginTop: "20px" })}
+  height: 100%;
+  ${mobile({ marginTop: "20px", width: "90%" })}
 `;
 
 const SummaryTitle = styled.h1`
@@ -314,7 +450,7 @@ const SummaryItemText = styled.span``;
 const SummaryItemPrice = styled.span``;
 
 const Button = styled.button`
-  width: 50%;
+  width: 100%;
   padding: 10px;
   margin: 20px auto;
   background-color: teal;
@@ -323,8 +459,16 @@ const Button = styled.button`
   border-radius: 12px;
   border: 1.5px solid teal;
   transition: ease 0.5s;
+  cursor: pointer;
   &:hover {
     background-color: transparent;
     color: teal;
+    cursor: pointer;
   }
+`;
+//Card........
+const Card = styled.div`
+  display: flex;
+  flex: 2;
+  justify-content: space-between;
 `;

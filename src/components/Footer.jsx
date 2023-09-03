@@ -9,68 +9,110 @@ import {
 } from "@material-ui/icons";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { Link, useLocation } from "react-router-dom";
 
 const Footer = () => {
+  const location = useLocation();
+
+  const payemnt = location.pathname.split("/").includes("payment");
+
   return (
-    <Container>
-      <Left>
-        <Logo>ROCK METAL</Logo>
-        <Desc>
-          There are many variations of passages of Lorem Ipsum available, but
-          the majority have suffered alteration in some form, by injected
-          humour, or randomised words which don’t look even slightly believable.
-        </Desc>
-        <SocialContainer>
-          <SocialIcon color="3B5999">
-            <Facebook />
-          </SocialIcon>
-          <SocialIcon color="E4405F">
-            <Instagram />
-          </SocialIcon>
-          <SocialIcon color="55ACEE">
-            <Twitter />
-          </SocialIcon>
-          <SocialIcon color="E60023">
-            <Pinterest />
-          </SocialIcon>
-        </SocialContainer>
-      </Left>
-      <Center>
-        <Title>Useful Links</Title>
-        <List>
-          <ListItem>Home</ListItem>
-          <ListItem>Cart</ListItem>
-          <ListItem>Man Fashion</ListItem>
-          <ListItem>Woman Fashion</ListItem>
-          <ListItem>Accessories</ListItem>
-          <ListItem>My Account</ListItem>
-          <ListItem>Order Tracking</ListItem>
-          <ListItem>Wishlist</ListItem>
-          <ListItem>Wishlist</ListItem>
-          <ListItem>Terms</ListItem>
-        </List>
-      </Center>
-      <Right>
-        <Title>Contact</Title>
-        <ContactItem>
-          <Room style={{ marginRight: "10px" }} /> University Building, Highway
-          Road
-        </ContactItem>
-        <ContactItem>
-          <Phone style={{ marginRight: "10px" }} /> +8801XXXXXXXXX
-        </ContactItem>
-        <ContactItem>
-          <MailOutline style={{ marginRight: "10px" }} /> contact@rockmetal.com
-        </ContactItem>
-        <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
-      </Right>
+    <Container style={{ display: payemnt ? "none" : "" }}>
+      <Top>
+        <Left>
+          <Logo>ROCK METAL</Logo>
+          <Desc>
+            There are many variations of passages of Lorem Ipsum available, but
+            the majority have suffered alteration in some form, by injected
+            humour, or randomised words which don’t look even slightly
+            believable.
+          </Desc>
+          <SocialContainer>
+            <SocialIcon color="3B5999">
+              <Facebook />
+            </SocialIcon>
+            <SocialIcon color="E4405F">
+              <Instagram />
+            </SocialIcon>
+            <SocialIcon color="55ACEE">
+              <Twitter />
+            </SocialIcon>
+            <SocialIcon color="E60023">
+              <Pinterest />
+            </SocialIcon>
+          </SocialContainer>
+        </Left>
+        <Center>
+          <Title>Useful Links</Title>
+          <List>
+            <Link to="/"> Home</Link>
+            <Link to="/cart"> Cart</Link>
+            <Link to="/"> Man Fashion</Link>
+            <Link to="/"> Woman Fashion</Link>
+            <Link to="/"> Accessories</Link>
+            <Link to="/">My Account</Link>
+            <Link to="/wishlist"> Wishlist</Link>
+          </List>
+        </Center>
+        <Right>
+          <Title>Contact</Title>
+          <ContactItem>
+            <Room style={{ marginRight: "10px" }} /> University Building,
+            Highway Road
+          </ContactItem>
+          <ContactItem>
+            <Phone style={{ marginRight: "10px" }} /> +8801XXXXXXXXX
+          </ContactItem>
+          <ContactItem>
+            <MailOutline style={{ marginRight: "10px" }} />{" "}
+            contact@rockmetal.com
+          </ContactItem>
+          <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
+        </Right>
+        <Image>
+          <img
+            style={{ width: "90px", height: "90px" }}
+            src="https://shop.adarbepari.com/wp-content/uploads/2020/06/jongolei-mongol.jpg"
+            alt=""
+          />
+          <img
+            style={{ width: "90px", height: "90px" }}
+            src="https://shop.adarbepari.com/wp-content/uploads/2020/06/artcell-tshirt.jpg"
+            alt=""
+          />
+          <img
+            style={{ width: "90px", height: "90px" }}
+            src="https://shop.adarbepari.com/wp-content/uploads/2020/07/bandarban-sublimation-tshirt.jpg"
+            alt=""
+          />
+          <img
+            style={{ width: "90px", height: "90px" }}
+            src="https://shop.adarbepari.com/wp-content/uploads/2020/01/kath-golaper-sadar-maya.jpg"
+            alt=""
+          />
+          <img
+            style={{ width: "90px", height: "90px" }}
+            src="https://shop.adarbepari.com/wp-content/uploads/2019/04/jadur-shohor-green.jpg"
+            alt=""
+          />
+          <img
+            style={{ width: "90px", height: "90px" }}
+            src="https://shop.adarbepari.com/wp-content/uploads/2020/09/bahanno-tash.jpg"
+            alt=""
+          />
+        </Image>
+      </Top>
+      <Bottom>
+        <Hr></Hr>
+        <p>© 2023 Rock Metal. All Rights Reserved. </p>
+      </Bottom>
     </Container>
   );
 };
 
 export default Footer;
 
-const Container = styled.div`
+const Top = styled.div`
   width: 90%;
   margin: 150px auto 0;
   display: flex;
@@ -78,6 +120,7 @@ const Container = styled.div`
   align-items: center;
   ${mobile({ flexDirection: "column" })}
 `;
+const Container = styled.div``;
 
 const Left = styled.div`
   flex: 1;
@@ -109,32 +152,49 @@ const SocialIcon = styled.div`
 `;
 
 const Center = styled.div`
-  flex: 1;
   padding: 20px;
+  margin-right: 50px;
   ${mobile({ display: "none" })}
+  a {
+    text-decoration: none;
+    color: black;
+  }
 `;
 
 const Title = styled.h3`
   margin-bottom: 30px;
 `;
 
-const List = styled.ul`
+const List = styled.div`
   margin: 0;
   padding: 0;
   list-style: none;
   display: flex;
-  flex-wrap: wrap;
-`;
-
-const ListItem = styled.li`
-  width: 50%;
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 5px;
 `;
 
 const Right = styled.div`
   flex: 1;
   padding: 20px;
   ${mobile({ backgroundColor: "#fff8f8" })}
+`;
+const Image = styled.div`
+  flex: 1;
+  flex-wrap: wrap;
+  padding: 20px;
+  ${mobile({ display: "none" })}
+`;
+const Bottom = styled.div`
+  width: 90%;
+  margin: 30px auto;
+  ${mobile({ textAlign: "center" })}
+`;
+const Hr = styled.hr`
+  background-color: #afafaf;
+  border: none;
+  height: 1px;
+  margin-bottom: 30px;
 `;
 
 const ContactItem = styled.div`

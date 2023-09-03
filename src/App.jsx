@@ -22,6 +22,8 @@ import styled from "styled-components";
 import { mobile } from "./responsive";
 import HorizontalLinearStepper from "./components/Stepper";
 import ErrorBoundary from "./utils/ErrorBoundary";
+import SuccessView from "./components/payment/SuccessView";
+import Failure from "./components/payment/Failure";
 
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -73,6 +75,12 @@ const App = () => {
             <PrivateRoute path="/orders">
               <Orders />
             </PrivateRoute>
+            <Route path="/payment/success/:id">
+              <SuccessView />
+            </Route>
+            <Route path="/payment/failure/:id">
+              <Failure />
+            </Route>
           </Div>
         </Switch>
         <Footer />
@@ -84,6 +92,6 @@ const App = () => {
 export default App;
 
 const Div = styled.div`
-  margin-top: 100px;
+  margin-top: 70px;
   ${mobile({ marginTop: "70px" })}
 `;

@@ -20,7 +20,7 @@ userRequest.interceptors.request.use(
     if (accessToken) {
       config.headers["token"] = `Bearer ${accessToken ? accessToken : token}`;
     }
-
+    console.log(config);
     return config;
   },
   (error) => {

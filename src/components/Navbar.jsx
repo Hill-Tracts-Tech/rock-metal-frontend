@@ -21,11 +21,14 @@ import { logout } from "../redux/userRedux";
 import gravatar from "gravatar";
 import { clear, clearCart, clearFavorite } from "../redux/cartRedux";
 import SearchItem from "./SearchItem";
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const location = useLocation();
 
+  const payemnt = location.pathname.split("/").includes("payment");
   //for search input and button
   const cart = useSelector((state) => state.cart);
   const [searchValue, setSearchValue] = useState("");
@@ -81,7 +84,7 @@ const Navbar = () => {
   };
 
   return (
-    <>
+    <div style={{ display: payemnt ? "none" : "" }}>
       <NavbarContainer>
         <Left>
           <Link to="/" style={{ color: "teal", textDecoration: "none" }}>
@@ -316,7 +319,7 @@ const Navbar = () => {
                   alt="profile"
                   style={{
                     height: "50px",
-                    width: "50px",
+                    // width: "50px",
                     borderRadius: "25px",
                     objectFit: "contain",
                   }}
@@ -327,6 +330,7 @@ const Navbar = () => {
               <SubDiv>
                 <h3 style={{ color: "teal", marginBottom: "3px" }}>
                   {currentUser?.name}
+                  <br />
                 </h3>
                 <span style={{ color: "teal" }}>{currentUser?.email}</span>
               </SubDiv>
@@ -353,7 +357,7 @@ const Navbar = () => {
           searchValue={searchValue}
         />
       )}
-    </>
+    </div>
   );
 };
 
@@ -563,7 +567,7 @@ const LoginButton = styled.button`
 const LoginButton1 = styled.button`
   padding: 0.5rem 1rem;
   background-color: white;
-  font-family: 700;
+  font-weight: 700;
   border: none;
   border-radius: 4px;
   color: teal;
@@ -625,14 +629,14 @@ const DrawerInner = styled.div`
 
 const Profile = styled.div`
   gap: 5px;
-  width: 64px;
+
+  margin: 0px auto 0px 0px;
   height: 64px;
   border: none;
   border-radius: 100%;
   display: flex;
   justify-content: end;
   align-items: center;
-  margin-left: 50px;
 `;
 
 const MenuItem = styled.div`
@@ -684,8 +688,10 @@ const Exit = styled.div`
   justify-content: start;
   align-items: center;
   gap: 5px;
+  cursor: pointer;
   &&:hover {
     background-color: teal;
+    cursor: pointer;
     border-radius: 4px;
     color: white;
     width: 100%;
