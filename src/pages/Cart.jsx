@@ -179,7 +179,9 @@ const Cart = ({ handleNext, setIsLoading }) => {
                       <Image src={product.img} />
                       <Details>
                         <ProductName>
-                          <b>Product:</b> {product.title}{" "}
+                          <b>Product:</b>
+                          <Br />
+                          {product.title}{" "}
                           <b style={{ fontSize: "20px" }}>
                             x {product.quantity}
                           </b>
@@ -273,9 +275,7 @@ export default Cart;
 
 const Container = styled.div``;
 
-const Wrapper = styled.div`
-  ${mobile({ padding: "10px" })}
-`;
+const Wrapper = styled.div``;
 
 const Title = styled.h1`
   font-weight: 300;
@@ -319,6 +319,7 @@ const Bottom = styled.div`
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    marginLeft: "-20px",
   })}
 `;
 
@@ -332,14 +333,18 @@ const Info = styled.div`
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
-  ${mobile({ flexDirection: "column" })}
+  ${mobile({ flexDirection: "column", padding: "20px" })}
   margin-bottom:20px;
 `;
-
+const Br = styled.br`
+  display: none;
+  ${mobile({ display: "block" })}
+`;
 const EmptyCartImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  ${mobile({ width: "90%" })}
 `;
 const EmptyCart = styled.div`
   max-width: 400px;
@@ -369,6 +374,7 @@ const ProductDetail = styled.div`
 
 const Image = styled.img`
   width: 200px;
+  ${mobile({ width: "50%" })}
 `;
 
 const Details = styled.div`
@@ -376,6 +382,7 @@ const Details = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin-right: 50px;
 `;
 
 const ProductName = styled.span``;
@@ -430,7 +437,7 @@ const Summary = styled.div`
   border-radius: 10px;
   padding: 20px;
   height: 50vh;
-  ${mobile({ marginTop: "20px" })}
+  ${mobile({ marginTop: "30px", width: "85%", marginLeft: "20px" })}
 `;
 
 const SummaryTitle = styled.h1`
@@ -500,4 +507,5 @@ const DeleteButton = styled.div`
       color: white;
     }
   }
+  ${mobile({ marginLeft: "-9px", marginTop: "-10px", marginBottom: "-10px" })}
 `;
