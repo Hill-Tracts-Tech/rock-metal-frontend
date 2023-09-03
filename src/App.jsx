@@ -26,6 +26,15 @@ import ErrorBoundary from "./utils/ErrorBoundary";
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
 
+  if (currentUser?.accessToken) {
+    if (!sessionStorage.getItem("accessToken")) {
+      sessionStorage.setItem(
+        "accessToken",
+        JSON.stringify(currentUser.accessToken)
+      );
+    }
+  }
+
   return (
     <ErrorBoundary>
       <Router>
