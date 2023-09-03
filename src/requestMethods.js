@@ -16,9 +16,9 @@ userRequest.interceptors.request.use(
     const user = JSON.parse(localStorage.getItem("persist:root"))?.user;
     const currentUser = user && JSON.parse(user).currentUser;
     const accessToken = currentUser?.accessToken;
-
+    const token = sessionStorage.getItem("accessToken");
     if (accessToken) {
-      config.headers["token"] = `Bearer ${accessToken}`;
+      config.headers["token"] = `Bearer ${accessToken ? accessToken : token}`;
     }
     console.log(config);
     return config;

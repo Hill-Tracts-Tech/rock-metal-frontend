@@ -69,15 +69,17 @@ const Orders = () => {
                           </ProductDetails>
                           <ProductItem>
                             <Title1>Payment</Title1>
-                            <small>{order.paymentStatus}</small>
+                            <small>{order?.paymentStatus}</small>
                           </ProductItem>
                           <ProductItem style={{ marginTop: "8px" }}>
                             <Title1>Shipping Address</Title1>
-                            <small>{order.data.ship_add1}</small>
+                            <small>
+                              {order?.data?.cus_add1 || order?.data?.cus_add2}
+                            </small>
                           </ProductItem>
                           <ProductItem style={{ marginTop: "8px" }}>
                             <Title1>Shipping Status</Title1>
-                            <small>Pending</small>
+                            <small>{order?.shippingStatus}</small>
                           </ProductItem>
                           <Flex>
                             <div>

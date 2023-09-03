@@ -20,7 +20,7 @@ const ProductList = () => {
 
   return (
     <Container>
-      <Title>{cat.toUpperCase()}</Title>
+      <Title>{cat?.toUpperCase()}</Title>
       <FilterContainer>
         <Filter>
           <FilterText>Filter Products:</FilterText>
