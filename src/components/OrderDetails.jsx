@@ -247,67 +247,67 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
                 <SummaryItemText>Total</SummaryItemText>
                 <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
               </SummaryItem>
+              <Card className="card bg-base-100 shadow-xl mb-10 ">
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "5px",
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="COD"
+                    name="payment-type"
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      padding: "10px",
+                      background: "teal",
+                    }}
+                    onChange={(event) => setPaymentType(event.target.value)}
+                    checked={paymentType === "COD"}
+                    onClick={(e) => showCard(e.target.value)}
+                  />
+                  <p>Cash On Delivery</p>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "5px",
+                  }}
+                >
+                  <input
+                    type="radio"
+                    value="card"
+                    name="payment-type"
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                    }}
+                    onChange={(event) => setPaymentType(event.target.value)}
+                    checked={paymentType === "card"}
+                    onClick={(e) => showCard(e.target.value)}
+                  />
+                  <p>Pay With Bkash</p>
+                </div>
+              </Card>
+              {/* akdjfg;ljgd */}
               {number && name && city && address && postcode && email ? (
-                <>
-                  <Card className="card bg-base-100 shadow-xl mb-10 ">
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "5px",
-                      }}
-                    >
-                      <input
-                        type="radio"
-                        value="COD"
-                        name="payment-type"
-                        style={{
-                          width: "20px",
-                          height: "20px",
-                          padding: "10px",
-                          background: "teal",
-                        }}
-                        onChange={(event) => setPaymentType(event.target.value)}
-                        checked={paymentType === "COD"}
-                        onClick={(e) => showCard(e.target.value)}
-                      />
-                      <p>Cash On Delivery</p>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "5px",
-                      }}
-                    >
-                      <input
-                        type="radio"
-                        value="card"
-                        name="payment-type"
-                        style={{
-                          width: "20px",
-                          height: "20px",
-                        }}
-                        onChange={(event) => setPaymentType(event.target.value)}
-                        checked={paymentType === "card"}
-                        onClick={(e) => showCard(e.target.value)}
-                      />
-                      <p>Pay With Bkash</p>
-                    </div>
-                  </Card>
-                  {/* akdjfg;ljgd */}
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    {showCards ? (
-                      <>
-                        <Button onClick={orderHandler}>Proceed Now </Button>
-                      </>
-                    ) : (
-                      <Button value="kolo" onClick={cashHandler}>
-                        Cash On Delivery
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  {showCards ? (
+                    <>
+                      <Button disabled onClick={orderHandler}>
+                        Proceed Now{" "}
                       </Button>
-                    )}
-                  </div>
-                </>
+                    </>
+                  ) : (
+                    <Button isabled onClick={cashHandler}>
+                      Cash On Delivery
+                    </Button>
+                  )}
+                </div>
               ) : (
                 <p
                   style={{

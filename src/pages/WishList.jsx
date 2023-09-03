@@ -117,7 +117,8 @@ const WishList = () => {
                     </ImageWrapper>
                     <Details>
                       <ProductName>
-                        <b>Product:</b> {product.title}{" "}
+                        <b>Product:</b>
+                        <Br /> {product.title}{" "}
                         <b style={{ fontSize: "20px" }}>
                           x {product.favQuantity}
                         </b>
@@ -191,7 +192,7 @@ const Wrapper = styled.div`
   padding: 20px;
   width: 90%;
   margin: 0 auto;
-  ${mobile({ padding: "10px" })}
+  ${mobile({})}
 `;
 
 const Title = styled.h1`
@@ -236,8 +237,12 @@ const TopText = styled.span`
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  ${mobile({ flexDirection: "column" })}
+  ${mobile({
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: "-20px",
+  })}
 `;
 
 const InfoWrapper = styled.div`
@@ -249,6 +254,10 @@ const Product = styled.div`
   display: flex;
   justify-content: space-between;
   ${mobile({ flexDirection: "column" })}
+`;
+const Br = styled.br`
+  display: none;
+  ${mobile({ display: "block" })}
 `;
 const ClearButton = styled.button`
   background-color: #ff0000;
@@ -264,6 +273,7 @@ const ClearButton = styled.button`
   &:hover {
     background-color: #cc0000;
   }
+  ${mobile({ marginLeft: "95px" })}
 `;
 const AddToCartButton = styled.button`
   border: 1px solid teal;
@@ -292,7 +302,8 @@ const ImageWrapper = styled.div`
 const Image = styled.img`
   height: 100%;
   width: 100%;
-  object-fit: cover;
+
+  ${mobile({ width: "70%", paddingLeft: "55px" })}
 `;
 
 const Details = styled.div`
@@ -301,6 +312,7 @@ const Details = styled.div`
   flex-direction: column;
   justify-content: space-around;
   margin-left: 20px;
+  ${mobile({ marginLeft: "-16px" })}
 `;
 const EmptyCartImage = styled.img`
   width: 100%;
@@ -334,6 +346,7 @@ const PriceDetail = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  ${mobile({ marginBottom: "20px" })}
 `;
 
 const ProductAmountContainer = styled.div`
@@ -360,30 +373,6 @@ const Hr = styled.hr`
   height: 1px;
 `;
 
-const Summary = styled.div`
-  flex: 1;
-  border: 0.5px solid lightgray;
-  border-radius: 10px;
-  padding: 20px;
-  height: 50vh;
-`;
-
-const SummaryTitle = styled.h1`
-  font-weight: 200;
-`;
-
-const SummaryItem = styled.div`
-  margin: 30px 0px;
-  display: flex;
-  justify-content: space-between;
-  font-weight: ${(props) => props.type === "total" && "500"};
-  font-size: ${(props) => props.type === "total" && "24px"};
-`;
-
-const SummaryItemText = styled.span``;
-
-const SummaryItemPrice = styled.span``;
-
 const QuantityActionButton = styled.div`
   display: flex;
   justify-content: center;
@@ -398,20 +387,6 @@ const QuantityActionButton = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.148), 0 4px 15px rgba(0, 0, 0, 0.116);
 `;
 
-const Button = styled.button`
-  width: 100%;
-  padding: 10px;
-  background-color: teal;
-  color: white;
-  font-weight: 600;
-  border-radius: 12px;
-  border: 1.5px solid teal;
-  transition: ease 0.5s;
-  &:hover {
-    background-color: transparent;
-    color: teal;
-  }
-`;
 const DeleteButton = styled.div`
   cursor: pointer;
   position: relative;
@@ -433,4 +408,11 @@ const DeleteButton = styled.div`
       color: white;
     }
   }
+  ${mobile({
+    position: "relative",
+    marginLeft: "90px",
+    marginTop: "-10px",
+    marginBottom: "-10px",
+    marginRight: "-70px",
+  })}
 `;
