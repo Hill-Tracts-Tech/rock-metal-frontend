@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { publicRequest, userRequest } from "../requestMethods";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
+import { mobile } from "../responsive";
 
 const Orders = () => {
   const { _id: userId } = useSelector((state) => state.user.currentUser);
@@ -57,53 +58,46 @@ const Orders = () => {
                   {order.products.map((product) => {
                     return (
                       <div key={product._id}>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            padding: "10px",
-                            margin: "10px 0",
-                            borderBottom: "0.5px solid gray",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "start",
-                              gap: "20px",
-                              flex: 2,
-                            }}
-                          >
-                            <img
-                              style={{ width: "80px" }}
-                              src={product.img}
-                              alt="product"
-                            />
+                        <SubContainer>
+                          <ProductDetails>
+                            <Img src={product.img} alt="product" />
                             <div>
-                              <h3>{product.title}</h3>
+                              <Title>{product.title}</Title>
                               <p>Size: {product?.size}</p>
                               <p>Color: {product?.color}</p>
                             </div>
-                          </div>
-                          <div style={{ flex: 1 }}>
-                            <h4>Payment</h4>
+                          </ProductDetails>
+                          <ProductItem>
+                            <Title1>Payment</Title1>
                             <small>{order.paymentStatus}</small>
-                          </div>
-                          <div style={{ flex: 1 }}>
-                            <h4>Shipping Address</h4>
+                          </ProductItem>
+                          <ProductItem style={{ marginTop: "8px" }}>
+                            <Title1>Shipping Address</Title1>
                             <small>{order.data.ship_add1}</small>
-                          </div>
-                          <div style={{ flex: 1 }}>
-                            <h4>Shipping Status</h4>
+                          </ProductItem>
+                          <ProductItem style={{ marginTop: "8px" }}>
+                            <Title1>Shipping Status</Title1>
                             <small>Pending</small>
-                          </div>
-                          <div style={{ flex: 1, textAlign: "center" }}>
-                            <h4>Amount</h4>
-                            <p>৳ {product.price}</p>
-                            <p>Qty: {product.quantity}</p>
-                            <p>Total: ৳ {product.quantity * product.price}</p>
-                          </div>
-                        </div>
+                          </ProductItem>
+                          <Flex>
+                            <div>
+                              <Title1 style={{ fontSize: "15px" }}>
+                                Amount
+                              </Title1>
+                              <p> ৳ {product.price}</p>
+                            </div>
+                            <div>
+                              <p>
+                                <Bold>Qty:</Bold>
+                                {product.quantity}
+                              </p>
+                            </div>
+                          </Flex>
+                          <ProductItem1>
+                            <Bold>Total:</Bold>
+                            <p>৳ {product.quantity * product.price}</p>
+                          </ProductItem1>
+                        </SubContainer>
                       </div>
                     );
                   })}
@@ -127,7 +121,52 @@ const Container = styled.div`
 const OrdersContainer = styled.div`
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   padding: 50px;
+  ${mobile({ padding: "0px" })}
 `;
 const Heading = styled.h2`
   margin-bottom: 40px;
+`;
+const SubContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 10px 0;
+  border-bottom: 0.5px solid gray;
+  ${mobile({ display: "grid", gridTemplateColumns: "auto auto" })}
+`;
+const ProductDetails = styled.div`
+  display: flex;
+  justify-content: start;
+  gap: 20px;
+  flex: 2;
+`;
+const Img = styled.img`
+  width: 80px;
+`;
+const Title = styled.h3`
+  ${mobile({ fontSize: "14px" })}
+`;
+const Title1 = styled.h4`
+  ${mobile({ fontSize: "13px" })}
+`;
+const ProductItem = styled.div`
+  flex: 1;
+  ${mobile({ marginBottom: "0px" })}
+`;
+const ProductItem1 = styled.div`
+  flex: 1;
+  text-align: center;
+  ${mobile({ textAlign: "left", marginTop: "8px" })}
+`;
+const Flex = styled.div`
+  flex: 1;
+  text-align: center;
+  ${mobile({ marginTop: "10px", display: "flex", gap: "70px" })}
+`;
+
+const Bold = styled.p`
+  ${mobile({ fontWeight: "800" })}
+`;
+const End = styled.div`
+  ${mobile({ marginRight: "0px" })}
 `;
