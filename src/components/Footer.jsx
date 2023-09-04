@@ -8,7 +8,7 @@ import {
   Twitter,
 } from "@material-ui/icons";
 import styled from "styled-components";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 import { Link, useLocation } from "react-router-dom";
 
 const Footer = () => {
@@ -29,16 +29,24 @@ const Footer = () => {
           </Desc>
           <SocialContainer>
             <SocialIcon color="3B5999">
-              <Facebook />
+              <Link to="https://www.facebook.com/profile.php?id=100063477416591&mibextid=9R9pXO">
+                <Facebook />
+              </Link>
             </SocialIcon>
             <SocialIcon color="E4405F">
-              <Instagram />
+              <Link to="/">
+                <Instagram />
+              </Link>
             </SocialIcon>
             <SocialIcon color="55ACEE">
-              <Twitter />
+              <Link to="/">
+                <Twitter />
+              </Link>
             </SocialIcon>
             <SocialIcon color="E60023">
-              <Pinterest />
+              <Link to="/">
+                <Pinterest />
+              </Link>
             </SocialIcon>
           </SocialContainer>
         </Left>
@@ -69,6 +77,7 @@ const Footer = () => {
           </ContactItem>
           <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
         </Right>
+
         <Image>
           <img
             style={{ width: "90px", height: "90px" }}
@@ -149,6 +158,9 @@ const SocialIcon = styled.div`
   align-items: center;
   justify-content: center;
   margin-right: 20px;
+  a {
+    color: white;
+  }
 `;
 
 const Center = styled.div`
@@ -177,13 +189,15 @@ const List = styled.div`
 const Right = styled.div`
   flex: 1;
   padding: 20px;
-  ${mobile({ backgroundColor: "#fff8f8" })}
+  ${mobile({ marginLeft: "-40px" })}
 `;
 const Image = styled.div`
   flex: 1;
   flex-wrap: wrap;
   padding: 20px;
+
   ${mobile({ display: "none" })}
+  ${tablet({ display: "none" })}
 `;
 const Bottom = styled.div`
   width: 90%;

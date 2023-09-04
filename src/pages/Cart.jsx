@@ -430,7 +430,6 @@ const Hr = styled.hr`
   border: none;
   height: 1px;
 `;
-
 const Summary = styled.div`
   flex: 1;
   border: 0.5px solid lightgray;

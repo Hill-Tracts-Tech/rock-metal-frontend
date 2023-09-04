@@ -201,7 +201,7 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
   align-items: center;
   padding: 10px;
-  ${mobile({ justifyContent: "center", width: "100%" })}
+  ${mobile({ justifyContent: "center", width: "100%", marginLeft: "-10px" })}
 `;
 const Title = styled.div`
   text-align: center;

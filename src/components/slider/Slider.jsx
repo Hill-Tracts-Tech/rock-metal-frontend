@@ -7,7 +7,7 @@ import "./styles.css";
 import { sliderItems } from "../../data";
 import styled from "styled-components";
 import SwiperCore, { Autoplay, Pagination } from "swiper";
-import { mobile } from "../../responsive";
+import { mobile, tablet } from "../../responsive";
 import { Link } from "react-router-dom";
 
 export default function Slider() {
@@ -55,6 +55,7 @@ const Slide = styled.div`
   align-items: center;
   background-color: #${(props) => props.bg};
   ${mobile({ display: "block" })}
+  ${tablet({ display: "block" })}
 `;
 
 const ImgContainer = styled.div`
