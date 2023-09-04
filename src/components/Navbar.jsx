@@ -9,10 +9,11 @@ import {
   AccountCircle,
   FavoriteBorderOutlined,
   Menu,
-  Close,
   CloseRounded,
   ExitToApp,
   ShoppingBasketOutlined,
+  PersonAddSharp,
+  Input,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import logo from "../assets/logo.png";
@@ -175,7 +176,13 @@ const Navbar = () => {
             </Logo>
           </Link>
         </Left>
-        <Center style={{ display: "flex", alignItems: "center" }}>
+        <Center
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginRight: drawerOpen ? "-530px" : "-60px",
+          }}
+        >
           <SearchButton onClick={togglePopup}>
             <Search
               style={{
@@ -187,19 +194,11 @@ const Navbar = () => {
           </SearchButton>
         </Center>
         <Right>
-          <MenuButton onClick={toggleDrawer}>
-            {drawerOpen ? (
-              <CloseRounded
-                style={{
-                  background: "teal",
-                  borderRadius: "20px",
-                  color: "white",
-                  marginRight: "-100px",
-                }}
-              />
-            ) : (
-              <Menu style={{ marginRight: "-100px" }} />
-            )}{" "}
+          <MenuButton
+            style={{ display: !drawerOpen ? "" : "none" }}
+            onClick={toggleDrawer}
+          >
+            {drawerOpen ? "" : <Menu style={{ marginRight: "-100px" }} />}{" "}
           </MenuButton>
         </Right>
       </MobileViewNavbarContainer>
@@ -208,66 +207,114 @@ const Navbar = () => {
       {/* Navbar drawer */}
       <DrawerWrapper open={drawerOpen}>
         <DrawerInner>
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt="profile"
+          <Div>
+            <CloseRounded
+              onClick={toggleDrawer}
               style={{
-                height: "50px",
-                width: "50px",
-                borderRadius: "25px",
-                objectFit: "contain",
+                background: "white",
+                borderRadius: "20px",
+                color: "teal",
+                marginRight: "-330px",
+                marginTop: "-10px",
               }}
             />
-          ) : (
-            <AccountCircle
-              style={{ color: "teal", height: "50px", width: "50px" }}
-            />
-          )}
-          <h3>{currentUser?.name}</h3>
-          <span>{currentUser?.email}</span>
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="profile"
+                style={{
+                  height: "50px",
+                  width: "50px",
+                  borderRadius: "25px",
+                  objectFit: "contain",
+                }}
+              />
+            ) : (
+              <AccountCircle
+                style={{ color: "white", height: "50px", width: "50px" }}
+              />
+            )}
+            <h3>{currentUser?.name}</h3>
+            <span>{currentUser?.email}</span>
+            <Hr />
+          </Div>
           <div style={{ display: "flex" }}>
-            <Link to="/cart" onClick={toggleDrawer}>
-              <MenuItem title="Cart">
-                <Badge badgeContent={cart.quantity} color="teal">
-                  <ShoppingCartOutlined style={{ color: "white" }} />
-                </Badge>
-              </MenuItem>
-            </Link>
-            <Link to="/wishList" onClick={toggleDrawer}>
-              <MenuItem title="WishList">
-                <Badge badgeContent={cart.favQuantity} color="teal">
-                  <FavoriteBorderOutlined style={{ color: "white" }} />
-                </Badge>
-              </MenuItem>
-            </Link>
+            {currentUser?.email && (
+              <>
+                <Link to="/cart" onClick={toggleDrawer}>
+                  <Button1 style={{ marginBottom: "30px" }}>
+                    <MenuItem title="Cart">
+                      <Badge badgeContent={cart.quantity} color="white">
+                        <ShoppingCartOutlined style={{ color: "white" }} />
+                      </Badge>
+                    </MenuItem>
+                  </Button1>
+                </Link>
+                <Link to="/wishList" onClick={toggleDrawer}>
+                  <Button1>
+                    <MenuItem title="WishList">
+                      <Badge badgeContent={cart.favQuantity} color="teal">
+                        <FavoriteBorderOutlined style={{ color: "white" }} />
+                      </Badge>
+                    </MenuItem>
+                  </Button1>
+                </Link>
+              </>
+            )}
+            {currentUser?.email && (
+              <>
+                <Link to="/orders" onClick={() => setIsPopupProfileOpen(false)}>
+                  <LoginButton1>
+                    <MenuItem title="Orders">
+                      <ShoppingBasketOutlined />
+                    </MenuItem>
+                  </LoginButton1>
+                </Link>
+                <Link to="">
+                  <LoginButton1
+                    onClick={handleLogout}
+                    style={{ marginLeft: "25px" }}
+                  >
+                    <MenuItem title="Log Out">
+                      <ExitToApp onClick={handleLogout1} />
+                    </MenuItem>
+                  </LoginButton1>
+                </Link>
+              </>
+            )}
+            {!currentUser?.email && (
+              <AuthContainer
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  margin: "50px",
+                  gap: "40px",
+                }}
+              >
+                <Link
+                  to="/register"
+                  style={{
+                    textDecoration: "none",
+                    fontWeight: "semibold",
+                  }}
+                >
+                  <RegisterButton1 onClick={toggleDrawer}>
+                    <PersonAddSharp />
+                    Register
+                  </RegisterButton1>
+                </Link>
+                <Link
+                  to="/login"
+                  style={{ textDecoration: "none", fontWeight: "semibold" }}
+                >
+                  <LoginButton1 onClick={toggleDrawer}>
+                    <Input />
+                    Sign In
+                  </LoginButton1>
+                </Link>
+              </AuthContainer>
+            )}
           </div>
-          {currentUser?.email && (
-            <>
-              <Link to="/orders" onClick={toggleDrawer}>
-                <LoginButton1>Orders</LoginButton1>
-              </Link>
-              <LoginButton1 onClick={handleLogout1}>Logout</LoginButton1>
-            </>
-          )}
-          {!currentUser?.email && (
-            <AuthContainer>
-              <Link
-                to="/register"
-                style={{ textDecoration: "none", fontWeight: "semibold" }}
-              >
-                <RegisterButton1 onClick={toggleDrawer}>
-                  Register
-                </RegisterButton1>
-              </Link>
-              <Link
-                to="/login"
-                style={{ textDecoration: "none", fontWeight: "semibold" }}
-              >
-                <LoginButton1 onClick={toggleDrawer}>Sign In</LoginButton1>
-              </Link>
-            </AuthContainer>
-          )}
         </DrawerInner>
       </DrawerWrapper>
 
@@ -535,48 +582,76 @@ const RegisterButton = styled.button`
     font-weight: 500;
   }
 `;
-const RegisterButton1 = styled.button`
-  padding: 0.5rem 1rem;
-  background-color: #ffff;
+const RegisterButton1 = styled.div`
+  color: white;
+  padding: 5px 6px;
+  width: 100%;
+  margin-bottom: 13px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  background-color: teal;
+  &:hover {
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: white;
+    width: 100%;
+  }
+`;
+const LoginButton = styled.div`
+  padding: 0.4rem 1rem;
+  background-color: teal;
   border: none;
   margin-right: 1rem;
   cursor: pointer;
   border: 1.3px solid teal;
   border-radius: 4px;
   transition: ease-in-out 0.5s;
-  color: teal;
-  &:hover {
-    background-color: #a8a6a6;
-    color: white;
-  }
-`;
-const LoginButton = styled.button`
-  padding: 0.5rem 1rem;
-  background-color: teal;
-  border: none;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-  border: 1.3px solid teal;
-  transition: ease-in-out 0.5s;
+  color: white;
   &:hover {
     background-color: transparent;
     color: teal;
   }
+  a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+  }
 `;
-const LoginButton1 = styled.button`
-  padding: 0.5rem 1rem;
-  background-color: white;
-  font-weight: 700;
+const Button1 = styled.div`
+  padding: 0.4rem 1rem;
+  background-color: teal;
   border: none;
-  border-radius: 4px;
-  color: teal;
+  margin-right: 1rem;
   cursor: pointer;
   border: 1.3px solid teal;
+  border-radius: 4px;
   transition: ease-in-out 0.5s;
-  &:hover {
-    background-color: #a8a6a6;
+  color: white;
+  a {
     color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+  }
+`;
+const LoginButton1 = styled.div`
+  color: white;
+  padding: 5px 6px;
+  width: 100%;
+  margin-bottom: 13px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  background-color: teal;
+  &&:hover {
+    cursor: pointer;
+    border-radius: 4px;
+    color: white;
+    width: 100%;
   }
 `;
 const MenuButton = styled.button`
@@ -610,6 +685,9 @@ const DrawerWrapper = styled.div`
   }
 `;
 const DrawerInner = styled.div`
+  padding: 0px 30px 0px 30px;
+`;
+const Div = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -641,6 +719,7 @@ const Profile = styled.div`
 
 const MenuItem = styled.div`
   padding: 1rem;
+  ${mobile({ paddingRight: "2px" })}
 `;
 const Left = styled.div`
   flex: 1;

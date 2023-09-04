@@ -10,6 +10,7 @@ import styled from "styled-components";
 import { addFavorite, addProduct } from "../redux/cartRedux";
 import toast, { Toaster } from "react-hot-toast";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import Swal from "sweetalert2";
 
 const AllProduct = ({ item }) => {
   const user = useSelector((state) => state.user.currentUser);
@@ -28,10 +29,18 @@ const AllProduct = ({ item }) => {
             email: user?.email,
           })
         );
-        toast.success("Added to cart successfully");
+        Swal.fire({
+          title: "Added to Cart successfully",
+          icon: "success",
+          confirmButtonColor: "teal",
+        });
       } catch (error) {
         console.log(error);
-        toast.error("Something went wrong! May be occurred ", error);
+        Swal.fire({
+          title: `Something went wrong! May be occurred ,${error}`,
+          icon: "warring",
+          confirmButtonColor: "teal",
+        });
       }
     } else {
       history.push("/login");
@@ -49,10 +58,18 @@ const AllProduct = ({ item }) => {
             size: item?.size[0],
           })
         );
-        toast.success("Added to wish list successfully");
+        Swal.fire({
+          title: "Added to wishlist successfully",
+          icon: "success",
+          confirmButtonColor: "teal",
+        });
       } catch (error) {
         console.log(error);
-        toast.error("Something went wrong! May be occurred ", error);
+        Swal.fire({
+          title: `Something went wrong! May be occurred ,${error}`,
+          icon: "warring",
+          confirmButtonColor: "teal",
+        });
       }
     } else {
       history.push("/login");
