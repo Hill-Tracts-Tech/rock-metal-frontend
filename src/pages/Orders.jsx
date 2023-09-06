@@ -71,16 +71,16 @@ const Orders = () => {
                             <Title1>Payment</Title1>
                             <small>{order?.paymentStatus}</small>
                           </ProductItem>
-                          <ProductItem style={{ marginTop: "8px" }}>
+                          <ProductItem2>
                             <Title1>Shipping Address</Title1>
                             <small>
                               {order?.data?.cus_add1 || order?.data?.cus_add2}
                             </small>
-                          </ProductItem>
-                          <ProductItem style={{ marginTop: "8px" }}>
+                          </ProductItem2>
+                          <ProductItem2>
                             <Title1>Shipping Status</Title1>
                             <small>{order?.shippingStatus}</small>
-                          </ProductItem>
+                          </ProductItem2>
                           <Flex>
                             <div>
                               <Title1 style={{ fontSize: "15px" }}>
@@ -155,6 +155,10 @@ const ProductItem = styled.div`
   flex: 1;
   ${mobile({ marginBottom: "0px" })}
 `;
+const ProductItem2 = styled.div`
+  flex: 1;
+  ${mobile({ marginBottom: "0px", marginTop: "8px" })}
+`;
 const ProductItem1 = styled.div`
   flex: 1;
   text-align: center;
@@ -167,8 +171,6 @@ const Flex = styled.div`
 `;
 
 const Bold = styled.p`
-  ${mobile({ fontWeight: "800" })}
-`;
-const End = styled.div`
-  ${mobile({ marginRight: "0px" })}
+  font-weight: 800;
+  ${mobile({ fontWeight: "800" })};
 `;

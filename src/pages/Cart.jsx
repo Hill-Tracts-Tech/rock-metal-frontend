@@ -187,7 +187,7 @@ const Cart = ({ handleNext, setIsLoading }) => {
                           </b>
                         </ProductName>
                         <ProductId>
-                          <b>ID:</b> {product._id}
+                          <b>ID:</b> {product?._id.slice(0, 20)}
                         </ProductId>
                         <ProductColor color={product.color} />
                         <ProductSize>
