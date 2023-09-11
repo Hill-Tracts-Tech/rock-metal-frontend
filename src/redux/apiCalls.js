@@ -9,6 +9,7 @@ import {
 import { publicRequest } from "../requestMethods";
 import { toast } from "react-hot-toast";
 import { addFavorite, addProduct } from "./cartRedux";
+import Swal from "sweetalert2";
 
 export const login = async (
   dispatch,
@@ -18,7 +19,11 @@ export const login = async (
   try {
     const res = await publicRequest.post("/auth/login", { email, password });
     dispatch(loginSuccess(res.data.data));
-    toast.success("Logged in Successfully");
+    Swal.fire({
+      title: "Logged in Successfully",
+      icon: "success",
+      confirmButtonColor: "teal",
+    });
     if (item && autoAddToCart) {
       dispatch(addProduct(item));
       toast.success("Product added to the cart");
@@ -48,7 +53,11 @@ export const register = async (
       password,
     });
     dispatch(registrationSuccess(res.data.data));
-    toast.success("Registered in Successfully");
+    Swal.fire({
+      title: "Registered in Successfully",
+      icon: "success",
+      confirmButtonColor: "teal",
+    });
     if (item && autoAddToCart) {
       dispatch(addProduct(item));
       toast.success("Product added to the cart");

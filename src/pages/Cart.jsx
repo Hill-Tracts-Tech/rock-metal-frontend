@@ -2,7 +2,6 @@ import { Add, Remove, Delete } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useHistory } from "react-router";
@@ -10,6 +9,7 @@ import "../index.css";
 import Swal from "sweetalert2";
 import {
   clearCart,
+  deliveryCharge,
   removeFromCart,
   updateProductQuantity,
 } from "../redux/cartRedux";
@@ -50,7 +50,9 @@ const Cart = ({ handleNext, setIsLoading }) => {
       }
     });
   };
-
+  useEffect(() => {
+    dispatch(deliveryCharge(100));
+  }, []);
   useEffect(() => {
     const makeRequest = async () => {
       try {
@@ -106,9 +108,10 @@ const Cart = ({ handleNext, setIsLoading }) => {
     size: product.size,
     color: product.color,
     price: product.price,
+    deliveryCharge: "100",
     quantity: product.quantity,
   }));
-  const total = Number(cart.total);
+  const total = Number(cart.total + cart.deliveryCharge);
   const userId = _id;
 
   const handleProceed = async () => {
@@ -187,7 +190,7 @@ const Cart = ({ handleNext, setIsLoading }) => {
                           </b>
                         </ProductName>
                         <ProductId>
-                          <b>ID:</b> {product._id}
+                          <b>ID:</b> {product?._id.slice(0, 20)}
                         </ProductId>
                         <ProductColor color={product.color} />
                         <ProductSize>
@@ -245,15 +248,17 @@ const Cart = ({ handleNext, setIsLoading }) => {
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>৳ 5.90</SummaryItemPrice>
+              <SummaryItemPrice>৳ {cart?.deliveryCharge}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>৳ -5.90</SummaryItemPrice>
+              <SummaryItemPrice>৳ -0.00</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
+              <SummaryItemPrice>
+                ৳ {cart.total + cart.deliveryCharge}
+              </SummaryItemPrice>
             </SummaryItem>
             {cart.products.length ? (
               <Button onClick={handleProceed}>PROCEED NOW</Button>

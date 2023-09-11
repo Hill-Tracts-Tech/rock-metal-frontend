@@ -7,6 +7,7 @@ const cartSlice = createSlice({
     favorite: [],
     favQuantity: 0,
     quantity: 0,
+    deliveryCharge: 100,
     total: 0,
     email: null,
   },
@@ -110,6 +111,9 @@ const cartSlice = createSlice({
       state.total = null;
       state.email = null;
     },
+    deliveryCharge: (state, action) => {
+      state.deliveryCharge = action.payload;
+    },
   },
 });
 
@@ -123,5 +127,6 @@ export const {
   removeFromCart,
   removeFromWishList,
   clear,
+  deliveryCharge,
 } = cartSlice.actions;
 export default cartSlice.reducer;

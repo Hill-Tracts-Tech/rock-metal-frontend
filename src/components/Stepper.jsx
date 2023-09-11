@@ -100,7 +100,7 @@ export default function HorizontalLinearStepper() {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               {activeStep === 0 ? (
                 <Button disabled>Back</Button>
               ) : (
@@ -114,7 +114,7 @@ export default function HorizontalLinearStepper() {
               <Button1 onClick={handleNext}>
                 {activeStep === steps.length - 1 ? "Finest" : " Next"}
               </Button1>
-            </Box>
+            </Box> */}
             {isLoading ? (
               <div
                 style={{

@@ -263,7 +263,7 @@ const Navbar = () => {
             )}
             {currentUser?.email && (
               <>
-                <Link to="/orders" onClick={() => setIsPopupProfileOpen(false)}>
+                <Link to="/orders" onClick={toggleDrawer}>
                   <LoginButton1>
                     <MenuItem title="Orders">
                       <ShoppingBasketOutlined />
@@ -272,11 +272,11 @@ const Navbar = () => {
                 </Link>
                 <Link to="">
                   <LoginButton1
-                    onClick={handleLogout}
+                    onClick={handleLogout1}
                     style={{ marginLeft: "25px" }}
                   >
                     <MenuItem title="Log Out">
-                      <ExitToApp onClick={handleLogout1} />
+                      <ExitToApp />
                     </MenuItem>
                   </LoginButton1>
                 </Link>
@@ -596,7 +596,6 @@ const RegisterButton1 = styled.div`
   &:hover {
     cursor: pointer;
     border-radius: 4px;
-    background-color: white;
     width: 100%;
   }
 `;
