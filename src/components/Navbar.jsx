@@ -8,19 +8,17 @@ import {
   ShoppingCartOutlined,
   AccountCircle,
   FavoriteBorderOutlined,
-  Menu,
   CloseRounded,
   ExitToApp,
   ShoppingBasketOutlined,
-  PersonAddSharp,
-  Input,
+  WhatsApp,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userRedux";
 import gravatar from "gravatar";
-import { clear, clearCart, clearFavorite } from "../redux/cartRedux";
+import { clear } from "../redux/cartRedux";
 import SearchItem from "./SearchItem";
 import { useLocation } from "react-router-dom";
 
@@ -30,6 +28,8 @@ const Navbar = () => {
   const location = useLocation();
 
   const payemnt = location.pathname.split("/").includes("payment");
+  const login = location.pathname.split("/").includes("login");
+  const singUp = location.pathname.split("/").includes("register");
   //for search input and button
   const cart = useSelector((state) => state.cart);
   const [searchValue, setSearchValue] = useState("");
@@ -79,10 +79,6 @@ const Navbar = () => {
     dispatch(logout());
     dispatch(clear());
   };
-  const handleLogout1 = () => {
-    dispatch(logout());
-    dispatch(clear());
-  };
 
   return (
     <div style={{ display: payemnt ? "none" : "" }}>
@@ -128,6 +124,24 @@ const Navbar = () => {
               </Badge>
             </MenuItem>
           </Link>
+          <SideIcon style={{ display: login || singUp ? "none" : "" }}>
+            <a
+              className="whatsapplink"
+              href="https://api.whatsapp.com/send?phone=8801888422116"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <WhatsApp
+                style={{
+                  color: "white",
+                  fontSize: "44px",
+                  marginLeft: "10px",
+                  marginTop: "2px",
+                }}
+              ></WhatsApp>
+              {/* <img src={whatsapp} alt="whatsapp" className="whatsapp" /> */}
+            </a>
+          </SideIcon>
           {!currentUser?.email ? (
             <AuthContainer>
               <Link
@@ -176,147 +190,49 @@ const Navbar = () => {
             </Logo>
           </Link>
         </Left>
-        <Center
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginRight: drawerOpen ? "-530px" : "-60px",
-          }}
-        >
-          <SearchButton onClick={togglePopup}>
-            <Search
+        <SideIcon style={{ display: login || singUp ? "block" : "" }}>
+          <a
+            className="whatsapplink"
+            href="https://api.whatsapp.com/send?phone=8801888422116"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <WhatsApp
               style={{
                 color: "white",
-                fontSize: 20,
-                textAlign: "center",
+                fontSize: "44px",
+                marginLeft: "10px",
+                marginTop: "2px",
               }}
+            ></WhatsApp>
+            {/* <img src={whatsapp} alt="whatsapp" className="whatsapp" /> */}
+          </a>
+        </SideIcon>
+        <>
+          {" "}
+          <SearchContainer style={{ marginRight: "13px" }}>
+            <SearchInput
+              type="text"
+              placeholder="Search..."
+              value={searchValue}
+              onChange={handleSearchChange}
+              style={{ width: "200px" }}
             />
-          </SearchButton>
-        </Center>
-        <Right>
-          <MenuButton
-            style={{ display: !drawerOpen ? "" : "none" }}
-            onClick={toggleDrawer}
-          >
-            {drawerOpen ? "" : <Menu style={{ marginRight: "-100px" }} />}{" "}
-          </MenuButton>
-        </Right>
+            <SearchButton onClick={handleSearch} disabled={!searchValue}>
+              <Search
+                style={{
+                  color: "white",
+                  fontSize: 20,
+                  textAlign: "center",
+                }}
+              />
+            </SearchButton>
+          </SearchContainer>
+        </>
       </MobileViewNavbarContainer>
       {/*  */}
       {/*  */}
       {/* Navbar drawer */}
-      <DrawerWrapper open={drawerOpen}>
-        <DrawerInner>
-          <Div>
-            <CloseRounded
-              onClick={toggleDrawer}
-              style={{
-                background: "white",
-                borderRadius: "20px",
-                color: "teal",
-                marginRight: "-330px",
-                marginTop: "-10px",
-              }}
-            />
-            {imageUrl ? (
-              <img
-                src={imageUrl}
-                alt="profile"
-                style={{
-                  height: "50px",
-                  width: "50px",
-                  borderRadius: "25px",
-                  objectFit: "contain",
-                }}
-              />
-            ) : (
-              <AccountCircle
-                style={{ color: "white", height: "50px", width: "50px" }}
-              />
-            )}
-            <h3>{currentUser?.name}</h3>
-            <span>{currentUser?.email}</span>
-            <Hr />
-          </Div>
-          <div style={{ display: "flex" }}>
-            {currentUser?.email && (
-              <>
-                <Link to="/cart" onClick={toggleDrawer}>
-                  <Button1 style={{ marginBottom: "30px" }}>
-                    <MenuItem title="Cart">
-                      <Badge badgeContent={cart.quantity} color="white">
-                        <ShoppingCartOutlined style={{ color: "white" }} />
-                      </Badge>
-                    </MenuItem>
-                  </Button1>
-                </Link>
-                <Link to="/wishList" onClick={toggleDrawer}>
-                  <Button1>
-                    <MenuItem title="WishList">
-                      <Badge badgeContent={cart.favQuantity} color="teal">
-                        <FavoriteBorderOutlined style={{ color: "white" }} />
-                      </Badge>
-                    </MenuItem>
-                  </Button1>
-                </Link>
-              </>
-            )}
-            {currentUser?.email && (
-              <>
-                <Link to="/orders" onClick={toggleDrawer}>
-                  <LoginButton1>
-                    <MenuItem title="Orders">
-                      <ShoppingBasketOutlined />
-                    </MenuItem>
-                  </LoginButton1>
-                </Link>
-                <Link to="">
-                  <LoginButton1
-                    onClick={handleLogout1}
-                    style={{ marginLeft: "25px" }}
-                  >
-                    <MenuItem title="Log Out">
-                      <ExitToApp />
-                    </MenuItem>
-                  </LoginButton1>
-                </Link>
-              </>
-            )}
-            {!currentUser?.email && (
-              <AuthContainer
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  margin: "50px",
-                  gap: "40px",
-                }}
-              >
-                <Link
-                  to="/register"
-                  style={{
-                    textDecoration: "none",
-                    fontWeight: "semibold",
-                  }}
-                >
-                  <RegisterButton1 onClick={toggleDrawer}>
-                    <PersonAddSharp />
-                    Register
-                  </RegisterButton1>
-                </Link>
-                <Link
-                  to="/login"
-                  style={{ textDecoration: "none", fontWeight: "semibold" }}
-                >
-                  <LoginButton1 onClick={toggleDrawer}>
-                    <Input />
-                    Sign In
-                  </LoginButton1>
-                </Link>
-              </AuthContainer>
-            )}
-          </div>
-        </DrawerInner>
-      </DrawerWrapper>
 
       {/* Search pop up */}
       <Overlay isOpen={isPopupOpen}>
@@ -488,6 +404,7 @@ const MobileViewNavbarContainer = styled.nav`
     align-items: center;
   }
 `;
+
 const NavbarContainer = styled.nav`
   position: fixed;
   top: 0;
@@ -561,6 +478,19 @@ const AuthContainer = styled.div`
     margin-top: 1rem;
   }
 `;
+const SideIcon = styled.div`
+  position: fixed;
+  background-color: #34d126;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  bottom: 0;
+  width: 55px;
+  height: 50px;
+  margin-bottom: 270px;
+  margin-right: -22px;
+  z-index: 1000;
+  ${mobile({ marginLeft: "320px", marginBottom: "360px" })}
+`;
 
 const RegisterButton = styled.button`
   padding: 0.5rem 1rem;
@@ -582,6 +512,7 @@ const RegisterButton = styled.button`
     font-weight: 500;
   }
 `;
+
 const RegisterButton1 = styled.div`
   color: white;
   padding: 5px 6px;
@@ -633,74 +564,6 @@ const Button1 = styled.div`
     color: #fff;
     text-decoration: none;
     font-weight: 500;
-  }
-`;
-const LoginButton1 = styled.div`
-  color: white;
-  padding: 5px 6px;
-  width: 100%;
-  margin-bottom: 13px;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  background-color: teal;
-  &&:hover {
-    cursor: pointer;
-    border-radius: 4px;
-    color: white;
-    width: 100%;
-  }
-`;
-const MenuButton = styled.button`
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 1.5rem;
-  display: none;
-  color: teal;
-  margin-right: 11px;
-  @media (max-width: 768px) {
-    display: block;
-    z-index: 200;
-  }
-`;
-
-const DrawerWrapper = styled.div`
-  position: fixed;
-  z-index: 2000;
-  padding-top: 30px;
-  right: ${({ open }) => (open ? "0" : "-3000px")};
-  width: 250px;
-  height: 100%;
-  background-color: teal;
-  color: #fff;
-  transition: right 0.3s ease-in-out;
-  @media (max-width: 768px) {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-`;
-const DrawerInner = styled.div`
-  padding: 0px 30px 0px 30px;
-`;
-const Div = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 500;
-    transition: ease 0.5s;
-    &&:hover {
-      font-size: 19px;
-    }
   }
 `;
 

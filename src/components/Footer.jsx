@@ -129,7 +129,9 @@ const Top = styled.div`
   align-items: center;
   ${mobile({ flexDirection: "column" })}
 `;
-const Container = styled.div``;
+const Container = styled.div`
+  ${mobile({ display: "none" })}
+`;
 
 const Left = styled.div`
   flex: 1;
