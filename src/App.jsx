@@ -24,6 +24,7 @@ import HorizontalLinearStepper from "./components/Stepper";
 import ErrorBoundary from "./utils/ErrorBoundary";
 import SuccessView from "./components/payment/SuccessView";
 import Failure from "./components/payment/Failure";
+import Bottombar from "./components/Navbar/Bottombar";
 
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -84,6 +85,7 @@ const App = () => {
           </Div>
         </Switch>
         <Footer />
+        <Bottombar />
       </Router>
     </ErrorBoundary>
   );
