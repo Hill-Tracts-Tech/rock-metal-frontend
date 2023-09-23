@@ -27,7 +27,7 @@ const RelatedProducts = ({ category, productId }) => {
       try {
         if (category) {
           const res = await axios.get(
-            `http://localhost:5000/api/products?category=${category[0]}`
+            `https://api.rockmetaltshirt.com/api/products?category=${category[0]}`
           );
           setProducts(res.data.data);
           setLoading(false);

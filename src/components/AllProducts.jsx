@@ -17,7 +17,9 @@ const AllProducts = () => {
     setLoading(true);
     const getProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/products");
+        const res = await axios.get(
+          "https://api.rockmetaltshirt.com/api/products"
+        );
         setProducts(res.data.data);
         setLoading(false);
       } catch (err) {

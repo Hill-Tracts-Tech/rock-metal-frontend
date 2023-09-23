@@ -17,8 +17,8 @@ const Products = ({ cat, filters, sort }) => {
       try {
         const res = await axios.get(
           cat
-            ? `http://localhost:5000/api/products?category=${cat}`
-            : "http://localhost:5000/api/products"
+            ? `https://api.rockmetaltshirt.com/api/products?category=${cat}`
+            : "https://api.rockmetaltshirt.com/api/products"
         );
         setProducts(res.data.data);
         setLoading(false);
