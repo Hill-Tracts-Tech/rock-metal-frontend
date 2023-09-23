@@ -25,25 +25,6 @@ export default function HorizontalLinearStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  // const handleSkip = () => {
-  //   if (!isStepOptional(activeStep)) {
-  //     // You probably want to guard against something like this,
-  //     // it should never occur unless someone's actively trying to break something.
-  //     throw new Error("You can't skip a step that isn't optional.");
-  //   }
-
-  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  //   setSkipped((prevSkipped) => {
-  //     const newSkipped = new Set(prevSkipped.values());
-  //     newSkipped.add(activeStep);
-  //     return newSkipped;
-  //   });
-  // };
-
-  // const handleReset = () => {
-  //   setActiveStep(0);
-  // };
-
   return (
     <Container>
       <Box sx={{ width: "100%" }}>
@@ -52,12 +33,11 @@ export default function HorizontalLinearStepper() {
             const stepProps = {};
             const labelProps = {};
 
-            // if (isStepSkipped(index)) {
-            //   stepProps.completed = false;
-            // }
             return (
               <Step key={label} {...stepProps}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
+                <StepLabel {...labelProps}>
+                  <Size>{label}</Size>
+                </StepLabel>
               </Step>
             );
           })}
@@ -159,23 +139,8 @@ const Container = styled.div`
   margin: 0 auto;
   ${mobile({ padding: "10px" })}
 `;
-const Button1 = styled.button`
-  width: 10%;
-  padding: 10px;
-  margin: 20px auto;
-  background-color: teal;
-  color: white;
-  font-weight: 600;
-  border-radius: 5px;
-  border: 1.5px solid teal;
-  transition: ease 0.5s;
-  cursor: pointer;
-  &:hover {
-    background-color: transparent;
-    color: teal;
-    cursor: pointer;
-  }
-  ${mobile({ width: "20%" })}
+const Size = styled.p`
+  ${mobile({ fontSize: "12px" })}
 `;
 
 const SubContainer = styled.div`
