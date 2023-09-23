@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 export default function Slider() {
-  const [sliders, setSliders] = useState({});
+  const [sliders, setSliders] = useState([]);
   useEffect(() => {
     const getSliders = async () => {
       try {
@@ -40,22 +40,23 @@ export default function Slider() {
         loop={true}
         className="mySwiper"
       >
-        {sliders.map((item) => (
-          <SwiperSlide>
-            <Slide bg={item.bg} key={item.id}>
-              <ImgContainer>
-                <Image src={item.img} />
-              </ImgContainer>
-              <InfoContainer>
-                <Title>{item.title}</Title>
-                <Desc>{item.desc}</Desc>
-                <Link to="/all-products">
-                  <Button>SHOW NOW</Button>
-                </Link>
-              </InfoContainer>
-            </Slide>
-          </SwiperSlide>
-        ))}
+        {sliders &&
+          sliders?.map((item) => (
+            <SwiperSlide>
+              <Slide bg={item.bg} key={item.id}>
+                <ImgContainer>
+                  <Image src={item.img} />
+                </ImgContainer>
+                <InfoContainer>
+                  <Title>{item.title}</Title>
+                  <Desc>{item.desc}</Desc>
+                  <Link to="/all-products">
+                    <Button>SHOW NOW</Button>
+                  </Link>
+                </InfoContainer>
+              </Slide>
+            </SwiperSlide>
+          ))}
       </Swiper>
     </>
   );
