@@ -425,10 +425,10 @@ const NavbarContainer = styled.nav`
 
 const Logo = styled.div`
   height: 42px;
-  height: 42px;
-  ${mobile({ width: "42px", height: "42px" })}
+  width: 100px;
+  ${mobile({ width: "120px", height: "42px" })}
   & img {
-    width: 42px;
+    width: 120px;
     height: 42px;
   }
 `;
