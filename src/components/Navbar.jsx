@@ -14,7 +14,7 @@ import {
   WhatsApp,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom/cjs/react-router-dom";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.jpeg";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userRedux";
 import gravatar from "gravatar";
@@ -424,10 +424,8 @@ const NavbarContainer = styled.nav`
 
 const Logo = styled.div`
   height: 42px;
-  height: 42px;
   ${mobile({ width: "42px", height: "42px" })}
   & img {
-    width: 42px;
     height: 42px;
   }
 `;
