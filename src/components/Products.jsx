@@ -141,8 +141,8 @@ const Titles = styled.div`
   align-items: center;
 `;
 const EmptyMessage = styled.h1`
-  width: 100%;
-  height: 300px;
+  width: 300px;
+  height: auto;
   margin: auto;
   text-align: center;
   border-radius: 6px;
