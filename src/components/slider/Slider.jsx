@@ -2,15 +2,28 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.min.css";
 import "swiper/components/pagination/pagination.min.css";
 import "swiper/components/navigation/navigation.min.css";
-
+import axios from "axios";
 import "./styles.css";
-import { sliderItems } from "../../data";
 import styled from "styled-components";
 import SwiperCore, { Autoplay, Pagination } from "swiper";
 import { mobile, tablet } from "../../responsive";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export default function Slider() {
+  const [sliders, setSliders] = useState({});
+  useEffect(() => {
+    const getSliders = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/sliders");
+        setSliders(res.data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getSliders();
+  }, []);
   SwiperCore.use([Autoplay, Pagination]);
 
   return (
@@ -27,7 +40,7 @@ export default function Slider() {
         loop={true}
         className="mySwiper"
       >
-        {sliderItems.map((item) => (
+        {sliders.map((item) => (
           <SwiperSlide>
             <Slide bg={item.bg} key={item.id}>
               <ImgContainer>
