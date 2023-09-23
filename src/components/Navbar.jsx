@@ -192,7 +192,6 @@ const Navbar = () => {
         </Left>
         <SideIcon style={{ display: login || singUp ? "block" : "" }}>
           <a
-            className="whatsapplink"
             href="https://api.whatsapp.com/send?phone=8801888422116"
             target="_blank"
             rel="noreferrer"
