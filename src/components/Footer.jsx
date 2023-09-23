@@ -10,6 +10,7 @@ import {
 import styled from "styled-components";
 import { mobile, tablet } from "../responsive";
 import { Link, useLocation } from "react-router-dom";
+import logo from "../assets/logo.jpeg";
 
 const Footer = () => {
   const location = useLocation();
@@ -20,7 +21,9 @@ const Footer = () => {
     <Container style={{ display: payemnt ? "none" : "" }}>
       <Top>
         <Left>
-          <Logo>ROCK METAL</Logo>
+          <Logo>
+            <img src={logo} alt="" />
+          </Logo>
           <Desc>
             There are many variations of passages of Lorem Ipsum available, but
             the majority have suffered alteration in some form, by injected
@@ -69,11 +72,11 @@ const Footer = () => {
             Highway Road
           </ContactItem>
           <ContactItem>
-            <Phone style={{ marginRight: "10px" }} /> +8801XXXXXXXXX
+            <Phone style={{ marginRight: "10px" }} /> +8801888422116
           </ContactItem>
           <ContactItem>
             <MailOutline style={{ marginRight: "10px" }} />{" "}
-            contact@rockmetal.com
+            rockmetaltshirt786@gmail.com
           </ContactItem>
           <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
         </Right>
@@ -140,7 +143,11 @@ const Left = styled.div`
   padding: 20px;
 `;
 
-const Logo = styled.h1``;
+const Logo = styled.h1`
+  img {
+    height: 50px;
+  }
+`;
 
 const Desc = styled.p`
   margin: 20px 0px;

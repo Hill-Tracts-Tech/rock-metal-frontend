@@ -156,7 +156,7 @@ const FilterContainer = styled.div`
   margin-bottom: 15px;
 `;
 
-const EmptyMessage = styled.div`
+const EmptyMessage = styled.h1`
   width: 300px;
   height: 300px;
   margin: auto;

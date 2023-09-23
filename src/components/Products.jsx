@@ -140,8 +140,8 @@ const Titles = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-const EmptyMessage = styled.div`
-  width: 300px;
+const EmptyMessage = styled.h1`
+  width: 100%;
   height: 300px;
   margin: auto;
   text-align: center;

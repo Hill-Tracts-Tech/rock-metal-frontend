@@ -72,19 +72,23 @@ const Features = ({ cat, filters, sort }) => {
         </Link>
       </Titles>
       {!loading ? (
-        <Wrapper>
-          {cat
-            ? filteredProducts
-                .filter((item) => item.isFeatured === true)
-                .map((item) => (
-                  <Feature item={item} loading={loading} key={item.id} />
-                ))
-            : products
-                .filter((item) => item.isFeatured === true)
-                .map((item) => (
-                  <Feature loading={loading} item={item} key={item.id} />
-                ))}
-        </Wrapper>
+        products.length === 0 && filteredProducts.length === 0 ? (
+          <EmptyMessage>No Products Found</EmptyMessage>
+        ) : (
+          <Wrapper>
+            {cat
+              ? filteredProducts
+                  .filter((item) => item.isFeatured === true)
+                  .map((item) => (
+                    <Feature item={item} loading={loading} key={item.id} />
+                  ))
+              : products
+                  .filter((item) => item.isFeatured === true)
+                  .map((item) => (
+                    <Feature loading={loading} item={item} key={item.id} />
+                  ))}
+          </Wrapper>
+        )
       ) : (
         <div
           style={{
@@ -153,4 +157,12 @@ const Button = styled.button`
     background-color: #fff;
     color: teal;
   }
+`;
+
+const EmptyMessage = styled.h1`
+  width: 100%;
+  height: 300px;
+  margin: auto;
+  text-align: center;
+  border-radius: 6px;
 `;
