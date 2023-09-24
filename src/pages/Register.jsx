@@ -53,13 +53,6 @@ const Register = () => {
               placeholder="name"
               required
             />
-
-            <Input
-              onChange={(e) => setLastName(e.target.value)}
-              name="last_name"
-              placeholder="last name(optional)"
-              type="text"
-            />
             <Input
               onChange={(e) => setUserNumber(e.target.value)}
               name="userNumber"

@@ -247,12 +247,11 @@ const Cart = ({ handleNext, setIsLoading }) => {
               <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
-              <SummaryItemText>Estimated Shipping</SummaryItemText>
+              <SummaryItemText>
+                Estimated Shipping <br />
+                (only For Dhaka)
+              </SummaryItemText>
               <SummaryItemPrice>৳ {cart?.deliveryCharge}</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>৳ -0.00</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
@@ -349,7 +348,7 @@ const EmptyCartImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  ${mobile({ width: "90%" })}
+  ${mobile({ width: "60%" })}
 `;
 const EmptyCart = styled.div`
   max-width: 400px;
@@ -442,10 +441,13 @@ const Summary = styled.div`
   padding: 20px;
   height: 50vh;
   ${mobile({ marginTop: "30px", width: "85%", marginLeft: "20px" })}
+  ${mobile({ marginBottom: "60px" })}
 `;
 
 const SummaryTitle = styled.h1`
   font-weight: 200;
+
+  ${mobile({ fontSize: "30px" })}
 `;
 
 const SummaryItem = styled.div`

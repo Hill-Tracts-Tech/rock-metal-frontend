@@ -7,7 +7,7 @@ const cartSlice = createSlice({
     favorite: [],
     favQuantity: 0,
     quantity: 0,
-    deliveryCharge: 100,
+    deliveryCharge: 120,
     total: 0,
     email: null,
   },

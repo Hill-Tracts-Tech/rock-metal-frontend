@@ -124,7 +124,7 @@ const WishList = () => {
                         </b>
                       </ProductName>
                       <ProductId>
-                        <b>ID:</b> {product._id}
+                        <b>ID:</b> {product._id.slice(0, 20)}
                       </ProductId>
                       <ProductColor color={product.color} />
                       <ProductSize>
@@ -318,6 +318,7 @@ const EmptyCartImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  ${mobile({ width: "80%" })}
 `;
 const EmptyCart = styled.div`
   max-width: 400px;

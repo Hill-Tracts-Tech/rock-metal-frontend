@@ -142,7 +142,7 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
                     onChange={(e) => setCity(e.target.value)}
                   >
                     <Option>Select your City</Option>
-                    {districts.map((district, i) => (
+                    {districts.sort().map((district, i) => (
                       <Option value={district}>{district}</Option>
                     ))}
                   </Select>
@@ -237,11 +237,9 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
               </SummaryItem>
               <SummaryItem>
                 <SummaryItemText>Estimated Shipping</SummaryItemText>
-                <SummaryItemPrice>৳ {cart?.deliveryCharge}</SummaryItemPrice>
-              </SummaryItem>
-              <SummaryItem>
-                <SummaryItemText>Shipping Discount</SummaryItemText>
-                <SummaryItemPrice>৳ -0.00</SummaryItemPrice>
+                <SummaryItemPrice>
+                  ৳ {city === "Dhaka" ? cart?.deliveryCharge : 120}
+                </SummaryItemPrice>
               </SummaryItem>
               <SummaryItem type="total">
                 <SummaryItemText>Total</SummaryItemText>
@@ -337,7 +335,7 @@ const Form = styled.form`
   padding: 30px 15px 0px 15px;
   border: none;
   gap: 20px;
-  ${mobile({ padding: "10px 15px 10px 15px", display: "block" })}
+  ${mobile({ padding: "10px 10px 10px 10px", display: "block" })}
 `;
 const FormPart = styled.form`
   display: flex;
@@ -345,7 +343,7 @@ const FormPart = styled.form`
   border: 0.5px solid lightgray;
   border-radius: 10px;
   padding: 30px 15px 30px 15px;
-  ${mobile({ padding: "10px 15px 10px 15px" })}
+  ${mobile({ padding: "10px 1px 30px 10px" })}
 `;
 const FormItem = styled.div`
   width: 100%;
@@ -432,7 +430,12 @@ const Summary = styled.div`
   border-radius: 10px;
   padding: 20px;
   height: 100%;
-  ${mobile({ marginTop: "20px", width: "90%" })}
+  ${mobile({
+    marginTop: "20px",
+    paddingRight: "10px",
+    marginBottom: "50px",
+    width: "90%",
+  })}
 `;
 
 const SummaryTitle = styled.h1`
