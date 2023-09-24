@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "@material-ui/core";
 import styled from "styled-components";
 import { mobile, tablet } from "../responsive";
-
 import {
   Search,
   ShoppingCartOutlined,
