@@ -51,8 +51,8 @@ const Cart = ({ handleNext, setIsLoading }) => {
     });
   };
   useEffect(() => {
-    dispatch(deliveryCharge(100));
-  }, []);
+    dispatch(deliveryCharge(80));
+  }, [dispatch]);
   useEffect(() => {
     const makeRequest = async () => {
       try {
@@ -108,10 +108,9 @@ const Cart = ({ handleNext, setIsLoading }) => {
     size: product.size,
     color: product.color,
     price: product.price,
-    deliveryCharge: "100",
     quantity: product.quantity,
   }));
-  const total = Number(cart.total + cart.deliveryCharge);
+  const total = Number(cart.total);
   const userId = _id;
 
   const handleProceed = async () => {

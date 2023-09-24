@@ -36,6 +36,7 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
       postcode,
       email,
       _id: _id,
+      deliveryCharge: city === "Dhaka" ? cart?.deliveryCharge : 120,
     };
     try {
       setIsLoading(true);
@@ -62,6 +63,7 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
       postcode,
       email,
       _id: _id,
+      deliveryCharge: city === "Dhaka" ? cart?.deliveryCharge : 120,
     };
 
     setIsLoading(true);
@@ -244,7 +246,8 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
               <SummaryItem type="total">
                 <SummaryItemText>Total</SummaryItemText>
                 <SummaryItemPrice>
-                  ৳ {cart.total + cart?.deliveryCharge}
+                  ৳{" "}
+                  {cart.total + (city === "Dhaka" ? cart?.deliveryCharge : 120)}
                 </SummaryItemPrice>
               </SummaryItem>
               <Card className="card bg-base-100 shadow-xl mb-10 ">

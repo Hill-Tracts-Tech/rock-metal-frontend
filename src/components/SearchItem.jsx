@@ -19,7 +19,9 @@ const SearchItem = ({ searchPopup, setSearchPopup, searchValue }) => {
     const getProducts = async () => {
       try {
         const res = await axios.get(
-          `https://api.rockmetaltshirt.com/api/products/?searchTerm=${searchValue}`
+          process.env.REACT_APP_PRODUCTION === "YES"
+            ? `https://api.rockmetaltshirt.com/api/products/?searchTerm=${searchValue}`
+            : `http://localhost:5002/api/products/?searchTerm=${searchValue}`
         );
         setProducts(res.data.data);
         setLoading(false);
