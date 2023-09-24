@@ -10,16 +10,23 @@ import { mobile, tablet } from "../../responsive";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+import { sliderItems } from "../../data";
 
 export default function Slider() {
   const [sliders, setSliders] = useState({});
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     const getSliders = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/sliders");
+        const res = await axios.get(
+          "https://api.rockmetaltshirt.com/api/sliders"
+        );
         setSliders(res.data.data);
+        setLoading(false);
       } catch (err) {
         console.log(err);
+        setLoading(false);
       }
     };
     getSliders();
@@ -28,35 +35,39 @@ export default function Slider() {
 
   return (
     <>
-      <Swiper
-        centeredSlides={true}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        loop={true}
-        className="mySwiper"
-      >
-        {sliders.map((item) => (
-          <SwiperSlide>
-            <Slide bg={item.bg} key={item.id}>
-              <ImgContainer>
-                <Image src={item.img} />
-              </ImgContainer>
-              <InfoContainer>
-                <Title>{item.title}</Title>
-                <Desc>{item.desc}</Desc>
-                <Link to="/all-products">
-                  <Button>SHOW NOW</Button>
-                </Link>
-              </InfoContainer>
-            </Slide>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {loading ? (
+        "Loading..."
+      ) : (
+        <Swiper
+          centeredSlides={true}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            clickable: true,
+          }}
+          loop={true}
+          className="mySwiper"
+        >
+          {(sliders.length > 0 ? sliders : sliderItems)?.map((item) => (
+            <SwiperSlide>
+              <Slide bg={item.bg} key={item.id}>
+                <ImgContainer>
+                  <Image src={item.img} />
+                </ImgContainer>
+                <InfoContainer>
+                  <Title>{item.title}</Title>
+                  <Desc>{item.desc}</Desc>
+                  <Link to="/all-products">
+                    <Button>SHOW NOW</Button>
+                  </Link>
+                </InfoContainer>
+              </Slide>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
     </>
   );
 }
