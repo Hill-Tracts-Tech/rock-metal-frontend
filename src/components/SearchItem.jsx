@@ -19,7 +19,7 @@ const SearchItem = ({ searchPopup, setSearchPopup, searchValue }) => {
     const getProducts = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/products/?searchTerm=${searchValue}`
+          `https://api.rockmetaltshirt.com/api/products/?searchTerm=${searchValue}`
         );
         setProducts(res.data.data);
         setLoading(false);

@@ -17,8 +17,8 @@ const Trendings = ({ cat, filters, sort }) => {
       try {
         const res = await axios.get(
           cat
-            ? `http://localhost:5000/api/products?category=${cat}`
-            : "http://localhost:5000/api/products"
+            ? `https://api.rockmetaltshirt.com/api/products?category=${cat}`
+            : "https://api.rockmetaltshirt.com/api/products"
         );
         setProducts(res.data.data);
         setLoading(false);
@@ -68,17 +68,21 @@ const Trendings = ({ cat, filters, sort }) => {
         </Link>
       </Titles>
       {!loading ? (
-        <Wrapper>
-          {cat
-            ? filteredProducts
-                .filter((item) => item.isTreding === true)
-                .map((item) => <Trending item={item} key={item.id} />)
-            : products
-                .filter((item) => item.isTreding === true)
-                .map((item) => (
-                  <Trending item={item} loading={loading} key={item.id} />
-                ))}
-        </Wrapper>
+        products.length === 0 ? (
+          <EmptyMessage>No Products Found</EmptyMessage>
+        ) : (
+          <Wrapper>
+            {cat
+              ? filteredProducts
+                  .filter((item) => item.isTreding === true)
+                  .map((item) => <Trending item={item} key={item.id} />)
+              : products
+                  .filter((item) => item.isTreding === true)
+                  .map((item) => (
+                    <Trending item={item} loading={loading} key={item.id} />
+                  ))}
+          </Wrapper>
+        )
       ) : (
         <div
           style={{
@@ -149,4 +153,12 @@ const Title = styled.h2`
   -webkit-text-fill-color: transparent;
   text-align: center;
   ${mobile({ fontSize: "20px", padding: "12px 0px" })};
+`;
+
+const EmptyMessage = styled.h1`
+  width: 100%;
+  height: 300px;
+  margin: auto;
+  text-align: center;
+  border-radius: 6px;
 `;

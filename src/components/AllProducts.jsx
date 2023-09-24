@@ -17,7 +17,9 @@ const AllProducts = () => {
     setLoading(true);
     const getProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/products");
+        const res = await axios.get(
+          "https://api.rockmetaltshirt.com/api/products"
+        );
         setProducts(res.data.data);
         setLoading(false);
       } catch (err) {
@@ -156,7 +158,7 @@ const FilterContainer = styled.div`
   margin-bottom: 15px;
 `;
 
-const EmptyMessage = styled.div`
+const EmptyMessage = styled.h1`
   width: 300px;
   height: 300px;
   margin: auto;
