@@ -271,7 +271,7 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
                   />
                   <p>Cash On Delivery</p>
                 </div>
-                <div
+                {/* <div
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -291,7 +291,7 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
                     onClick={(e) => showCard(e.target.value)}
                   />
                   <p>Pay With Bkash</p>
-                </div>
+                </div> */}
               </Card>
               {/* akdjfg;ljgd */}
               {number && name && city && address && postcode && email ? (
@@ -304,7 +304,7 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
                     </>
                   ) : (
                     <Button isabled onClick={cashHandler}>
-                      Cash On Delivery
+                      Proceed
                     </Button>
                   )}
                 </div>

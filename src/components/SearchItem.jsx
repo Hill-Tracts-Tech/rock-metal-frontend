@@ -75,7 +75,7 @@ const SearchItem = ({ searchPopup, setSearchPopup, searchValue }) => {
                         alt=""
                       />
                       <h2>{product?.title}</h2>
-                      <p>{product?.desc}</p>
+                      <p>{product?.desc?.slice(0, 100)}</p>
                       <small style={{ marginTop: "25px" }}>
                         Price: {product.price}
                       </small>

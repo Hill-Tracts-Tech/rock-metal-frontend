@@ -231,6 +231,8 @@ const Navbar = () => {
               border: "none",
               outline: "none",
               backgroundColor: "transparent",
+              marginRight: "20px",
+              marginTop: "13px",
             }}
             onClick={togglePopup}
           >
@@ -252,7 +254,7 @@ const Navbar = () => {
               value={searchValue}
               onChange={handleSearchChange}
             />
-            <SearchButton onClick={togglePopup} disabled={!searchValue}>
+            <SearchButton onClick={handleSearch} disabled={!searchValue}>
               <Search
                 style={{
                   color: "white",
@@ -436,7 +438,7 @@ const Logo = styled.div`
   width: 120px;
   ${mobile({ width: "120px", height: "42px" })}
   & img {
-    width: 120px;
+    /* width: 120px; */
     height: 42px;
   }
 `;
@@ -497,7 +499,7 @@ const SideIcon = styled.div`
   margin-bottom: 270px;
   margin-right: -22px;
   z-index: 1000;
-  ${mobile({ marginLeft: "304px", marginBottom: "360px" })}
+  ${mobile({ marginLeft: "304px", marginBottom: "360px", right: 0 })}
   ${tablet({
     marginRight: "0px",
     marginBottom: "470px",
