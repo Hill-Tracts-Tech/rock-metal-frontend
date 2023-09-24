@@ -37,7 +37,7 @@ const Navbar = () => {
   // popup
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isPopupProfileOpen, setIsPopupProfileOpen] = useState(false);
-  const [searchPopup, setSearchPopup] = useState(false);
+  const [searchPopup, setSearchPopup] = useState(true);
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -209,7 +209,7 @@ const Navbar = () => {
         </SideIcon>
         <>
           {" "}
-          <SearchContainer style={{ marginRight: "13px" }}>
+          {/* <SearchContainer style={{ marginRight: "13px" }}>
             <SearchInput
               type="text"
               placeholder="Search..."
@@ -226,7 +226,17 @@ const Navbar = () => {
                 }}
               />
             </SearchButton>
-          </SearchContainer>
+          </SearchContainer> */}
+          <button
+            style={{
+              border: "none",
+              outline: "none",
+              backgroundColor: "transparent",
+            }}
+            onClick={togglePopup}
+          >
+            <Search />
+          </button>
         </>
       </MobileViewNavbarContainer>
       {/*  */}
@@ -424,8 +434,10 @@ const NavbarContainer = styled.nav`
 
 const Logo = styled.div`
   height: 42px;
-  ${mobile({ width: "42px", height: "42px" })}
+  width: 120px;
+  ${mobile({ width: "120px", height: "42px" })}
   & img {
+    width: 120px;
     height: 42px;
   }
 `;
