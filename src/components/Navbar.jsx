@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "@material-ui/core";
 import styled from "styled-components";
-import { mobile } from "../responsive";
+import { mobile, tablet } from "../responsive";
 
 import {
   Search,
@@ -498,7 +498,10 @@ const SideIcon = styled.div`
   margin-bottom: 270px;
   margin-right: -22px;
   z-index: 1000;
-  ${mobile({ marginLeft: "320px", marginBottom: "360px" })}
+  ${mobile({ marginLeft: "320px", marginBottom: "360px" })}/* ${tablet({
+    marginLeft: "695px",
+    marginBottom: "474px",
+  })} */
 `;
 
 const RegisterButton = styled.button`

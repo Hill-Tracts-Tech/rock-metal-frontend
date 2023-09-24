@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { sliderItems } from "../../data";
+import Skeleton from "react-loading-skeleton";
 
 export default function Slider() {
   const [sliders, setSliders] = useState({});
@@ -36,7 +37,20 @@ export default function Slider() {
   return (
     <>
       {loading ? (
-        "Loading..."
+        <SliderSkeletor>
+          <Skeleton width={700} height={400} />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+            }}
+          >
+            <Skeleton width={600} height={30} />
+            <Skeleton width={600} height={50} />
+            <Skeleton width={100} height={40} />
+          </div>
+        </SliderSkeletor>
       ) : (
         <Swiper
           centeredSlides={true}
@@ -72,6 +86,15 @@ export default function Slider() {
   );
 }
 
+const SliderSkeletor = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 0 40px;
+  ${mobile({ flexDirection: "column" })}
+  ${tablet({ flexDirection: "column" })}
+`;
 const Slide = styled.div`
   width: 100vw;
   height: 100vh;
