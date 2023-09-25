@@ -162,6 +162,7 @@ const Image = styled.img`
   height: 75%;
   z-index: 2;
   mix-blend-mode: darken;
+  width: 290px;
 `;
 
 const Icon = styled.div`

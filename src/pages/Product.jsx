@@ -109,7 +109,7 @@ const Product = () => {
                 ? product.desc
                 : "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Inventore, ab. Quisquam tempora adipisci vitae saepe"}
             </Desc>
-            <Price>৳ {product.price}</Price>
+            <Price>৳ {product.price * quantity}</Price>
             <FilterContainer>
               <Filter>
                 <FilterTitle>Color</FilterTitle>

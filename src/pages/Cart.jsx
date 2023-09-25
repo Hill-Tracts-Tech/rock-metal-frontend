@@ -51,8 +51,8 @@ const Cart = ({ handleNext, setIsLoading }) => {
     });
   };
   useEffect(() => {
-    dispatch(deliveryCharge(100));
-  }, []);
+    dispatch(deliveryCharge(80));
+  }, [dispatch]);
   useEffect(() => {
     const makeRequest = async () => {
       try {
@@ -108,10 +108,9 @@ const Cart = ({ handleNext, setIsLoading }) => {
     size: product.size,
     color: product.color,
     price: product.price,
-    deliveryCharge: "100",
     quantity: product.quantity,
   }));
-  const total = Number(cart.total + cart.deliveryCharge);
+  const total = Number(cart.total);
   const userId = _id;
 
   const handleProceed = async () => {
@@ -168,7 +167,7 @@ const Cart = ({ handleNext, setIsLoading }) => {
           </TopTexts>
         </Top>
         <Bottom>
-          <Info>
+          <Info empty={cart.products.length === 0}>
             {cart.products.length > 0 ? (
               <InfoWrapper>
                 {cart.products.map((product) => (
@@ -240,34 +239,35 @@ const Cart = ({ handleNext, setIsLoading }) => {
               </EmptyCart>
             )}
           </Info>
-          <Summary>
-            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>৳ {cart?.deliveryCharge}</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>৳ -0.00</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem type="total">
-              <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>
-                ৳ {cart.total + cart.deliveryCharge}
-              </SummaryItemPrice>
-            </SummaryItem>
-            {cart.products.length ? (
-              <Button onClick={handleProceed}>PROCEED NOW</Button>
-            ) : (
-              <Button style={{ backgroundColor: "gray", color: "gray" }}>
-                PROCEED NOW
-              </Button>
-            )}
-          </Summary>
+          {cart?.products?.length > 0 && (
+            <Summary>
+              <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+              <SummaryItem>
+                <SummaryItemText>Subtotal</SummaryItemText>
+                <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem>
+                <SummaryItemText>
+                  Estimated Shipping <br />
+                  (only For Dhaka)
+                </SummaryItemText>
+                <SummaryItemPrice>৳ {cart?.deliveryCharge}</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem type="total">
+                <SummaryItemText>Total</SummaryItemText>
+                <SummaryItemPrice>
+                  ৳ {cart.total + cart.deliveryCharge}
+                </SummaryItemPrice>
+              </SummaryItem>
+              {cart.products.length ? (
+                <Button onClick={handleProceed}>PROCEED NOW</Button>
+              ) : (
+                <Button style={{ backgroundColor: "gray", color: "gray" }}>
+                  PROCEED NOW
+                </Button>
+              )}
+            </Summary>
+          )}
         </Bottom>
       </Wrapper>
     </Container>
@@ -333,6 +333,7 @@ const InfoWrapper = styled.div`
 `;
 const Info = styled.div`
   flex: 3;
+  ${({ empty }) => (empty ? "display: flex; justify-content: center;" : "")}
 `;
 
 const Product = styled.div`
@@ -349,7 +350,7 @@ const EmptyCartImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  ${mobile({ width: "90%" })}
+  ${mobile({ width: "60%" })}
 `;
 const EmptyCart = styled.div`
   max-width: 400px;
@@ -442,10 +443,13 @@ const Summary = styled.div`
   padding: 20px;
   height: 50vh;
   ${mobile({ marginTop: "30px", width: "85%", marginLeft: "20px" })}
+  ${mobile({ marginBottom: "60px" })}
 `;
 
 const SummaryTitle = styled.h1`
   font-weight: 200;
+
+  ${mobile({ fontSize: "30px" })}
 `;
 
 const SummaryItem = styled.div`

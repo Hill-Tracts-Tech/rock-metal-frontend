@@ -204,6 +204,7 @@ const Content = styled.div`
 
 const Image = styled.img`
   height: 200px;
+  width: 260px;
   z-index: 2;
   mix-blend-mode: darken;
 `;

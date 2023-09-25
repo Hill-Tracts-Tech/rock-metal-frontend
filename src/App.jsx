@@ -25,6 +25,7 @@ import ErrorBoundary from "./utils/ErrorBoundary";
 import SuccessView from "./components/payment/SuccessView";
 import Failure from "./components/payment/Failure";
 import Bottombar from "./components/Navbar/Bottombar";
+import useRightClickContext from "./hoc/preventRightClick";
 
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -37,6 +38,9 @@ const App = () => {
       );
     }
   }
+
+  // disabled right click on production
+  useRightClickContext();
 
   return (
     <ErrorBoundary>
