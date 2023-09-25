@@ -438,6 +438,7 @@ const Logo = styled.div`
   & img {
     width: 120px;
     height: 42px;
+    ${mobile({ width: "auto" })}
   }
 `;
 
