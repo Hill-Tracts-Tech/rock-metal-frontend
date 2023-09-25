@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { publicRequest, userRequest } from "../requestMethods";
+import { userRequest } from "../requestMethods";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import { mobile } from "../responsive";
@@ -45,60 +45,61 @@ const Orders = () => {
             {orders.map((order) => (
               <div key={order._id}>
                 <div>
-                  {/* <p>{order?._id}</p>
-                  <p>{order?.total_amount}</p>
-                  <p>{order?.paymentStatus}</p>
-                  <p>{order?.products[0].title}</p>
-                  <p>{order?.products.length}</p>
-                  <img
-                    style={{ width: "80px" }}
-                    src={order?.products[0].img}
-                    alt="product"
-                  /> */}
                   {order.products.map((product) => {
                     return (
                       <div key={product._id}>
                         <SubContainer>
-                          <ProductDetails>
+                          <ProductItem1>
                             <Img src={product.img} alt="product" />
-                            <div>
-                              <Title>{product.title}</Title>
-                              <p>Size: {product?.size}</p>
-                              <p>Color: {product?.color}</p>
-                            </div>
-                          </ProductDetails>
+                            <MobTil>{product.title}</MobTil>
+                          </ProductItem1>
                           <ProductItem>
-                            <Title1>Payment</Title1>
+                            <Title>{product.title}</Title>
+                            <p>
+                              <B>Size: </B>
+                              {product?.size}
+                            </p>
+                            <p>
+                              <B> Color: </B>
+                              {product?.color}
+                            </p>
+                          </ProductItem>
+                          <ProductItem>
+                            <Bold>Payment</Bold>
                             <small>{order?.paymentStatus}</small>
                           </ProductItem>
-                          <ProductItem2>
-                            <Title1>Shipping Address</Title1>
+                          <ProductItem>
+                            <Bold>
+                              Shipping
+                              <Br /> Address
+                            </Bold>
                             <small>
                               {order?.data?.cus_add1 || order?.data?.cus_add2}
                             </small>
-                          </ProductItem2>
-                          <ProductItem2>
-                            <Title1>Shipping Status</Title1>
+                          </ProductItem>
+                          <ProductItem>
+                            <Bold>
+                              Shipping
+                              <Br /> Status
+                            </Bold>
                             <small>{order?.shippingStatus}</small>
-                          </ProductItem2>
-                          <Flex>
-                            <div>
-                              <Title1 style={{ fontSize: "15px" }}>
-                                Amount
-                              </Title1>
-                              <p> ৳ {product.price}</p>
-                            </div>
-                            <div>
-                              <p>
-                                <Bold>Qty:</Bold>
-                                {product.quantity}
-                              </p>
-                            </div>
-                          </Flex>
-                          <ProductItem1>
+                          </ProductItem>
+
+                          <ProductItem>
+                            <Bold>Amount</Bold>
+                            <p> ৳ {product.price}</p>
+                          </ProductItem>
+                          <ProductItem>
+                            <Bold>Quantity:</Bold>
+                            <p style={{ marginLeft: "9px" }}>
+                              {product.quantity}
+                            </p>
+                          </ProductItem>
+
+                          <ProductItem>
                             <Bold>Total:</Bold>
                             <p>৳ {product.quantity * product.price}</p>
-                          </ProductItem1>
+                          </ProductItem>
                         </SubContainer>
                       </div>
                     );
@@ -118,12 +119,13 @@ export default Orders;
 const Container = styled.div`
   width: 90%;
   margin: auto;
+  ${mobile({ paddingBottom: "80px" })}
 `;
 
 const OrdersContainer = styled.div`
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   padding: 50px;
-  ${mobile({ padding: "0px" })}
+  ${mobile({ padding: "0 10px" })}
 `;
 const Heading = styled.h2`
   margin-bottom: 40px;
@@ -133,44 +135,56 @@ const SubContainer = styled.div`
   justify-content: space-between;
   padding: 10px;
   margin: 10px 0;
+
   border-bottom: 0.5px solid gray;
-  ${mobile({ display: "grid", gridTemplateColumns: "auto auto" })}
+  ${mobile({ display: "flex", flexDirection: "column" })}
 `;
-const ProductDetails = styled.div`
-  display: flex;
-  justify-content: start;
-  gap: 20px;
-  flex: 2;
-`;
+
 const Img = styled.img`
   width: 80px;
+  ${mobile({ width: "120px" })}
 `;
 const Title = styled.h3`
-  ${mobile({ fontSize: "14px" })}
+  display: block;
+  ${mobile({ display: "none" })}
 `;
-const Title1 = styled.h4`
-  ${mobile({ fontSize: "13px" })}
+
+const MobTil = styled.h4`
+  display: none;
+  ${mobile({ display: "block", fontSize: "20px", margin: "10px 0" })}
 `;
 const ProductItem = styled.div`
   flex: 1;
-  ${mobile({ marginBottom: "0px" })}
-`;
-const ProductItem2 = styled.div`
-  flex: 1;
-  ${mobile({ marginBottom: "0px", marginTop: "8px" })}
+  justify-content: center;
+
+  align-items: center;
+  ${mobile({
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: "0px",
+  })}
 `;
 const ProductItem1 = styled.div`
   flex: 1;
-  text-align: center;
-  ${mobile({ textAlign: "left", marginTop: "8px" })}
-`;
-const Flex = styled.div`
-  flex: 1;
-  text-align: center;
-  ${mobile({ marginTop: "10px", display: "flex", gap: "70px" })}
+  justify-content: center;
+  align-items: center;
+  ${mobile({
+    display: "flex",
+    justifyCntent: "center",
+    alignItems: "center",
+    marginBottom: "0px",
+    flexDirection: "column",
+  })}
 `;
 
 const Bold = styled.p`
   font-weight: 800;
   ${mobile({ fontWeight: "800" })};
+`;
+const B = styled.b`
+  ${mobile({ fontWeight: "800" })};
+`;
+const Br = styled.br`
+  display: block;
+  ${mobile({ display: "none" })};
 `;

@@ -114,12 +114,12 @@ const AllProducts = () => {
                   <AllProduct item={item} key={item.id} />
                 ))
               ) : (
-                <EmptyMessage>
+                <EmptyDiv>
                   <EmptyMessageImg src={img} alt="EmptyProduct" />
-                  <p style={{ marginBottom: "10px" }}>
+                  <EmptyMessage style={{ marginBottom: "10px" }}>
                     Sorry, We cannot find any matched product.
-                  </p>
-                </EmptyMessage>
+                  </EmptyMessage>
+                </EmptyDiv>
               )
             ) : products.length > 0 ? (
               products.map((item) => <AllProduct item={item} key={item.id} />)
@@ -158,6 +158,14 @@ const FilterContainer = styled.div`
   margin-bottom: 15px;
 `;
 
+const EmptyDiv = styled.div`
+  width: 300px;
+  height: 300px;
+  margin: auto;
+  text-align: center;
+  border-radius: 6px;
+  ${mobile({ paddingBottom: "20px" })}
+`;
 const EmptyMessage = styled.h1`
   width: 300px;
   height: 300px;
