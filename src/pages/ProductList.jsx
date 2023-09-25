@@ -58,7 +58,9 @@ const ProductList = () => {
 
 export default ProductList;
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-top: 100px;
+`;
 
 const Title = styled.h1`
   margin: 20px;

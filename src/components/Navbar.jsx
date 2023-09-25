@@ -231,6 +231,7 @@ const Navbar = () => {
               border: "none",
               outline: "none",
               backgroundColor: "transparent",
+              marginRight: "25px",
             }}
             onClick={togglePopup}
           >
@@ -435,7 +436,7 @@ const NavbarContainer = styled.nav`
 const Logo = styled.div`
   height: 42px;
   width: 120px;
-  ${mobile({ width: "120px", height: "42px" })}
+  ${mobile({ width: "120px", height: "42px", marginBottom: "15px" })}
   & img {
     height: 42px;
     ${mobile({ width: "auto" })}
