@@ -26,7 +26,7 @@ const Orders = () => {
     getOrders();
   }, [userId]);
 
-  console.log(orders[0]);
+  console.log(orders, "orders");
 
   return (
     <Container>
@@ -97,8 +97,12 @@ const Orders = () => {
                           </ProductItem>
 
                           <ProductItem>
-                            <Bold>Total:</Bold>
-                            <p>৳ {product.quantity * product.price}</p>
+                            <Bold>Total + Delivery:</Bold>
+                            <p>
+                              ৳{" "}
+                              {product.quantity * product.price +
+                                order?.deliveryCharge}
+                            </p>
                           </ProductItem>
                         </SubContainer>
                       </div>
@@ -125,7 +129,7 @@ const Container = styled.div`
 const OrdersContainer = styled.div`
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   padding: 50px;
-  ${mobile({ padding: "0 10px" })}
+  ${mobile({ padding: "0px 0 50px 0" })}
 `;
 const Heading = styled.h2`
   margin-bottom: 40px;

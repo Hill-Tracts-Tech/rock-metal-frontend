@@ -18,7 +18,9 @@ const AllProducts = () => {
     const getProducts = async () => {
       try {
         const res = await axios.get(
-          "https://api.rockmetaltshirt.com/api/products"
+          process.env.REACT_APP_PRODUCTION === "YES"
+            ? "https://api.rockmetaltshirt.com/api/products"
+            : "http://localhost:5002/api/products"
         );
         setProducts(res.data.data);
         setLoading(false);
