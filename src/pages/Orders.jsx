@@ -123,7 +123,7 @@ export default Orders;
 const Container = styled.div`
   width: 90%;
   margin: auto;
-  ${mobile({ paddingBottom: "80px" })}
+  ${mobile({ paddingBottom: "80px", marginTop: "100px" })}
 `;
 
 const OrdersContainer = styled.div`
