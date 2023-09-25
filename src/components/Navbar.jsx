@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "@material-ui/core";
 import styled from "styled-components";
 import { mobile, tablet } from "../responsive";
-
 import {
   Search,
   ShoppingCartOutlined,
@@ -498,11 +497,10 @@ const SideIcon = styled.div`
   margin-bottom: 270px;
   margin-right: -22px;
   z-index: 1000;
-  ${mobile({ marginLeft: "304px", marginBottom: "360px" })}
-  ${tablet({
-    marginRight: "0px",
-    marginBottom: "470px",
-  })}
+  ${mobile({ marginLeft: "320px", marginBottom: "360px" })}/* ${tablet({
+    marginLeft: "695px",
+    marginBottom: "474px",
+  })} */
 `;
 
 const RegisterButton = styled.button`
