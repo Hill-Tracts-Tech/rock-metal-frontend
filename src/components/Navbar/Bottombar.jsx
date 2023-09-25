@@ -57,6 +57,12 @@ const Bottombar = () => {
     dispatch(logout());
     dispatch(clear());
   };
+
+  const activeCart = location?.pathname?.split("/").includes("cart");
+  const activeWishlist = location?.pathname?.split("/").includes("wishList");
+
+  const avtiveHome = location?.pathname === "/";
+
   return (
     <Container style={{ display: payemnt || login || singup ? "none" : "" }}>
       <BottomBarContainer>
@@ -67,20 +73,23 @@ const Bottombar = () => {
             gap: "40px",
           }}
         >
-          <Link to="/">
+          <Link to="/" style={{ background: avtiveHome ? "#215b6c" : "" }}>
             <MenuItem title="Cart">
               <Home />
             </MenuItem>
           </Link>
 
-          <Link to="/cart">
+          <Link to="/cart" style={{ background: activeCart ? "#215b6c" : "" }}>
             <MenuItem title="Cart">
               <Badge badgeContent={cart.quantity} color="white">
                 <ShoppingCartOutlined style={{ color: "white" }} />
               </Badge>
             </MenuItem>
           </Link>
-          <Link to="/wishList">
+          <Link
+            to="/wishList"
+            style={{ background: activeWishlist ? "#215b6c" : "" }}
+          >
             <MenuItem title="WishList">
               <Badge badgeContent={cart.favQuantity} color="teal">
                 <FavoriteBorderOutlined style={{ color: "white" }} />
