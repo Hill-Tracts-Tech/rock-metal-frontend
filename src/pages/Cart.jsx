@@ -167,7 +167,7 @@ const Cart = ({ handleNext, setIsLoading }) => {
           </TopTexts>
         </Top>
         <Bottom>
-          <Info>
+          <Info empty={cart.products.length === 0}>
             {cart.products.length > 0 ? (
               <InfoWrapper>
                 {cart.products.map((product) => (
@@ -239,33 +239,35 @@ const Cart = ({ handleNext, setIsLoading }) => {
               </EmptyCart>
             )}
           </Info>
-          <Summary>
-            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>
-                Estimated Shipping <br />
-                (only For Dhaka)
-              </SummaryItemText>
-              <SummaryItemPrice>৳ {cart?.deliveryCharge}</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem type="total">
-              <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>
-                ৳ {cart.total + cart.deliveryCharge}
-              </SummaryItemPrice>
-            </SummaryItem>
-            {cart.products.length ? (
-              <Button onClick={handleProceed}>PROCEED NOW</Button>
-            ) : (
-              <Button style={{ backgroundColor: "gray", color: "gray" }}>
-                PROCEED NOW
-              </Button>
-            )}
-          </Summary>
+          {cart?.products?.length > 0 && (
+            <Summary>
+              <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+              <SummaryItem>
+                <SummaryItemText>Subtotal</SummaryItemText>
+                <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem>
+                <SummaryItemText>
+                  Estimated Shipping <br />
+                  (only For Dhaka)
+                </SummaryItemText>
+                <SummaryItemPrice>৳ {cart?.deliveryCharge}</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem type="total">
+                <SummaryItemText>Total</SummaryItemText>
+                <SummaryItemPrice>
+                  ৳ {cart.total + cart.deliveryCharge}
+                </SummaryItemPrice>
+              </SummaryItem>
+              {cart.products.length ? (
+                <Button onClick={handleProceed}>PROCEED NOW</Button>
+              ) : (
+                <Button style={{ backgroundColor: "gray", color: "gray" }}>
+                  PROCEED NOW
+                </Button>
+              )}
+            </Summary>
+          )}
         </Bottom>
       </Wrapper>
     </Container>
@@ -331,6 +333,7 @@ const InfoWrapper = styled.div`
 `;
 const Info = styled.div`
   flex: 3;
+  ${({ empty }) => (empty ? "display: flex; justify-content: center;" : "")}
 `;
 
 const Product = styled.div`

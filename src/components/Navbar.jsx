@@ -425,6 +425,7 @@ const NavbarContainer = styled.nav`
   padding: 1rem 2rem;
   background-color: #ffffff;
   color: teal;
+  margin-bottom: 15px;
   @media (max-width: 768px) {
     padding: 1rem;
     display: none;
@@ -436,7 +437,6 @@ const Logo = styled.div`
   width: 120px;
   ${mobile({ width: "120px", height: "42px" })}
   & img {
-    width: 120px;
     height: 42px;
     ${mobile({ width: "auto" })}
   }
