@@ -18,6 +18,7 @@ export const login = async (
   dispatch(loginStart());
   try {
     const res = await publicRequest.post("/auth/login", { email, password });
+    localStorage.setItem("token", res.data.data?.accessToken);
     dispatch(loginSuccess(res.data.data));
     Swal.fire({
       title: "Logged in Successfully",
@@ -43,7 +44,6 @@ export const register = async (
   dispatch,
   { name, email, password, item, autoAddToCart, userNumber }
 ) => {
-  console.log(name);
   dispatch(registrationStart());
   try {
     const res = await publicRequest.post("/auth/register", {
@@ -52,6 +52,7 @@ export const register = async (
       userNumber,
       password,
     });
+    localStorage.setItem("token", res.data.data?.accessToken);
     dispatch(registrationSuccess(res.data.data));
     Swal.fire({
       title: "Registered in Successfully",
