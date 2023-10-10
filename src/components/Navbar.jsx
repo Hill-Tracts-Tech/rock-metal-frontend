@@ -493,16 +493,11 @@ const SideIcon = styled.div`
   background-color: #34d126;
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
-  bottom: 0;
+  bottom: 50%;
   width: 55px;
   height: 50px;
-  margin-bottom: 270px;
-  margin-right: -22px;
   z-index: 1000;
-  ${mobile({ marginLeft: "320px", marginBottom: "360px" })}/* ${tablet({
-    marginLeft: "695px",
-    marginBottom: "474px",
-  })} */
+  right: 0;
 `;
 
 const RegisterButton = styled.button`

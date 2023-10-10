@@ -171,9 +171,13 @@ const Color = styled.div`
 
 const Sizes = styled.div`
   display: flex;
+  flex-wrap: wrap-reverse;
+  /* grid-template-columns: auto auto auto auto; */
   justify-content: center;
   align-items: center;
   gap: 20px;
+  width: 80%;
+  margin: 0 auto;
 `;
 
 const Size = styled.div`
@@ -183,7 +187,7 @@ const Size = styled.div`
   color: white;
   padding: 5px;
   height: 25px;
-  width: 25px;
+  width: 40px;
   font-weight: bold;
   padding-top: 10px;
   border-radius: 25px;
