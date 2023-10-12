@@ -1,3 +1,6 @@
+import Hoodie from "./assets/hoodie.jpg";
+import shirt from "./assets/shirt.jpg";
+
 export const sliderItems = [
   {
     id: 1,
@@ -25,15 +28,15 @@ export const sliderItems = [
 export const categories = [
   {
     id: 1,
-    img: "https://mir-s3-cdn-cf.behance.net/project_modules/fs/abe698125439939.61198f0dc1e3c.jpg",
+    img: shirt,
     title: "SHIRT STYLE!",
     cat: "shirt",
   },
   {
     id: 2,
-    img: "https://static.vecteezy.com/system/resources/previews/021/734/401/non_2x/sports-jersey-mockup-front-view-free-vector.jpg",
-    title: "GORGEOUS JERSEY",
-    cat: "jersey",
+    img: Hoodie,
+    title: "CUSTOMIZED HOODIE",
+    cat: "hoodie",
   },
   {
     id: 3,
