@@ -20,7 +20,7 @@ const SearchItem = ({ searchPopup, setSearchPopup, searchValue }) => {
       try {
         const res = await axios.get(
           process.env.REACT_APP_PRODUCTION === "YES"
-            ? `https://api.rockmetaltshirt.com/api/products/?searchTerm=${searchValue}`
+            ? `https://rock-metal-backend-3yv4t3p4i-chttravels-projects.vercel.app/api/products/?searchTerm=${searchValue}`
             : `http://localhost:5002/api/products/?searchTerm=${searchValue}`
         );
         setProducts(res.data.data);

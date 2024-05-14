@@ -19,7 +19,7 @@ const AllProducts = () => {
       try {
         const res = await axios.get(
           process.env.REACT_APP_PRODUCTION === "YES"
-            ? "https://api.rockmetaltshirt.com/api/products"
+            ? "https://rock-metal-backend-3yv4t3p4i-chttravels-projects.vercel.app/api/products"
             : "http://localhost:5002/api/products"
         );
         setProducts(res.data.data);

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL =
   process.env.REACT_APP_PRODUCTION === "YES"
-    ? "https://api.rockmetaltshirt.com/api/"
+    ? "https://rock-metal-backend-3yv4t3p4i-chttravels-projects.vercel.app/api/"
     : "http://localhost:5002/api";
 
 export const publicRequest = axios.create({
