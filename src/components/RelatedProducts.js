@@ -29,7 +29,7 @@ const RelatedProducts = ({ category, productId }) => {
           const res = await axios.get(
             process.env.REACT_APP_PRODUCTION === "YES"
               ? `https://api.rockmetaltshirt.com/api/products?category=${category[0]}`
-              : `https://api.rockmetaltshirt.com/api/products?category=${category[0]}`
+              : `http://localhost:5002/api/products?category=${category[0]}`
           );
           setProducts(res.data.data);
           setLoading(false);

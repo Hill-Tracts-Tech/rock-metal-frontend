@@ -23,7 +23,7 @@ export default function Slider() {
         const res = await axios.get(
           process.env.REACT_APP_PRODUCTION === "YES"
             ? "https://api.rockmetaltshirt.com/api/sliders"
-            : "https://api.rockmetaltshirt.com/api/sliders"
+            : "http://localhost:5002/api/sliders"
         );
         setSliders(res.data.data);
         setLoading(false);
