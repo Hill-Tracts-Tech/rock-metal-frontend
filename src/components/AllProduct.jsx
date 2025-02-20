@@ -18,32 +18,32 @@ const AllProduct = ({ item }) => {
   const history = useHistory();
 
   const handleAddToCart = () => {
-    if (user) {
-      try {
-        dispatch(
-          addProduct({
-            ...item,
-            quantity: 1,
-            color: item?.color[0],
-            size: item?.size[0],
-            email: user?.email,
-          })
-        );
-        Swal.fire({
-          title: "Added to Cart successfully",
-          icon: "success",
-          confirmButtonColor: "teal",
-        });
-      } catch (error) {
-        console.log(error);
-        Swal.fire({
-          title: `Something went wrong! May be occurred ,${error}`,
-          icon: "warring",
-          confirmButtonColor: "teal",
-        });
+    const data = {
+      ...item,
+      quantity: 1,
+      color: item?.color[0],
+      size: item?.size[0],
+    };
+    try {
+      if (user) {
+        dispatch(addProduct(data)); // ✅ This now correctly updates quantity
+        toast.success("Added to cart successfully!");
+      } else {
+        let guestCart = JSON.parse(localStorage.getItem("guestCart")) || [];
+        const existingIndex = guestCart.findIndex((p) => p._id === data._id);
+
+        if (existingIndex !== -1) {
+          guestCart[existingIndex].quantity += 1; // ✅ Increase quantity
+        } else {
+          guestCart.push(data);
+        }
+
+        localStorage.setItem("guestCart", JSON.stringify(guestCart));
+        dispatch(addProduct(data)); // ✅ Keep Redux in sync
+        toast.success("Added to cart successfully!");
       }
-    } else {
-      history.push("/login");
+    } catch (error) {
+      toast.error("Something went wrong! Please try again.");
     }
   };
 

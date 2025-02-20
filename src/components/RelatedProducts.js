@@ -53,23 +53,26 @@ const RelatedProducts = ({ category, productId }) => {
       size: item?.size[0],
       email: user?.email,
     };
-    if (user) {
-      try {
-        dispatch(addProduct(data));
-        toast.success("Added to cart successfully");
-      } catch (error) {
-        console.log(error);
-        toast.error("Something went wrong! May be occurred ", error);
+    try {
+      if (user) {
+        dispatch(addProduct(data)); // ✅ This now correctly updates quantity
+        toast.success("Added to cart successfully!");
+      } else {
+        let guestCart = JSON.parse(localStorage.getItem("guestCart")) || [];
+        const existingIndex = guestCart.findIndex((p) => p._id === data._id);
+
+        if (existingIndex !== -1) {
+          guestCart[existingIndex].quantity += 1; // ✅ Increase quantity
+        } else {
+          guestCart.push(data);
+        }
+
+        localStorage.setItem("guestCart", JSON.stringify(guestCart));
+        dispatch(addProduct(data)); // ✅ Keep Redux in sync
+        toast.success("Added to cart successfully!");
       }
-    } else {
-      history.push({
-        pathname: "/login",
-        state: {
-          from: history.location,
-          autoAddToCart: true,
-          item: data,
-        },
-      });
+    } catch (error) {
+      toast.error("Something went wrong! Please try again.");
     }
   };
   const handleAddToFavorite = (Id) => {
