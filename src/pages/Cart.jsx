@@ -18,7 +18,9 @@ import emptyCart from "../assets/cart-empty.png";
 
 const Cart = ({ handleNext, setIsLoading }) => {
   const cart = useSelector((state) => state.cart);
-  const { _id } = useSelector((state) => state.user.currentUser);
+  const currentUser = useSelector((state) => state.user);
+
+  const { _id } = currentUser;
 
   const [stripeToken, setStripeToken] = useState(null);
   const history = useHistory();
@@ -50,9 +52,7 @@ const Cart = ({ handleNext, setIsLoading }) => {
       }
     });
   };
-  useEffect(() => {
-    dispatch(deliveryCharge(80));
-  }, [dispatch]);
+
   useEffect(() => {
     const makeRequest = async () => {
       try {
@@ -71,9 +71,27 @@ const Cart = ({ handleNext, setIsLoading }) => {
   }, [stripeToken, cart.total, history]);
 
   const handleQuantity = (type, productId) => {
-    const updatedQuantity = type === "inc" ? 1 : -1;
-    dispatch(updateProductQuantity({ productId, quantity: updatedQuantity }));
+    const productInCart = cart.products.find((p) => p._id === productId);
+
+    if (!productInCart) return; // Ensure product exists
+
+    let newQuantity =
+      type === "inc" ? productInCart.quantity + 1 : productInCart.quantity - 1;
+
+    if (newQuantity < 1) return; // Prevent quantity from going below 1
+
+    dispatch(updateProductQuantity({ productId, quantity: newQuantity }));
+
+    // ✅ Update guest cart in localStorage for non-logged-in users
+    if (!_id) {
+      const guestCart = JSON.parse(localStorage.getItem("guestCart")) || [];
+      const updatedGuestCart = guestCart.map((item) =>
+        item._id === productId ? { ...item, quantity: newQuantity } : item
+      );
+      localStorage.setItem("guestCart", JSON.stringify(updatedGuestCart));
+    }
   };
+
   const handleRemoveFromCart = (productId) => {
     Swal.fire({
       title: "Are you sure?",
@@ -110,8 +128,24 @@ const Cart = ({ handleNext, setIsLoading }) => {
     price: product.price,
     quantity: product.quantity,
   }));
-  const total = Number(cart.total);
+
   const userId = _id;
+  const subtotal = cart.products.reduce(
+    (acc, product) => acc + product.price * product.quantity,
+    0
+  );
+
+  const deliveryCharge = currentUser?.address?.city === "Dhaka" ? 120 : 80;
+
+  // If guest user, get from localStorage
+  const storedCharge = localStorage.getItem("deliveryCharge");
+  const finalDeliveryCharge = currentUser
+    ? deliveryCharge
+    : storedCharge
+    ? Number(storedCharge)
+    : 80;
+
+  const total = subtotal + finalDeliveryCharge;
 
   const handleProceed = async () => {
     try {

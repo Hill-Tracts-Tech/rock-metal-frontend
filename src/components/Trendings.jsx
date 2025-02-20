@@ -19,10 +19,10 @@ const Trendings = ({ cat, filters, sort }) => {
           cat
             ? process.env.REACT_APP_PRODUCTION === "YES"
               ? `https://api.rockmetaltshirt.com/api/products?category=${cat}`
-              : `http://localhost:5002/api/products?category=${cat}`
+              : `http://localhost:5000/api/products?category=${cat}`
             : process.env.REACT_APP_PRODUCTION === "YES"
             ? "https://api.rockmetaltshirt.com/api/products"
-            : "http://localhost:5002/api/products"
+            : "http://localhost:5000/api/products"
         );
         setProducts(res.data.data);
         setLoading(false);

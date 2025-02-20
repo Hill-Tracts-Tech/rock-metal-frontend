@@ -5,78 +5,126 @@ import { useDispatch, useSelector } from "react-redux";
 import { districts } from "../data";
 import { userRequest } from "../requestMethods";
 import { clearCart } from "../redux/cartRedux";
+import { useHistory } from "react-router-dom";
 
 const OrderDetails = ({ handleNext, setIsLoading }) => {
   const cart = useSelector((state) => state.cart);
-  const { email, _id, phone, name } = useSelector(
-    (state) => state.user.currentUser
-  );
-  const [username, setName] = useState(name);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+
+  const { email, _id, phone, name } = currentUser || {};
+
+  // State for user inputs
+  const [username, setName] = useState(name || "");
+  const [userEmail, setUserEmail] = useState(email || "");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
-  const [number, setNumber] = useState(phone);
+  const [number, setNumber] = useState(phone || "");
   const [postcode, setPostCode] = useState("");
   const [showCards, setShowCards] = useState(false);
   const [paymentType, setPaymentType] = useState("COD");
-  const dispatch = useDispatch();
+
+  // Dynamic delivery charge handling
+  const deliveryCharge = city !== "Dhaka" ? 120 : 80;
+  const totalAmount = cart.total + deliveryCharge;
+  const history = useHistory();
+
   const showCard = (value) => {
-    if (value === "card") {
-      setShowCards(true);
+    setShowCards(value === "card");
+  };
+
+  // Prepare order data
+  // Prepare order data
+  const getOrderData = () => {
+    if (_id) {
+      // Logged-in user
+      return {
+        user: _id, // Send user ID if logged in
+        products: cart.products.map(
+          ({ title, size, color, price, quantity }) => ({
+            title,
+            size,
+            color,
+            price,
+            quantity,
+          })
+        ),
+        total_amount: totalAmount,
+        deliveryCharge,
+        paymentStatus: "Pending",
+        shippingStatus: "Processing",
+      };
     } else {
-      setShowCards(false);
+      // Guest user
+      return {
+        guest: {
+          name: username,
+          phone: number,
+          email: userEmail,
+          address: { city, postcode, street: address },
+        },
+        products: cart.products.map(
+          ({ title, size, color, price, quantity }) => ({
+            title,
+            size,
+            color,
+            price,
+            quantity,
+          })
+        ),
+        total_amount: totalAmount,
+        deliveryCharge,
+        paymentStatus: "Pending",
+        shippingStatus: "Processing",
+      };
     }
   };
+
+  // **Order Handler for Online Payment**
   const orderHandler = async (e) => {
     e.preventDefault();
-    const data = {
-      name: username,
-      phone: number,
-      city,
-      address,
-      postcode,
-      email,
-      _id: _id,
-      deliveryCharge: city === "Dhaka" ? cart?.deliveryCharge : 120,
-    };
+    const data = getOrderData();
+
     try {
       setIsLoading(true);
       const res = await userRequest.post("/orders/payment", data);
       if (res.data) {
-        window.location.replace(res.data.data);
-        dispatch(clearCart());
-        handleNext();
+        // dispatch(clearCart());
+        // // handleNext();
+        // const orderDetails = res.data.order;
+        // // Redirect user to the order confirmation page
+        // window.location.href = `/order-receive/${orderDetails.orderId}`;
       }
     } catch (error) {
-      console.log(error);
+      console.error("Payment Error:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // **Cash on Delivery Handler**
   const cashHandler = async (e) => {
     e.preventDefault();
-    const data = {
-      name: username,
-      phone: number,
-      city,
-      address,
-      postcode,
-      email,
-      _id: _id,
-      deliveryCharge: city === "Dhaka" ? cart?.deliveryCharge : 120,
-    };
-
-    setIsLoading(true);
+    const data = getOrderData();
+    console.log(data);
     try {
+      setIsLoading(true);
       const res = await userRequest.post("/orders/cash-on-delivery", data);
-      setIsLoading(false);
+      console.log(res);
       if (res.data) {
         dispatch(clearCart());
-        handleNext();
+        // handleNext();
+        const orderDetails = res.data.order;
+        // Redirect user to the order confirmation page
+        history.push({
+          pathname: `/order-receive/${orderDetails._id}`,
+          state: { order: orderDetails },
+        });
       }
     } catch (error) {
+      console.error("COD Error:", error);
+    } finally {
       setIsLoading(false);
-      console.log(error);
     }
   };
 
@@ -84,153 +132,75 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
     <Container>
       <Wrapper>
         <Top>
-          <TopButton
-            style={{
-              backgroundColor: "teal",
-              color: "#ffffff",
-              border: "none",
-              padding: "10px 20px",
-              borderRadius: "4px",
-              fontSize: "16px",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            Shipping
-          </TopButton>
-          <TopButton
-            style={{
-              backgroundColor: "teal",
-              color: "#ffffff",
-              border: "none",
-              padding: "10px 20px",
-              borderRadius: "4px",
-              fontSize: "16px",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            Item: {cart.products.length}
-          </TopButton>
+          <TopButton>Shipping</TopButton>
+          <TopButton>Item: {cart.products.length}</TopButton>
         </Top>
         <Bottom>
           <Form onSubmit={orderHandler}>
             <FormPart>
               <FormItem>
                 <InputItem>
-                  <Lable>
-                    Name <span style={{ fontWeight: "900" }}>:</span>
-                  </Lable>
+                  <Label>Name:</Label>
                   <Input
-                    value={username}
-                    name="name"
                     type="text"
+                    value={username}
+                    onChange={(e) => setName(e.target.value)}
                     required
-                    disabled
-                    placeholder={username}
+                    placeholder="Enter your name"
                   />
                 </InputItem>
                 <InputItem>
-                  <Lable>
-                    City <span style={{ fontWeight: "900" }}>:</span>
-                  </Lable>
-
-                  <Select
-                    name="city"
-                    type="text"
-                    required
-                    onChange={(e) => setCity(e.target.value)}
-                  >
+                  <Label>City:</Label>
+                  <Select onChange={(e) => setCity(e.target.value)} required>
                     <Option>Select your City</Option>
                     {districts.sort().map((district, i) => (
-                      <Option value={district}>{district}</Option>
+                      <Option key={i} value={district}>
+                        {district}
+                      </Option>
                     ))}
                   </Select>
                 </InputItem>
                 <InputItem>
-                  <Lable>
-                    Email <span style={{ fontWeight: "900" }}>:</span>
-                  </Lable>
-
+                  <Label>Email:</Label>
                   <Input
-                    name="email"
-                    placeholder={email}
                     type="email"
-                    pattern={`/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,`}
+                    value={userEmail}
+                    placeholder="Enter your email"
+                    onChange={(e) => setUserEmail(e.target.value)}
                     required
-                    disabled
-                    value={email}
                   />
                 </InputItem>
                 <InputItem>
-                  <Lable>
-                    Phone Number <span style={{ fontWeight: "900" }}>:</span>
-                  </Lable>
-
+                  <Label>Phone Number:</Label>
                   <Input
-                    name="number"
-                    type="number"
+                    type="tel"
                     value={number}
-                    pattern={/^01[3-9]\d{8}$/}
-                    placeholder={number}
+                    pattern="^01[3-9]\d{8}$"
+                    onChange={(e) => setNumber(e.target.value)}
+                    placeholder="Your phone number"
                     required
                   />
                 </InputItem>
                 <InputItem>
-                  <Lable>
-                    Postcode / ZIP <span style={{ fontWeight: "900" }}>:</span>
-                  </Lable>
-
+                  <Label>Postcode / ZIP:</Label>
                   <Input
-                    onChange={(e) => setPostCode(e.target.value)}
-                    name="postcode"
                     type="number"
+                    onChange={(e) => setPostCode(e.target.value)}
+                    placeholder="Enter postal code"
                     required
                   />
                 </InputItem>
                 <InputItem>
-                  <Lable>
-                    House/Address <span style={{ fontWeight: "900" }}>:</span>
-                  </Lable>
-
+                  <Label>House/Address:</Label>
                   <Input
-                    onChange={(e) => setAddress(e.target.value)}
-                    name="address"
                     type="text"
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Your full address"
                     required
                   />
                 </InputItem>
               </FormItem>
             </FormPart>
-
-            {/* <div style={{ display: "flex", justifyContent: "center" }}>
-                {number && name && city && address && postcode && email ? (
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: "250px",
-                    }}
-                  >
-                    <Button onClick={orderHandler}>Checkout</Button>
-                    <Button value="kolo" onClick={cashHandler}>
-                      Cash On Delivery
-                    </Button>
-                  </div>
-                ) : (
-                  <p
-                    style={{
-                      color: "gray",
-                      marginTop: "15px",
-                      fontSize: "20px",
-                    }}
-                  >
-                    Complete the details
-                  </p>
-                )}
-              </div> */}
             <Summary>
               <SummaryTitle>ORDER SUMMARY</SummaryTitle>
               <SummaryItem>
@@ -239,76 +209,38 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
               </SummaryItem>
               <SummaryItem>
                 <SummaryItemText>Estimated Shipping</SummaryItemText>
-                <SummaryItemPrice>
-                  ৳ {city === "Dhaka" ? cart?.deliveryCharge : 120}
-                </SummaryItemPrice>
+                <SummaryItemPrice>৳ {deliveryCharge}</SummaryItemPrice>
               </SummaryItem>
               <SummaryItem type="total">
                 <SummaryItemText>Total</SummaryItemText>
-                <SummaryItemPrice>
-                  ৳{" "}
-                  {cart.total + (city === "Dhaka" ? cart?.deliveryCharge : 120)}
-                </SummaryItemPrice>
+                <SummaryItemPrice>৳ {totalAmount}</SummaryItemPrice>
               </SummaryItem>
-              <Card className="card bg-base-100 shadow-xl mb-10 ">
+              <Card className="card bg-base-100 shadow-xl mb-10">
                 <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "5px",
-                  }}
+                  style={{ display: "flex", alignItems: "center", gap: "5px" }}
                 >
                   <input
                     type="radio"
                     value="COD"
                     name="payment-type"
-                    style={{
-                      width: "20px",
-                      height: "20px",
-                      padding: "10px",
-                      background: "teal",
-                    }}
-                    onChange={(event) => setPaymentType(event.target.value)}
+                    onChange={(e) => setPaymentType(e.target.value)}
                     checked={paymentType === "COD"}
                     onClick={(e) => showCard(e.target.value)}
                   />
                   <p>Cash On Delivery</p>
                 </div>
-                {/* <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "5px",
-                  }}
-                >
-                  <input
-                    type="radio"
-                    value="card"
-                    name="payment-type"
-                    style={{
-                      width: "20px",
-                      height: "20px",
-                    }}
-                    onChange={(event) => setPaymentType(event.target.value)}
-                    checked={paymentType === "card"}
-                    onClick={(e) => showCard(e.target.value)}
-                  />
-                  <p>Pay With Bkash</p>
-                </div> */}
               </Card>
-              {/* akdjfg;ljgd */}
-              {number && name && city && address && postcode && email ? (
+              {number &&
+              username &&
+              city &&
+              address &&
+              postcode &&
+              userEmail ? (
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   {showCards ? (
-                    <>
-                      <Button disabled onClick={orderHandler}>
-                        Proceed Now{" "}
-                      </Button>
-                    </>
+                    <Button onClick={orderHandler}>Proceed Now</Button>
                   ) : (
-                    <Button isabled onClick={cashHandler}>
-                      Proceed
-                    </Button>
+                    <Button onClick={cashHandler}>Proceed</Button>
                   )}
                 </div>
               ) : (
@@ -359,7 +291,7 @@ const InputItem = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Lable = styled.label`
+const Label = styled.label`
   font-size: 17px;
   font-family: 700;
   color: gray;

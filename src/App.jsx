@@ -14,7 +14,6 @@ import { useSelector } from "react-redux";
 import AllProducts from "./components/AllProducts";
 import ScrollToTop from "./components/scroll/ScrollToTop";
 import WishList from "./pages/WishList";
-import PrivateRoute from "./router/PrivateRoute ";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Orders from "./pages/Orders";
@@ -26,6 +25,7 @@ import SuccessView from "./components/payment/SuccessView";
 import Failure from "./components/payment/Failure";
 import Bottombar from "./components/Navbar/Bottombar";
 import useRightClickContext from "./hoc/preventRightClick";
+import OrderReceive from "./components/OrderReceive";
 
 const App = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -71,17 +71,20 @@ const App = () => {
             <Route path="/register">
               {currentUser?.email ? <Redirect to="/" /> : <Register />}
             </Route>
-            <PrivateRoute path="/cart">
+            <Route path="/cart">
               <HorizontalLinearStepper />
-            </PrivateRoute>
-            <PrivateRoute path="/wishList">
+            </Route>
+            <Route path="/wishList">
               <WishList />
-            </PrivateRoute>
-            <PrivateRoute path="/orders">
+            </Route>
+            <Route path="/orders">
               <Orders />
-            </PrivateRoute>
+            </Route>
             <Route path="/payment/success/:id">
               <SuccessView />
+            </Route>
+            <Route path="/order-receive/:orderId">
+              <OrderReceive />
             </Route>
             <Route path="/payment/failure/:id">
               <Failure />
