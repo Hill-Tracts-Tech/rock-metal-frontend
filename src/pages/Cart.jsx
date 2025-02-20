@@ -72,18 +72,18 @@ const Cart = ({ handleNext, setIsLoading }) => {
 
   const handleQuantity = (type, productId) => {
     const productInCart = cart.products.find((p) => p._id === productId);
-
     if (!productInCart) return; // Ensure product exists
 
     let newQuantity =
       type === "inc" ? productInCart.quantity + 1 : productInCart.quantity - 1;
 
-    if (newQuantity < 1) return; // Prevent quantity from going below 1
+    if (newQuantity < 1) return; // Prevent going below 1
 
+    // ✅ Update Redux
     dispatch(updateProductQuantity({ productId, quantity: newQuantity }));
 
-    // ✅ Update guest cart in localStorage for non-logged-in users
-    if (!_id) {
+    // ✅ Update Local Storage for Guest Users
+    if (!currentUser) {
       const guestCart = JSON.parse(localStorage.getItem("guestCart")) || [];
       const updatedGuestCart = guestCart.map((item) =>
         item._id === productId ? { ...item, quantity: newQuantity } : item
@@ -130,6 +130,7 @@ const Cart = ({ handleNext, setIsLoading }) => {
   }));
 
   const userId = _id;
+
   const subtotal = cart.products.reduce(
     (acc, product) => acc + product.price * product.quantity,
     0
@@ -273,35 +274,35 @@ const Cart = ({ handleNext, setIsLoading }) => {
               </EmptyCart>
             )}
           </Info>
-          {cart?.products?.length > 0 && (
-            <Summary>
-              <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-              <SummaryItem>
-                <SummaryItemText>Subtotal</SummaryItemText>
-                <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
-              </SummaryItem>
-              <SummaryItem>
-                <SummaryItemText>
-                  Estimated Shipping <br />
-                  (only For Dhaka)
-                </SummaryItemText>
-                <SummaryItemPrice>৳ {cart?.deliveryCharge}</SummaryItemPrice>
-              </SummaryItem>
-              <SummaryItem type="total">
-                <SummaryItemText>Total</SummaryItemText>
-                <SummaryItemPrice>
-                  ৳ {cart.total + cart.deliveryCharge}
-                </SummaryItemPrice>
-              </SummaryItem>
-              {cart.products.length ? (
-                <Button onClick={handleProceed}>PROCEED NOW</Button>
-              ) : (
-                <Button style={{ backgroundColor: "gray", color: "gray" }}>
-                  PROCEED NOW
-                </Button>
-              )}
-            </Summary>
-          )}
+          <Summary>
+            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+
+            <SummaryItem>
+              <SummaryItemText>Subtotal</SummaryItemText>
+              <SummaryItemPrice>৳ {subtotal}</SummaryItemPrice>
+            </SummaryItem>
+
+            <SummaryItem>
+              <SummaryItemText>
+                Estimated Shipping <br />
+                (only For Dhaka)
+              </SummaryItemText>
+              <SummaryItemPrice>৳ {finalDeliveryCharge}</SummaryItemPrice>
+            </SummaryItem>
+
+            <SummaryItem type="total">
+              <SummaryItemText>Total</SummaryItemText>
+              <SummaryItemPrice>৳ {total}</SummaryItemPrice>
+            </SummaryItem>
+
+            {cart.products.length ? (
+              <Button onClick={handleProceed}>PROCEED NOW</Button>
+            ) : (
+              <Button style={{ backgroundColor: "gray", color: "gray" }}>
+                PROCEED NOW
+              </Button>
+            )}
+          </Summary>
         </Bottom>
       </Wrapper>
     </Container>
