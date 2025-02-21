@@ -54,9 +54,20 @@ const cartSlice = createSlice({
     },
 
     removeFromCart: (state, action) => {
-      state.products = state.products.filter(
-        (item) => item._id !== action.payload._id
+      const productToRemove = state.products.find(
+        (item) => item._id === action.payload._id
       );
+
+      if (productToRemove) {
+        // Subtract the quantity and total price of the removed item
+        state.quantity -= productToRemove.quantity; // Reduce the total quantity
+        state.total -= productToRemove.price * productToRemove.quantity; // Reduce the total price
+
+        // Remove the item from the products list
+        state.products = state.products.filter(
+          (item) => item._id !== action.payload._id
+        );
+      }
     },
 
     addFavorite: (state, action) => {
