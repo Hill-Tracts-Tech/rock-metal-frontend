@@ -123,16 +123,16 @@ const Navbar = () => {
           {!currentUser?.email ? (
             <AuthContainer>
               <Link
-                to="/register"
-                style={{ textDecoration: "none", fontWeight: "semibold" }}
-              >
-                <RegisterButton>Register</RegisterButton>
-              </Link>
-              <Link
                 to="/login"
                 style={{ textDecoration: "none", fontWeight: "semibold" }}
               >
                 <LoginButton>Sign In</LoginButton>
+              </Link>
+              <Link
+                to="/orders"
+                style={{ textDecoration: "none", fontWeight: "semibold" }}
+              >
+                <RegisterButton>My Orders</RegisterButton>
               </Link>
             </AuthContainer>
           ) : (

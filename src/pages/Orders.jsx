@@ -2,36 +2,79 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { userRequest } from "../requestMethods";
+import axios from "axios";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import { mobile } from "../responsive";
 import img from "../assets/sad.png";
+
 const Orders = () => {
-  const { _id: userId } = useSelector((state) => state.user.currentUser);
+  const { currentUser } = useSelector((state) => state.user);
+  const userId = currentUser?._id || null;
+
   const [orders, setOrders] = useState([]);
   const [isLoading, setLoading] = useState(false);
-
+  const [orderId, setOrderId] = useState("");
+  const [isGuestOrder, setIsGuestOrder] = useState(false);
+  console.log(orders, "orders");
+  // Fetch orders for logged-in users
   useEffect(() => {
-    setLoading(true);
-    const getOrders = async () => {
-      try {
-        const res = await userRequest.get(`orders/find/${userId}`);
-        setOrders(res.data.data);
-        setLoading(false);
-      } catch (error) {
-        toast.error("Something went wrong");
-        setLoading(false);
-      }
-    };
-    getOrders();
+    if (userId) {
+      setLoading(true);
+      const getOrders = async () => {
+        try {
+          const res = await userRequest.get(`orders/find/${userId}`);
+          setOrders(res.data.data);
+          setLoading(false);
+        } catch (error) {
+          toast.error("Something went wrong");
+          setLoading(false);
+        }
+      };
+      getOrders();
+    }
   }, [userId]);
 
-  console.log(orders, "orders");
+  // Fetch guest order using Order ID
+  const handleGuestOrderSubmit = async (e) => {
+    e.preventDefault();
+    if (!orderId) {
+      toast.error("Please enter a valid Order ID.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/orders/${orderId}`
+      );
+      setOrders([res.data.data]); // Wrap in array to match the expected format
+      setIsGuestOrder(true);
+      setLoading(false);
+    } catch (error) {
+      toast.error("Order not found!");
+      setLoading(false);
+    }
+  };
 
   return (
     <Container>
       <OrdersContainer>
         <Heading>Your Orders</Heading>
+
+        {/* Guest Order Input */}
+        {!userId && !isGuestOrder && (
+          <GuestOrderForm onSubmit={handleGuestOrderSubmit}>
+            <OrderInput
+              type="text"
+              placeholder="Enter your Order ID"
+              value={orderId}
+              onChange={(e) => setOrderId(e.target.value)}
+            />
+            <SubmitButton type="submit">Find Order</SubmitButton>
+          </GuestOrderForm>
+        )}
+
         {isLoading ? (
           <>
             {[...Array(5)].map((_, index) => (
@@ -46,7 +89,7 @@ const Orders = () => {
               <EmptyDiv>
                 <EmptyMessageImg src={img} alt="EmptyProduct" />
                 <EmptyMessage style={{ marginBottom: "10px" }}>
-                  Sorry, You did't Order any T-shirt.
+                  Sorry, no orders found.
                 </EmptyMessage>
               </EmptyDiv>
             ) : (
@@ -55,6 +98,7 @@ const Orders = () => {
                   <div key={order._id}>
                     <div>
                       {order.products.map((product) => {
+                        console.log(order?.guest?.address?.city);
                         return (
                           <div key={product._id}>
                             <SubContainer>
@@ -69,7 +113,7 @@ const Orders = () => {
                                   {product?.size}
                                 </p>
                                 <p>
-                                  <B> Color: </B>
+                                  <B>Color: </B>
                                   {product?.color}
                                 </p>
                               </ProductItem>
@@ -84,20 +128,21 @@ const Orders = () => {
                                 </Bold>
                                 <small>
                                   {order?.data?.cus_add1 ||
-                                    order?.data?.cus_add2}
+                                    `${order?.guest?.address?.city} -
+                                      ${order?.guest?.address?.street} -
+                                      ${order?.guest?.address?.postcode}` ||
+                                    "N/A"}
                                 </small>
                               </ProductItem>
                               <ProductItem>
-                                <Bold>
-                                  Shipping
-                                  <Br /> Status
-                                </Bold>
-                                <small>{order?.shippingStatus}</small>
+                                <Bold>Shipping Status</Bold>
+                                <small>
+                                  {order?.shippingStatus || "Pending"}
+                                </small>
                               </ProductItem>
-
                               <ProductItem>
                                 <Bold>Amount</Bold>
-                                <p> ৳ {product.price}</p>
+                                <p>৳ {product.price}</p>
                               </ProductItem>
                               <ProductItem>
                                 <Bold>Quantity:</Bold>
@@ -105,13 +150,12 @@ const Orders = () => {
                                   {product.quantity}
                                 </p>
                               </ProductItem>
-
                               <ProductItem>
                                 <Bold>Total + Delivery:</Bold>
                                 <p>
                                   ৳{" "}
                                   {product.quantity * product.price +
-                                    order?.deliveryCharge}
+                                    (order?.deliveryCharge || 120)}
                                 </p>
                               </ProductItem>
                             </SubContainer>
@@ -225,4 +269,33 @@ const EmptyMessageImg = styled.img`
   height: 80%;
   object-fit: cover;
   border-radius: 6px;
+`;
+
+const GuestOrderForm = styled.form`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const OrderInput = styled.input`
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  margin-right: 10px;
+`;
+
+const SubmitButton = styled.button`
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4ade80;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #3cb371;
+  }
 `;

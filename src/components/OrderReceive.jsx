@@ -56,8 +56,13 @@ const SummaryBox = styled.div`
   p:last-child {
     font-weight: 600;
     font-size: 1.1rem;
+    word-break: break-word; /* Break long words */
+    overflow-wrap: break-word; /* Break long words */
+    white-space: pre-wrap; /* Allows wrapping and respects spaces */
+    width: 100%; /* Force it to stay within the container */
   }
 `;
+
 
 const Card = styled.div`
   background: white;
@@ -486,7 +491,7 @@ const OrderReceive = () => {
       <OrderSummaryGrid>
         <SummaryBox>
           <p>Order Number</p>
-          <p>{order.trackingId}</p>
+          <p style={{width: "maxContent"}}>{order._id}</p>
         </SummaryBox>
         <SummaryBox>
           <p>Date</p>
