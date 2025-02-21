@@ -17,8 +17,8 @@ const Products = ({ cat, filters, sort }) => {
       try {
         const res = await axios.get(
           cat
-            ? `${process.env.REACT_APP_BASE_URL}/products?category=${cat}`
-            : `${process.env.REACT_APP_BASE_URL}/products`
+            ? `${process.env.REACT_APP_BASE_URL}/products?category=${cat}&limit=20`
+            : `${process.env.REACT_APP_BASE_URL}/products?limit=20`
         );
         setProducts(res.data.data);
         setLoading(false);

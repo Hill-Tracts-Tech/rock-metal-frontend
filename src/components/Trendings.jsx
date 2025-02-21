@@ -56,6 +56,11 @@ const Trendings = ({ cat, filters, sort }) => {
     }
   }, [sort]);
 
+  console.log(
+    products.filter((item) => item.isTreding === true),
+    "cat"
+  );
+
   return (
     <Container>
       <Title>
