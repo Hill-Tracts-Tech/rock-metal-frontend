@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "@material-ui/core";
 import styled from "styled-components";
-import { mobile, tablet } from "../responsive";
+import { mobile } from "../responsive";
 import {
   Search,
   ShoppingCartOutlined,
@@ -20,6 +20,7 @@ import gravatar from "gravatar";
 import { clear } from "../redux/cartRedux";
 import SearchItem from "./SearchItem";
 import { useLocation } from "react-router-dom";
+import SocialContactButton from "./SocialContactButton";
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -32,15 +33,10 @@ const Navbar = () => {
   //for search input and button
   const cart = useSelector((state) => state.cart);
   const [searchValue, setSearchValue] = useState("");
-  const [drawerOpen, setDrawerOpen] = useState(false);
   // popup
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isPopupProfileOpen, setIsPopupProfileOpen] = useState(false);
   const [searchPopup, setSearchPopup] = useState(true);
-
-  const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen);
-  };
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -123,24 +119,7 @@ const Navbar = () => {
               </Badge>
             </MenuItem>
           </Link>
-          <SideIcon style={{ display: login || singUp ? "none" : "" }}>
-            <a
-              className="whatsapplink"
-              href="https://api.whatsapp.com/send?phone=8801888422116"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <WhatsApp
-                style={{
-                  color: "white",
-                  fontSize: "44px",
-                  marginLeft: "10px",
-                  marginTop: "2px",
-                }}
-              ></WhatsApp>
-              {/* <img src={whatsapp} alt="whatsapp" className="whatsapp" /> */}
-            </a>
-          </SideIcon>
+          <SocialContactButton />
           {!currentUser?.email ? (
             <AuthContainer>
               <Link
@@ -189,43 +168,8 @@ const Navbar = () => {
             </Logo>
           </Link>
         </Left>
-        <SideIcon style={{ display: login || singUp ? "block" : "" }}>
-          <a
-            href="https://api.whatsapp.com/send?phone=8801888422116"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <WhatsApp
-              style={{
-                color: "white",
-                fontSize: "44px",
-                marginLeft: "10px",
-                marginTop: "2px",
-              }}
-            ></WhatsApp>
-            {/* <img src={whatsapp} alt="whatsapp" className="whatsapp" /> */}
-          </a>
-        </SideIcon>
+        <SocialContactButton />
         <>
-          {" "}
-          {/* <SearchContainer style={{ marginRight: "13px" }}>
-            <SearchInput
-              type="text"
-              placeholder="Search..."
-              value={searchValue}
-              onChange={handleSearchChange}
-              style={{ width: "200px" }}
-            />
-            <SearchButton onClick={handleSearch} disabled={!searchValue}>
-              <Search
-                style={{
-                  color: "white",
-                  fontSize: 20,
-                  textAlign: "center",
-                }}
-              />
-            </SearchButton>
-          </SearchContainer> */}
           <button
             style={{
               border: "none",
