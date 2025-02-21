@@ -16,8 +16,7 @@ const Orders = () => {
   const [isLoading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [isGuestOrder, setIsGuestOrder] = useState(false);
-  console.log(orders, "orders");
-  // Fetch orders for logged-in users
+
   useEffect(() => {
     if (userId) {
       setLoading(true);
@@ -35,7 +34,6 @@ const Orders = () => {
     }
   }, [userId]);
 
-  // Fetch guest order using Order ID
   const handleGuestOrderSubmit = async (e) => {
     e.preventDefault();
     if (!orderId) {
@@ -48,7 +46,7 @@ const Orders = () => {
       const res = await axios.get(
         `http://localhost:5000/api/orders/${orderId}`
       );
-      setOrders([res.data.data]); // Wrap in array to match the expected format
+      setOrders([res.data.data]);
       setIsGuestOrder(true);
       setLoading(false);
     } catch (error) {
@@ -61,8 +59,6 @@ const Orders = () => {
     <Container>
       <OrdersContainer>
         <Heading>Your Orders</Heading>
-
-        {/* Guest Order Input */}
         {!userId && !isGuestOrder && (
           <GuestOrderForm onSubmit={handleGuestOrderSubmit}>
             <OrderInput
@@ -78,9 +74,7 @@ const Orders = () => {
         {isLoading ? (
           <>
             {[...Array(5)].map((_, index) => (
-              <div key={index} style={{ marginBottom: "10px" }}>
-                <Skeleton height={100} />
-              </div>
+              <SkeletonCard key={index} />
             ))}
           </>
         ) : (
@@ -88,84 +82,43 @@ const Orders = () => {
             {orders.length === 0 ? (
               <EmptyDiv>
                 <EmptyMessageImg src={img} alt="EmptyProduct" />
-                <EmptyMessage style={{ marginBottom: "10px" }}>
-                  Sorry, no orders found.
-                </EmptyMessage>
+                <EmptyMessage>No orders found.</EmptyMessage>
               </EmptyDiv>
             ) : (
-              <div>
+              <OrdersGrid>
                 {orders.map((order) => (
-                  <div key={order._id}>
-                    <div>
-                      {order.products.map((product) => {
-                        console.log(order?.guest?.address?.city);
-                        return (
-                          <div key={product._id}>
-                            <SubContainer>
-                              <ProductItem1>
-                                <Img src={product.img} alt="product" />
-                                <MobTil>{product.title}</MobTil>
-                              </ProductItem1>
-                              <ProductItem>
-                                <Title>{product.title}</Title>
-                                <p>
-                                  <B>Size: </B>
-                                  {product?.size}
-                                </p>
-                                <p>
-                                  <B>Color: </B>
-                                  {product?.color}
-                                </p>
-                              </ProductItem>
-                              <ProductItem>
-                                <Bold>Payment</Bold>
-                                <small>{order?.paymentStatus}</small>
-                              </ProductItem>
-                              <ProductItem>
-                                <Bold>
-                                  Shipping
-                                  <Br /> Address
-                                </Bold>
-                                <small>
-                                  {order?.data?.cus_add1 ||
-                                    `${order?.guest?.address?.city} -
-                                      ${order?.guest?.address?.street} -
-                                      ${order?.guest?.address?.postcode}` ||
-                                    "N/A"}
-                                </small>
-                              </ProductItem>
-                              <ProductItem>
-                                <Bold>Shipping Status</Bold>
-                                <small>
-                                  {order?.shippingStatus || "Pending"}
-                                </small>
-                              </ProductItem>
-                              <ProductItem>
-                                <Bold>Amount</Bold>
-                                <p>৳ {product.price}</p>
-                              </ProductItem>
-                              <ProductItem>
-                                <Bold>Quantity:</Bold>
-                                <p style={{ marginLeft: "9px" }}>
-                                  {product.quantity}
-                                </p>
-                              </ProductItem>
-                              <ProductItem>
-                                <Bold>Total + Delivery:</Bold>
-                                <p>
-                                  ৳{" "}
-                                  {product.quantity * product.price +
-                                    (order?.deliveryCharge || 120)}
-                                </p>
-                              </ProductItem>
-                            </SubContainer>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
+                  <OrderCard key={order._id}>
+                    {order.products.map((product) => (
+                      <ProductInfo key={product._id}>
+                        <Image src={product.img} alt={product.title} />
+                        <Details>
+                          <ProductTitle>{product.title}</ProductTitle>
+                          <InfoRow>
+                            <strong>Size:</strong> {product.size || "N/A"}
+                          </InfoRow>
+                          <InfoRow>
+                            <strong>Color:</strong> {product.color || "N/A"}
+                          </InfoRow>
+                          <InfoRow>
+                            <strong>Payment:</strong> {order.paymentStatus}
+                          </InfoRow>
+                          <InfoRow>
+                            <strong>Shipping:</strong> {order.shippingStatus}
+                          </InfoRow>
+                          <InfoRow>
+                            <strong>Quantity:</strong> {product.quantity}
+                          </InfoRow>
+                          <TotalPrice>
+                            ৳{" "}
+                            {product.quantity * product.price +
+                              (order.deliveryCharge || 120)}
+                          </TotalPrice>
+                        </Details>
+                      </ProductInfo>
+                    ))}
+                  </OrderCard>
                 ))}
-              </div>
+              </OrdersGrid>
             )}
           </>
         )}
@@ -179,123 +132,118 @@ export default Orders;
 const Container = styled.div`
   width: 90%;
   margin: auto;
-  ${mobile({ paddingBottom: "80px", marginTop: "100px" })}
+  padding-top: 40px;
+  ${mobile({ marginTop: "100px" })}
 `;
 
 const OrdersContainer = styled.div`
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  padding: 50px;
-  ${mobile({ padding: "0px 0 50px 0" })}
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 40px;
+  /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); */
+  ${mobile({ padding: "20px" })}
 `;
+
 const Heading = styled.h2`
-  margin-bottom: 40px;
-  padding: 10px;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
 `;
-const SubContainer = styled.div`
+
+const OrdersGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+`;
+
+const OrderCard = styled.div`
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+`;
+
+const ProductInfo = styled.div`
   display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  margin: 10px 0;
-
-  border-bottom: 0.5px solid gray;
-  ${mobile({ display: "flex", flexDirection: "column" })}
+  gap: 20px;
+  margin-bottom: 15px;
 `;
 
-const Img = styled.img`
+const Image = styled.img`
   width: 80px;
-  ${mobile({ width: "120px" })}
-`;
-const Title = styled.h3`
-  display: block;
-  ${mobile({ display: "none" })}
-`;
-
-const MobTil = styled.h4`
-  display: none;
-  ${mobile({ display: "block", fontSize: "20px", margin: "10px 0" })}
-`;
-const ProductItem = styled.div`
-  flex: 1;
-  justify-content: center;
-
-  align-items: center;
-  ${mobile({
-    display: "flex",
-    justifyContent: "space-between",
-    marginBottom: "0px",
-  })}
-`;
-const ProductItem1 = styled.div`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  ${mobile({
-    display: "flex",
-    justifyCntent: "center",
-    alignItems: "center",
-    marginBottom: "0px",
-    flexDirection: "column",
-  })}
-`;
-
-const Bold = styled.p`
-  font-weight: 800;
-  ${mobile({ fontWeight: "800" })};
-`;
-const B = styled.b`
-  ${mobile({ fontWeight: "800" })};
-`;
-const Br = styled.br`
-  display: block;
-  ${mobile({ display: "none" })};
-`;
-const EmptyDiv = styled.div`
-  width: 300px;
-
-  margin: auto;
-  text-align: center;
-  border-radius: 6px;
-  ${mobile({ paddingBottom: "20px" })}
-`;
-const EmptyMessage = styled.h1`
-  font-size: 30px;
-  margin: auto;
-  text-align: center;
-  border-radius: 6px;
-  ${mobile({ fontSize: "20px" })};
-`;
-const EmptyMessageImg = styled.img`
-  width: 80%;
-  height: 80%;
+  height: 80px;
+  border-radius: 8px;
   object-fit: cover;
-  border-radius: 6px;
+`;
+
+const Details = styled.div`
+  flex: 1;
+`;
+
+const ProductTitle = styled.h3`
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+`;
+
+const InfoRow = styled.p`
+  margin: 5px 0;
+  color: #555;
+`;
+
+const StatusBadge = styled.span``;
+
+const TotalPrice = styled.p`
+  margin-top: 10px;
+  font-weight: bold;
+  color: #4ade80;
 `;
 
 const GuestOrderForm = styled.form`
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-bottom: 20px;
 `;
 
 const OrderInput = styled.input`
-  padding: 10px;
+  padding: 12px;
   font-size: 16px;
-  border: 1px solid gray;
-  border-radius: 4px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   margin-right: 10px;
+  flex: 1;
 `;
 
 const SubmitButton = styled.button`
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 12px 20px;
   background-color: #4ade80;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background 0.3s;
 
   &:hover {
     background-color: #3cb371;
   }
+`;
+
+const EmptyDiv = styled.div`
+  text-align: center;
+  margin-top: 50px;
+`;
+
+const EmptyMessageImg = styled.img`
+  width: 60%;
+  margin-bottom: 20px;
+`;
+
+const EmptyMessage = styled.h1`
+  font-size: 24px;
+  color: #555;
+`;
+
+const SkeletonCard = styled(Skeleton)`
+  height: 250px;
+  border-radius: 12px;
 `;

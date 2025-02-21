@@ -71,7 +71,8 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
           address: { city, postcode, street: address },
         },
         products: cart.products.map(
-          ({ title, size, color, price, quantity }) => ({
+          ({ title, size, color, price, quantity, img }) => ({
+            img,
             title,
             size,
             color,
