@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
-import PrintIcon from "@material-ui/icons/Print";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
@@ -62,7 +61,6 @@ const SummaryBox = styled.div`
     width: 100%; /* Force it to stay within the container */
   }
 `;
-
 
 const Card = styled.div`
   background: white;
@@ -164,6 +162,7 @@ const ButtonGroup = styled.div`
   gap: 1rem;
   justify-content: center;
   margin-top: 2rem;
+  margin-bottom: 80px;
 `;
 
 const Button = styled.button`
@@ -449,7 +448,7 @@ const OrderReceive = () => {
     const fetchOrderDetails = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/orders/${orderId}`
+          `${process.env.REACT_APP_BASE_URL}/orders/${orderId}`
         );
         setOrder(res?.data?.data);
       } catch (err) {
@@ -491,7 +490,7 @@ const OrderReceive = () => {
       <OrderSummaryGrid>
         <SummaryBox>
           <p>Order Number</p>
-          <p style={{width: "maxContent"}}>{order._id}</p>
+          <p style={{ width: "maxContent" }}>{order._id}</p>
         </SummaryBox>
         <SummaryBox>
           <p>Date</p>
@@ -576,15 +575,14 @@ const OrderReceive = () => {
       </Card>
 
       <ButtonGroup>
-        <Button className="primary" onClick={() => window.print()}>
-          <PrintIcon /> Print Invoice
-        </Button>
         <Button className="secondary" onClick={handleDownloadPDF}>
           <GetAppIcon /> Download Invoice
         </Button>
-        <Button className="secondary" onClick={() => {}}>
-          <LocalShippingIcon /> Track Order
-        </Button>
+        <Link to="/orders" style={{ textDecoration: "none" }}>
+          <Button className="secondary" onClick={() => {}}>
+            <LocalShippingIcon /> Track Order
+          </Button>
+        </Link>
       </ButtonGroup>
     </Container>
   );

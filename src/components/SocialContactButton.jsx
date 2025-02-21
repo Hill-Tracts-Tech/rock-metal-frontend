@@ -13,6 +13,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 768px) {
+    bottom: 60px; // More space for smaller screens
+  }
 `;
 
 const IconsContainer = styled.div`
@@ -83,7 +87,7 @@ const SocialContactButton = () => {
       {/* Social Icons - Open Above the Main Button */}
       <IconsContainer isOpen={isOpen}>
         <IconButton
-          href="https://m.me/yourusername"
+          href="https://m.me/rasalahmad.ahmad.3"
           target="_blank"
           rel="noreferrer"
           bgColor="#1877F2"

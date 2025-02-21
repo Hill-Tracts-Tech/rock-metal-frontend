@@ -17,12 +17,8 @@ const Products = ({ cat, filters, sort }) => {
       try {
         const res = await axios.get(
           cat
-            ? process.env.REACT_APP_PRODUCTION === "YES"
-              ? `https://api.rockmetaltshirt.com/api/products?category=${cat}`
-              : `http://localhost:5000/api/products?category=${cat}`
-            : process.env.REACT_APP_PRODUCTION === "YES"
-            ? "https://api.rockmetaltshirt.com/api/products"
-            : "http://localhost:5000/api/products"
+            ? `${process.env.REACT_APP_BASE_URL}/products?category=${cat}`
+            : `${process.env.REACT_APP_BASE_URL}/products`
         );
         setProducts(res.data.data);
         setLoading(false);

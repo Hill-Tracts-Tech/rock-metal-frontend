@@ -1,9 +1,6 @@
 import axios from "axios";
 
-const BASE_URL =
-  process.env.REACT_APP_PRODUCTION === "YES"
-    ? "https://api.rockmetaltshirt.com/api/"
-    : "http://localhost:5000/api";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const publicRequest = axios.create({
   baseURL: BASE_URL,

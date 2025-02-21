@@ -44,7 +44,7 @@ const Orders = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/orders/${orderId}`
+        `${process.env.REACT_APP_BASE_URL}/orders/${orderId}`
       );
       setOrders([res.data.data]);
       setIsGuestOrder(true);
