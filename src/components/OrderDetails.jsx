@@ -23,11 +23,18 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
   const [postcode, setPostCode] = useState("");
   const [showCards, setShowCards] = useState(false);
   const [paymentType, setPaymentType] = useState("COD");
+  const history = useHistory();
 
   // Dynamic delivery charge handling
   const deliveryCharge = city !== "Dhaka" ? 120 : 80;
-  const totalAmount = cart.total + deliveryCharge;
-  const history = useHistory();
+  // Calculate subtotal dynamically
+  const subtotal = cart.products.reduce(
+    (acc, product) => acc + product.price * product.quantity,
+    0
+  );
+
+  // Calculate total with delivery charge
+  const totalAmount = subtotal + deliveryCharge;
 
   const showCard = (value) => {
     setShowCards(value === "card");
@@ -205,7 +212,7 @@ const OrderDetails = ({ handleNext, setIsLoading }) => {
               <SummaryTitle>ORDER SUMMARY</SummaryTitle>
               <SummaryItem>
                 <SummaryItemText>Subtotal</SummaryItemText>
-                <SummaryItemPrice>৳ {cart.total}</SummaryItemPrice>
+                <SummaryItemPrice>৳ {subtotal}</SummaryItemPrice>
               </SummaryItem>
               <SummaryItem>
                 <SummaryItemText>Estimated Shipping</SummaryItemText>
